@@ -301,3 +301,81 @@ th {
   color: #555;
   font-size: 1rem;
 }
+/* === Results Page Styles === */
+
+.results-page {
+  padding: 2rem;
+}
+
+.results-page h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ff69b4;
+  margin-bottom: 1.5rem;
+}
+
+.results-page .filters {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.results-page .filters select.form-select {
+  min-width: 150px;
+  border: 1px solid #ff69b4;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+}
+
+.results-page .filters select.form-select:focus {
+  outline: none;
+  border-color: #ff1493;
+  box-shadow: 0 0 0 2px rgba(255, 20, 147, 0.2);
+}
+
+/* Result cards */
+.result-card {
+  background-color: #ffffff;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.result-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+.result-card h4 {
+  color: #ff69b4;
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.result-card p {
+  color: #555;
+  font-size: 1rem;
+  margin: 0.25rem 0;
+}
+
+/* Progress bar inside result card */
+.result-card .progress-wrapper {
+  margin-top: 0.5rem;
+}
+
+.result-card .progress-wrapper .progress {
+  height: 12px;
+  background-color: #ffe4e1;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.result-card .progress-wrapper .progress-bar {
+  height: 100%;
+  background-color: #ff1493;
+  transition: width 0.3s ease;
+}
+
