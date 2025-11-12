@@ -1,35 +1,48 @@
 <template>
-  <div class="login-container">
-    <h1>Login</h1>
-    <form @submit.prevent="handleLogin">
-      <label>Email:</label>
-      <input v-model="email" type="email" required />
-      
-      <label>Password:</label>
-      <input v-model="password" type="password" required />
-      
-      <button type="submit">Logga in</button>
-    </form>
-    <router-link to="/register">Skapa konto</router-link>
+  <div class="container mt-5">
+    <div v-if="!userStore.isLoggedIn">
+      <h2 class="mb-4">Logga in</h2>
+      <LoginForm @login="handleLogin" />
+    </div>
+
+    <div v-else class="text-center">
+      <p>Redirecting to dashboard...</p>
+    </div>
+
+    <div v-if="errorMessage" class="alert alert-danger mt-3">
+      {{ errorMessage }}
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useUserStore } from '../store/userstore.js'
+import { ref, watch, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useUserStore } from '../store/userstore.js'
+import LoginForm from '../components/LoginForm.vue'
 
-const email = ref('')
-const password = ref('')
-const userStore = useUserStore()
 const router = useRouter()
+const userStore = useUserStore()
+const errorMessage = ref('')
 
-async function handleLogin() {
-  const success = await userStore.login(email.value, password.value)
-  if (success) {
-    router.push('/dashboard') // skicka användaren till dashboard
-  } else {
-    alert('Fel email eller lösenord')
+// Redirect if already logged in on mount
+onMounted(() => {
+  if (userStore.isLoggedIn) {
+    router.push('/dashboard')
+  }
+})
+
+// Watch login state and redirect immediately after login
+watch(() => userStore.isLoggedIn, (loggedIn) => {
+  if (loggedIn) {
+    router.push('/dashboard')
+  }
+})
+
+async function handleLogin(credentials) {
+  const res = await userStore.login(credentials.email, credentials.password)
+  if (!res.success) {
+    errorMessage.value = res.message
   }
 }
 </script>

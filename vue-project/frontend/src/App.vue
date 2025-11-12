@@ -1,28 +1,12 @@
 <template>
-  <div id="app" class="flex min-h-screen">
-    <!-- Sidebar visas endast om användaren är inloggad -->
+  <div id="app" class="d-flex min-vh-100">
+    <!-- Sidebar: only show if user is logged in -->
     <Sidebar v-if="userStore.isLoggedIn" />
 
-    <div class="flex-1 flex flex-col">
-      <!-- Navbar -->
-      <nav class="navbar">
-        <div class="logo">Läroportal</div>
-        <div class="nav-actions">
-          <template v-if="userStore.isLoggedIn">
-            <span class="mr-4">Hej, {{ userStore.name }}</span>
-            <button @click="logout" class="btn-logout">Logga ut</button>
-          </template>
-          <template v-else>
-            <router-link to="/" class="nav-link">Home</router-link>
-            <!-- Login-route kan läggas till senare -->
-          </template>
-        </div>
-      </nav>
-
-      <!-- Main content -->
-      <main class="main-content">
-        <router-view />
-      </main>
+    <!-- Main content -->
+    <div class="flex-grow-1">
+      <Navbar />
+      <router-view />
     </div>
   </div>
 </template>
@@ -30,16 +14,17 @@
 <script setup>
 import { onMounted } from 'vue'
 import { useUserStore } from './store/userstore.js'
+import Navbar from './components/Navbar.vue'
 import Sidebar from './components/Sidebar.vue'
 
 const userStore = useUserStore()
 
-// Auto-login vid app-start
+// Auto-fetch logged-in user data on app start
 onMounted(() => {
   userStore.fetchUser()
 })
 
-// Logga ut-funktion
+// Optional global logout function
 function logout() {
   userStore.logout()
 }

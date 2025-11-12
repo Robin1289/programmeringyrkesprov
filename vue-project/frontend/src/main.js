@@ -1,12 +1,20 @@
-import { createApp } from 'vue';
-import App from './App.vue';
-import { createPinia } from 'pinia';
-import router from './router';
-import '../public/assets/styles.css';
+import { createApp } from 'vue'
+import { createPinia } from 'pinia'
+import App from './App.vue'
+import router from './router'
+import { useUserStore } from './store/userstore.js'
+import '../public/assets/styles.css'
 
-const app = createApp(App);
-const pinia = createPinia();
+const app = createApp(App)
+const pinia = createPinia()
+app.use(pinia)
 
-app.use(pinia);
-app.use(router);
-app.mount('#app');
+// Restore session before mounting
+const userStore = useUserStore()
+await userStore.fetchUser()  // ensures isLoggedIn is correct
+
+app.use(router)
+app.mount('#app')
+
+
+
