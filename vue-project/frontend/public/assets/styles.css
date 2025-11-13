@@ -13,8 +13,6 @@ html, body {
   background-color: #fff0f5; /* Hello Kitty soft pink */
   color: #111827;
   line-height: 1.6;
-  padding: 0;
-  margin: 0;
 }
 
 /* App layout */
@@ -22,15 +20,13 @@ html, body {
   display: flex;
   min-height: 100vh;
   width: 100%;
-  padding: 0;
-  margin: 0;
 }
 
 /* Sidebar */
 .sidebar {
   width: 220px;
   flex-shrink: 0;
-  background-color: #ffc0cb; /* Hello Kitty pink */
+  background-color: #ffc0cb;
   color: #fff;
   padding: 2rem 1.5rem;
   display: flex;
@@ -50,7 +46,7 @@ html, body {
   background-color: #ffb6c1;
 }
 
-/* Huvudinnehåll */
+/* Main content */
 .flex-1 {
   flex: 1;
   display: flex;
@@ -61,7 +57,7 @@ html, body {
 
 /* Navbar */
 .navbar {
-  background-color: #ff69b4; /* Hello Kitty hot pink */
+  background-color: #ff69b4;
   color: white;
   padding: 1rem 2rem;
   display: flex;
@@ -102,24 +98,6 @@ html, body {
 
 .btn-logout:hover {
   background-color: #ff69b4;
-}
-
-/* Main content */
-.main-content {
-  flex: 1;
-  padding: 2rem;
-  max-width: 100%;
-  overflow-x: hidden;
-  gap: 1.5rem;
-}
-
-/* Cards / panels */
-.card {
-  background-color: #fff;
-  border-radius: 0.75rem;
-  padding: 1.5rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  margin-bottom: 1.5rem;
 }
 
 /* Buttons */
@@ -167,6 +145,41 @@ input:focus, select:focus, textarea:focus {
   box-shadow: 0 0 0 2px rgba(255,105,180,0.2);
 }
 
+/* Cards / Panels */
+.card, .dashboard-card, .result-card {
+  background-color: #fff;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  margin-bottom: 1.5rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover, .dashboard-card:hover, .result-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+}
+
+/* Progress Bars */
+.progress-wrapper {
+  width: 100%;
+  max-width: 400px;
+  margin-top: 0.5rem;
+}
+
+.progress {
+  height: 16px;
+  background-color: #ffe4e1;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  background-color: #ff1493;
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
 /* Tables */
 table {
   width: 100%;
@@ -185,59 +198,7 @@ th {
   font-weight: 600;
 }
 
-/* Responsive design */
-@media (max-width: 768px) {
-  #app {
-    flex-direction: column;
-  }
-
-  .sidebar {
-    width: 100%;
-    flex-direction: row;
-    overflow-x: auto;
-  }
-
-  .sidebar a {
-    margin-bottom: 0;
-    margin-right: 1rem;
-  }
-}
-
-/* === Dashboard Styles === */
-
-.dashboard-container {
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-
-.dashboard-header {
-  display: flex;
-  align-items: center;
-  gap: 2.5rem;
-  background: linear-gradient(90deg, #ffb6c1, #ff69b4);
-  padding: 2.5rem 3rem;
-  border-radius: 1.25rem;
-  color: white;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.profile-pic-wrapper {
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 5px solid white;
-  flex-shrink: 0;
-}
-
-.profile-pic {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
+/* Dashboard / Results Titles */
 .dashboard-title {
   font-size: 2.5rem;
   font-weight: 800;
@@ -251,62 +212,6 @@ th {
   margin-bottom: 1rem;
 }
 
-.progress-wrapper {
-  width: 100%;
-  max-width: 400px;
-}
-
-.progress {
-  height: 16px;
-  background-color: #ffe4e1;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.progress-bar {
-  background-color: #ff1493;
-  height: 100%;
-  width: 40%;
-  border-radius: 8px;
-  transition: width 0.3s ease;
-}
-
-.progress-label {
-  font-size: 1rem;
-  color: #fff;
-  text-align: left;
-  margin-bottom: 0.25rem;
-}
-
-.dashboard-card {
-  background-color: #ffffff;
-  border-radius: 1rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  transition: transform 0.2s, box-shadow 0.2s;
-  padding: 1.75rem;
-}
-
-.dashboard-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
-}
-
-.dashboard-card h3 {
-  color: #ff69b4;
-  font-size: 1.6rem;
-  margin-bottom: 0.75rem;
-}
-
-.dashboard-card p {
-  color: #555;
-  font-size: 1rem;
-}
-/* === Results Page Styles === */
-
-.results-page {
-  padding: 2rem;
-}
-
 .results-page h2 {
   font-size: 2rem;
   font-weight: 700;
@@ -314,68 +219,405 @@ th {
   margin-bottom: 1.5rem;
 }
 
-.results-page .filters {
+/* Welcome / Logout Popups */
+.welcome-overlay, .logout-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
   display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-  margin-bottom: 1.5rem;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
 }
 
-.results-page .filters select.form-select {
-  min-width: 150px;
-  border: 1px solid #ff69b4;
-  border-radius: 0.5rem;
-  padding: 0.5rem 0.75rem;
+.welcome-popup, .logout-popup {
+  position: relative;
+  text-align: center;
+  padding: 3rem 2.5rem;
+  background: white;
+  border-radius: 1.5rem;
+  width: 700px;
+  max-width: 90%;
+  box-shadow: 0 12px 36px rgba(0,0,0,0.35);
+  animation: fadeInUp 0.6s ease-out;
 }
 
-.results-page .filters select.form-select:focus {
-  outline: none;
-  border-color: #ff1493;
-  box-shadow: 0 0 0 2px rgba(255, 20, 147, 0.2);
-}
-
-/* Result cards */
-.result-card {
-  background-color: #ffffff;
+.welcome-video, .logout-video {
+  width: 100%;
   border-radius: 1rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  padding: 1.5rem;
-  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
+
+.hearts-container {
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Fade animation */
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.8s ease;
+}
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Auth Forms & Side Videos */
+/* Auth Forms & Side Videos */
+.auth-container {
+  display: flex;
+  width: 100%;
+  max-height: 90vh; /* tall but not scrollable */
+  align-items: stretch; /* stretch children to same height */
+  justify-content: center;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.side-video {
+  flex: 1;                /* fill available space */
+  max-width: 400px;       /* constrain width */
+  height: auto;
+  object-fit: cover;
+  border-radius: 1rem;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+}
+
+.auth-form {
+  flex: 0 0 500px;         /* fixed width */
+  min-height: 500px;       /* match desired video height */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: white;
+  padding: 3.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+}
+
+/* Login / Register Forms */
+.login-form, .register-form {
+  width: 100%;
+  height: 100%;            /* fill the auth-form height */
+  background-color: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  padding: 3rem;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.result-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+.login-form:hover, .register-form:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 36px rgba(0,0,0,0.15);
 }
 
-.result-card h4 {
-  color: #ff69b4;
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
+.login-form .form-control, .register-form .form-control {
+  border-radius: 0.625rem;
+  border: 1px solid #ff69b4;
+  padding: 0.85rem 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.result-card p {
-  color: #555;
-  font-size: 1rem;
-  margin: 0.25rem 0;
+.login-form .form-control:focus, .register-form .form-control:focus {
+  outline: none;
+  border-color: #ff1493;
+  box-shadow: 0 0 0 2px rgba(255, 105, 180,0.2);
 }
 
-/* Progress bar inside result card */
-.result-card .progress-wrapper {
-  margin-top: 0.5rem;
+.login-form .btn-primary, .register-form .btn-primary {
+  background-color: #ff69b4;
+  border: none;
+  padding: 0.75rem 1rem;
 }
 
-.result-card .progress-wrapper .progress {
-  height: 12px;
-  background-color: #ffe4e1;
-  border-radius: 6px;
+.login-form .btn-primary:hover, .register-form .btn-primary:hover {
+  background-color: #ff1493;
+}
+
+.login-form .text-pink, .register-form .text-pink {
+  color: #ff1493;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .auth-container {
+    flex-direction: column;
+    align-items: center;
+    max-height: none;
+  }
+
+  .side-video {
+    width: 90%;
+    max-height: 300px;
+    height: auto;
+  }
+
+  .auth-form {
+    flex: 0 0 90%;
+    min-height: 400px;
+    padding: 2.5rem;
+  }
+
+  .login-form, .register-form {
+    padding: 2.5rem;
+    height: auto;
+  }
+}
+/* Dashboard profile picture */
+.profile-pic-wrapper {
+  width: 140px;       /* fixed width */
+  height: 140px;      /* fixed height */
+  border-radius: 50%;
+  overflow: hidden;
+  border: 5px solid white;
+  flex-shrink: 0;
+}
+
+.profile-pic {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* Dashboard Header */
+.dashboard-header {
+  background: linear-gradient(90deg, #ffb6c1, #ff69b4);
+  border-radius: 1rem;
+  color: white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  padding: 1rem 2rem;  /* slightly thinner header */
+
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+
+  /* ensure it doesn't touch the sidebar */
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* Wrap header in container so it doesn’t touch sidebar */
+.dashboard-container {
+  padding-left: 1rem;  /* space from sidebar */
+  padding-right: 1rem;
+}
+
+/* Profile picture wrapper */
+.profile-pic-wrapper {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-pic-wrapper .profile-pic {
+  width: 150px;   /* bigger to fill header nicely */
+  height: 150px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 4px solid white;
+}
+
+/* Dashboard title */
+.dashboard-title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-bottom: 0.25rem;
+}
+
+/* Progress bar */
+.progress-wrapper {
+  width: 100%;
+}
+
+.progress {
+  height: 10px;
+  background-color: rgba(255,255,255,0.3);
+  border-radius: 5px;
   overflow: hidden;
 }
 
-.result-card .progress-wrapper .progress-bar {
+.progress-bar {
   height: 100%;
   background-color: #ff1493;
+  border-radius: 5px;
   transition: width 0.3s ease;
 }
 
+.progress-label {
+  font-size: 0.9rem;
+  color: white;
+  margin-top: 0.25rem;
+}
+/* Level Page Cards */
+.level-page .dashboard-card {
+  text-align: center;        /* center all text inside the card */
+  color: #ff1493;            /* bright pink text to match dashboard theme */
+}
+
+.level-page .dashboard-card h3 {
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.level-page .dashboard-card p {
+  font-size: 0.95rem;
+  color: #ff69b4;            /* slightly lighter pink for secondary text */
+}
+
+/* LevelProgress styling inside existing dashboard header */
+.level-progress {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;   /* vertically center inside header */
+  width: 100%;
+}
+
+/* Progress bar matches dashboard header style */
+.level-progress .progress {
+  height: 10px;
+  background-color: rgba(255, 255, 255, 0.3); /* same as dashboard */
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.level-progress .progress-bar {
+  height: 100%;
+  background-color: #ff1493; /* accent pink like dashboard */
+  border-radius: 5px;
+  transition: width 0.3s ease;
+}
+
+.level-progress .progress-label {
+  font-size: 0.9rem;
+  color: white;
+  margin-top: 0.25rem;
+  text-align: center;       /* center the text horizontally */
+}
+/* Level Page Header */
+.level-header {
+  background: #ffd6e0; /* slightly darker soft pink */
+  border-radius: 1rem;
+  color: #ff1493;
+  display: flex;
+  align-items: center; /* vertical centering */
+  gap: 1rem;
+  padding: 1.5rem 2rem; /* taller header */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Level Page Title */
+.level-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #ff1493;
+}
+
+/* Profile picture for level page */
+.profile-pic-wrapper.level-pic {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid #ff69b4;
+  flex-shrink: 0;
+}
+
+.profile-pic-wrapper.level-pic .profile-pic {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Progress bar wrapper */
+.level-header .progress-wrapper {
+  width: 100%;
+  max-width: 400px;
+}
+
+/* Progress bar background for contrast */
+.level-header .progress-wrapper .progress {
+  height: 14px; /* taller */
+  background-color: #ffb6c1; /* better contrast than header */
+  border-radius: 7px;
+  overflow: hidden;
+}
+
+/* Progress fill */
+.level-header .progress-wrapper .progress-bar {
+  background-color: #ff1493;
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+/* Progress label text */
+.level-header .progress-wrapper .progress-label {
+  font-size: 0.95rem;
+  color: #ff1493;
+  margin-top: 0.35rem;
+  text-align: left;
+}
+/* Assignments Page – Header Styling */
+.assignments-header {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  background: linear-gradient(90deg, #ffa6c9, #ff69b4);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+/* Assignment Grid Spacing */
+.assignments-grid {
+  margin-top: 1rem;
+}
+
+/* Assignment Cards */
+.assignment-card {
+  background-color: #ffffff;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0px 6px 14px rgba(0,0,0,0.10);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.assignment-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0px 10px 20px rgba(0,0,0,0.15);
+}
+
+/* Assignment Teaser Text */
+.assignment-teaser {
+  color: #555;
+  font-size: 0.95rem;
+  margin-bottom: 1.25rem;
+}
+
+/* “Loading assignments…” */
+.assignments-loading {
+  color: #ff69b4;
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+/* “No assignments available…” */
+.assignments-empty {
+  color: #777;
+  font-size: 1.1rem;
+  margin-top: 2rem;
+}

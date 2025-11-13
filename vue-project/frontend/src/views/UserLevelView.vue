@@ -1,34 +1,26 @@
 <template>
   <div class="dashboard-container">
-    <!-- Header with username and progress bar -->
-    <div class="dashboard-header d-flex gap-3 align-items-start">
-      <div class="profile-pic-wrapper">
+    <!-- Level Page Header -->
+    <div class="level-header d-flex gap-3 align-items-center mt-5 p-3">
+      <div class="profile-pic-wrapper level-pic">
         <img src="/public/assets/img/userphp.jpg" alt="Profile" class="profile-pic" />
       </div>
 
-      <div class="d-flex flex-column w-100">
-        <!-- Username -->
-        <div class="dashboard-title">Hello, {{ userName }}!</div>
+      <div class="d-flex flex-column justify-content-center w-100">
+        <!-- Username + level-specific greeting -->
+        <div class="level-title mb-1">Hello, {{ userName }}! Your Progress Towards the Next Level.</div>
 
-        <!-- Progress bar directly under the username -->
-        <div class="mt-2 w-100">
-          <div class="progress-wrapper">
-            <div class="progress">
-              <div
-                class="progress-bar"
-                :style="{ width: progressPercentage + '%' }"
-              ></div>
-            </div>
-            <div class="progress-label mt-1">
-              Points: {{ userPoints }} / {{ nextLevel?.l_min_points ?? 0 }}
-            </div>
-          </div>
-        </div>
+        <!-- Progress bar -->
+        <LevelProgress
+          :current-level="currentLevel"
+          :next-level="nextLevel"
+          :user-points="userPoints"
+        />
       </div>
     </div>
 
     <!-- Level cards -->
-    <div class="row g-4 mt-4">
+    <div class="row g-4 mt-4 level-page">
       <div class="col-md-6" v-if="currentLevel">
         <div class="dashboard-card p-4">
           <h3>Current Level: {{ currentLevel.l_name }}</h3>
@@ -47,8 +39,9 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useUserStore } from '../store/userstore.js'
+import LevelProgress from '../components/LevelProgress.vue'
 
 const userStore = useUserStore()
 const userName = userStore.name
@@ -58,20 +51,12 @@ const nextLevel = ref(null)
 const userPoints = ref(0)
 const loading = ref(true)
 
-const progressPercentage = computed(() => {
-  if (!currentLevel.value || !nextLevel.value) return 0
-  const minPoints = currentLevel.value.l_min_points
-  const maxPoints = nextLevel.value.l_min_points
-  const progress = userPoints.value - minPoints
-  const total = maxPoints - minPoints
-  return Math.min(Math.max((progress / total) * 100, 0), 100)
-})
-
 async function fetchLevels() {
   try {
-    const response = await fetch('http://localhost/yrkesprov/vue-project/backend/api/levels.php', {
-      credentials: 'include'
-    })
+    const response = await fetch(
+      `http://localhost/yrkesprov/vue-project/backend/api/levels.php?user_id=${userStore.id}`,
+      { credentials: 'include' }
+    )
     const data = await response.json()
 
     if (data.success) {

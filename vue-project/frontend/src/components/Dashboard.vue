@@ -10,10 +10,10 @@
         />
       </div>
       <div class="d-flex flex-column w-100">
-        <h1 class="dashboard-title">Hej, {{ userStore.name }}!</h1>
+        <h1 class="dashboard-title">Hello, {{ userStore.name }}!</h1>
 
         <!-- Progress bar under username -->
-        <div class="mt-2 w-100" v-if="currentLevel && nextLevel">
+        <div class="mt-0 w-100" v-if="currentLevel && nextLevel">
           <div class="progress-wrapper">
             <div class="progress">
               <div
@@ -61,13 +61,12 @@
   </div>
 </template>
 
+
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import { useUserStore } from '../store/userstore.js'
 
 const userStore = useUserStore()
-
-// Level data
 const currentLevel = ref(null)
 const nextLevel = ref(null)
 const userPoints = ref(0)
@@ -82,7 +81,6 @@ const progressPercentage = computed(() => {
   return Math.min(Math.max((progress / total) * 100, 0), 100)
 })
 
-// Fetch level info from backend
 async function fetchLevels() {
   try {
     const response = await fetch(
@@ -90,7 +88,6 @@ async function fetchLevels() {
       { credentials: 'include' }
     )
     const data = await response.json()
-
     if (data.success) {
       currentLevel.value = data.currentLevel
       nextLevel.value = data.nextLevel

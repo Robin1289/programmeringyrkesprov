@@ -1,7 +1,5 @@
 <template>
   <div class="register-container">
-    <h1>Registrera konto</h1>
-
     <RegisterForm @register="handleRegister" />
 
   </div>
