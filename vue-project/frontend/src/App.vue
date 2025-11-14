@@ -7,6 +7,7 @@
     <div class="flex-grow-1">
       <Navbar />
       <router-view />
+      <Footer />
     </div>
   </div>
 </template>
@@ -16,6 +17,7 @@ import { onMounted } from 'vue'
 import { useUserStore } from './store/userstore.js'
 import Navbar from './components/Navbar.vue'
 import Sidebar from './components/Sidebar.vue'
+import Footer from './components/Footer.vue'
 
 const userStore = useUserStore()
 

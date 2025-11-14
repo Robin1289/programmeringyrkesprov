@@ -1,33 +1,33 @@
 <template>
   <div class="container mt-5">
+
     <!-- Login Form -->
     <div v-if="!userStore.isLoggedIn && !showWelcomePopup">
-      <LoginForm @login="handleLogin" />
+      <LoginForm />
     </div>
 
-    <!-- Loading / redirect message -->
+    <!-- Loading / Redirect message -->
     <div v-else-if="userStore.isLoggedIn && !showWelcomePopup" class="text-center">
-      <p>Redirecting to dashboard...</p>
+      <p>Redirecting...</p>
     </div>
 
-    <!-- Welcome popup -->
+    <!-- Welcome Popup (3 seconds) -->
     <WelcomePopup
       v-if="showWelcomePopup"
       :username="userStore.name"
       :video-src="'/media/cutevid.mp4'"
       :sound-src="'/media/uwu.mp3'"
-      @close="handlePopupClose"
     />
 
-    <!-- Error message -->
-    <div v-if="errorMessage" class="alert alert-danger mt-3">
+    <div v-if="errorMessage" class="alert alert-danger mt-3 text-center">
       {{ errorMessage }}
     </div>
+
   </div>
 </template>
 
 <script setup>
-import { ref, watch, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '../store/userstore.js'
 import LoginForm from '../components/LoginForm.vue'
@@ -35,30 +35,55 @@ import WelcomePopup from '../components/WelcomePopup.vue'
 
 const router = useRouter()
 const userStore = useUserStore()
+
 const errorMessage = ref('')
 const showWelcomePopup = ref(false)
 
-// On mount, redirect if already logged in
+
+// If already logged in → redirect
 onMounted(() => {
   if (userStore.isLoggedIn) {
-    router.push('/dashboard')
+    if (userStore.role === 1) {
+      router.push('/dashboard')
+    } else {
+      router.push('/admin-dashboard')
+    }
   }
 })
 
-// Handle login
-async function handleLogin(credentials) {
-  const res = await userStore.login(credentials.email, credentials.password)
-  if (res.success) {
-    // Instead of redirecting immediately, show popup first
-    showWelcomePopup.value = true
-  } else {
-    errorMessage.value = res.message
-  }
-}
 
-// Called when the popup finishes
-function handlePopupClose() {
+// Listen for login via Pinia
+userStore.$onAction(({ name, after, onError }) => {
+  if (name === "login") {
+
+    after(() => {
+      // Login succeeded
+      errorMessage.value = ""
+
+      // Show welcome popup
+      showWelcomePopup.value = true
+
+      // Wait 3 seconds, then close + redirect
+      setTimeout(() => {
+        redirectAfterPopup()
+      }, 3000)
+    })
+
+    onError((err) => {
+      errorMessage.value = err.message || "Något gick fel."
+    })
+  }
+})
+
+
+// Redirect based on user role
+function redirectAfterPopup() {
   showWelcomePopup.value = false
-  router.push('/dashboard')
+
+  if (userStore.role === 1) {
+    router.push('/dashboard')
+  } else {
+    router.push('/admin-dashboard')
+  }
 }
 </script>

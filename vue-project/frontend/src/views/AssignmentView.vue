@@ -31,7 +31,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useUserStore } from '../store/userstore.js'
-import AssignmentCard from '../components/AssignmentCard.vue'
+import AssignmentCard from  '../components/AssignmentCard.vue'
 
 const userStore = useUserStore()
 const assignments = ref([])

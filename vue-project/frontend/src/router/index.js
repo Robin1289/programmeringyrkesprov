@@ -7,6 +7,10 @@ import UserLevelView from '@/views/UserLevelView.vue'
 import AssignmentView from '@/views/AssignmentView.vue'
 import QuizView from '@/views/QuizView.vue' 
 import ResultCard from '@/views/ResultCard.vue'
+import AdminDashboardView from '@/views/AdminDashboard.vue'
+import AdminResults from '@/components/AdminResults.vue'
+import AdminQuizzes from '@/components/AdminQuizzes.vue'
+import AdminUsers from '@/components/AdminUsers.vue'
 
 const routes = [
   { path: '/', redirect: '/dashboard' },
@@ -15,14 +19,12 @@ const routes = [
   { path: '/results', component: ResultCard, meta: { requiresAuth: true } },
   { path: '/level', component: UserLevelView, meta: { requiresAuth: true } },
   { path: '/assignments', component: AssignmentView, meta: { requiresAuth: true } },
-  { path: '/dashboard', component: DashboardView, meta: { requiresAuth: true } },
-   {
-    path: '/quiz/:id',
-    name: 'Quiz',
-    component: QuizView,
-    props: true // allows the :id param to be passed as a prop
-  },
-
+  { path: '/dashboard', component: DashboardView, meta: { requiresAuth: true }},
+  { path: '/admin-dashboard', component: AdminDashboardView, meta: { requiresAuth: true, adminOnly: true }},
+  { path: '/quiz/:id', name: 'Quiz', component: QuizView, props: true , meta: { requiresAuth: true }},
+  { path: '/admin-quizzes', component: AdminQuizzes, meta: { requiresAuth: true, adminOnly: true }},
+  { path: '/admin-results', component: AdminResults, meta: { requiresAuth: true, adminOnly: true }},
+  { path: '/admin-users', component: AdminUsers, meta: { requiresAuth: true, adminOnly: true }}
 ]
 
 const router = createRouter({
