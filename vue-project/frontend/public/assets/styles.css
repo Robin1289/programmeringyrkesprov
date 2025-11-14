@@ -774,10 +774,8 @@ th {
   color: #4a1942;
   opacity: 0.9;
 }
-/* --------------------------------------------- */
-/*  ADMIN HERO SECTION                           */
-/* --------------------------------------------- */
 
+/*  ADMIN HERO SECTION                           */
 .admin-hero {
   background: linear-gradient(135deg, #ff9ec4, #ff6fa4);
   padding: 3rem 2rem;
@@ -843,10 +841,7 @@ th {
 .admin-click-cards {
   margin-top: 2rem;
 }
-/* ============================= */
 /*      LEVEL HEATMAP SECTION    */
-/* ============================= */
-
 .level-heatmap-section {
   margin-top: 3rem;
   padding: 2rem;
@@ -908,3 +903,162 @@ th {
   font-weight: 600;
   color: #7a3b4d;
 }
+/* --- ASSIGNMENT VIEW STYLING --- */
+
+.assignments-header-wrapper {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.assignments-header {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #7a3b4d;
+}
+
+.assignments-subtitle {
+  font-size: 1.1rem;
+  margin-top: -5px;
+  color: #b26a7a;
+}
+
+.user-level {
+  color: #ff478a;
+  font-weight: 800;
+}
+
+.assignments-loading {
+  color: #b26a7a;
+  font-size: 1.2rem;
+  margin-top: 20px;
+}
+
+.assignments-empty {
+  color: #7a3b4d;
+  font-size: 1.2rem;
+  margin-top: 20px;
+  opacity: 0.9;
+}
+
+.assignments-grid {
+  margin-top: 10px;
+}
+/*        ASSIGNMENT CARDS         */
+.assignment-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 22px;
+  border: 1px solid #f3d5df;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.assignment-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+}
+
+.assignment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.assignment-title {
+  color: #7a3b4d;
+  font-weight: 700;
+  margin-right: 10px;
+  font-size: 1.2rem;
+}
+
+.assignment-teaser {
+  font-size: 0.95rem;
+  line-height: 1.4;
+  min-height: 50px;
+}
+
+/* Difficulty badges */
+
+.difficulty-badge {
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: white;
+}
+
+/* Recommended — user's level */
+.diff-recommended {
+  background: #ff7ba5;
+}
+
+/* Easy — lower level than user */
+.diff-easy {
+  background: #9fd7b7;
+}
+
+/* Hard — higher level than user */
+.diff-hard {
+  background: #c47ea8;
+}
+
+/* RANK BANNER – New updated version */
+.rank-banner {
+  background: #ffe8f2;
+  border-left: 5px solid #ff4f90;
+  padding: 1rem;
+  border-radius: 10px;
+  max-width: 100%; /* full width inside container */
+  margin: 0 auto 2rem auto;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+}
+
+.rank-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #c02863;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.rank-position,
+.rank-percentage {
+  font-size: 1.05rem;
+  color: #7a3b4d;
+  text-align: center;
+  margin: 0rem 0;
+}
+
+.rank-message {
+  margin-top: 0rem;
+  text-align: center;
+  font-size: 1rem;
+  color: #b02e67;
+  font-weight: 600;
+}
+/* ⭐ MOTIVATION CARD */
+.motivation-card {
+  width: 100%;
+  background: linear-gradient(135deg, #ffe7f3, #ffd4ec);
+  border-radius: 14px;
+  padding: 2rem 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.motivation-title {
+  font-size: 1.9rem;
+  font-weight: 800;
+  color: #8c3b5c;
+  margin-bottom: 0.8rem;
+}
+
+.motivation-message {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #5c2c3a;
+  opacity: 0.95;
+}
+
+
+

@@ -66,11 +66,12 @@ try {
 
     if ($user && password_verify($password, $user['u_password_hash'])) {
 
-        // Set session
-        $_SESSION['user_id']    = $user['u_id'];
-        $_SESSION['user_name']  = $user['u_name'];
+        $_SESSION['user_id'] = $user['u_id'];
+        $_SESSION['user_name'] = $user['u_name'];
         $_SESSION['user_email'] = $user['u_mail'];
+        $_SESSION['user_level'] = $user['u_level_fk']; 
         $_SESSION['last_activity'] = time();
+
 
         echo json_encode([
             'success' => true,

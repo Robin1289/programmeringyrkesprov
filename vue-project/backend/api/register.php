@@ -50,7 +50,7 @@ try {
     $hashed = password_hash($password, PASSWORD_DEFAULT);
 
     // Set starting level and role
-    $level = 1;
+    $level = 4;
     $role = 1;
 
     // Insert new user with level and role
