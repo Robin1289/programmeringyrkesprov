@@ -1,9 +1,26 @@
 <?php
-$frontendOrigin = 'http://localhost:5174';
 
-header('Content-Type: application/json');
-header("Access-Control-Allow-Origin: $frontendOrigin");
+$allowedOrigins = [
+    "http://localhost:5173",
+    "http://localhost:5174"
+];
+
+$requestOrigin = $_SERVER['HTTP_ORIGIN'] ?? '';
+
+if (in_array($requestOrigin, $allowedOrigins)) {
+    header("Access-Control-Allow-Origin: $requestOrigin");
+}
+
 header("Access-Control-Allow-Credentials: true");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
+header("Content-Type: application/json");
+
+// OPTIONS preflight
+if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
+    http_response_code(200);
+    exit;
+}
 
 require_once "../config/db.php";
 
@@ -19,30 +36,34 @@ if (!isset($_SESSION['user_id'])) {
 $userId = $_SESSION['user_id'];
 
 try {
-    // Fetch ONLY student users (u_role_fk = 1)
+    // Fetch ONLY students + convert to real levels
     $stmt = $pdo->query("
-        SELECT u_id, u_points
+        SELECT 
+            u_id,
+            u_level_fk,
+            u_points,
+            (u_level_fk - 3) AS real_level
         FROM user
         WHERE u_role_fk = 1
-        ORDER BY u_points DESC
+        ORDER BY real_level DESC, u_points DESC
     ");
-    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $total = count($rows);
+
     $rank = null;
 
     foreach ($rows as $index => $row) {
         if ((int)$row['u_id'] === (int)$userId) {
-            $rank = $index + 1;
+            $rank = $index + 1; // ranks start at 1
             break;
         }
     }
 
-    // Percentage calculation:
-    // Higher rank (smaller number) = better percentage
-    $percentage = 0;
-    if ($rank !== null && $total > 1) {
-        $percentage = round((($total - $rank) / ($total - 1)) * 100);
+    // New TOP % calculation (you requested: "Top 100% etc.")
+    $percentage = 100;
+    if ($rank !== null && $total > 0) {
+        $percentage = round((1 - (($rank - 1) / $total)) * 100);
     }
 
     echo json_encode([

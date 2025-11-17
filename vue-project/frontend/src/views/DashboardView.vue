@@ -18,9 +18,16 @@ import Dashboard from '../components/Dashboard.vue'
 
 const userStore = useUserStore()
 
-onMounted(() => {
+onMounted(async () => {
+  // Run level_up.php when dashboard loads
+  await fetch("http://localhost/yrkesprov/vue-project/backend/api/level_up.php", {
+    method: "POST",
+    credentials: "include"
+  });
+
+  // Fetch user only if not already loaded
   if (!userStore.isLoggedIn) {
-    userStore.fetchUser()
+    await userStore.fetchUser()
   }
 })
 </script>

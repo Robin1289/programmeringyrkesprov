@@ -36,8 +36,20 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useUserStore } from '../store/userstore.js'
-import AssignmentCard from '../components/AssignmentCard.vue'
+import AssignmentCard from '../components/Assignmentcard.vue'
 
+onMounted(async () => {
+  // Run level_up.php when dashboard loads
+  await fetch("http://localhost/yrkesprov/vue-project/backend/api/level_up.php", {
+    method: "POST",
+    credentials: "include"
+  });
+
+  // Fetch user only if not already loaded
+  if (!userStore.isLoggedIn) {
+    await userStore.fetchUser()
+  }
+})
 const userStore = useUserStore()
 
 const assignments = ref([])
