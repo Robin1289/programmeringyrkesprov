@@ -11,12 +11,14 @@ import AdminDashboardView from '@/views/AdminDashboard.vue'
 import AdminResults from '@/components/AdminResults.vue'
 import AdminQuizzes from '@/components/AdminQuizzes.vue'
 import AdminUsers from '@/components/AdminUsers.vue'
+import QuizResultView from '@/views/QuizResultView.vue'
 
 const routes = [
   { path: '/', redirect: '/dashboard' },
   { path: '/login', component: LoginView },
   { path: '/register', component: RegisterView },
   { path: '/results', component: ResultCard, meta: { requiresAuth: true } },
+  { path: '/results/:id', name: 'results', component: QuizResultView, meta: { requiresAuth: true } },
   { path: '/level', component: UserLevelView, meta: { requiresAuth: true } },
   { path: '/assignments', component: AssignmentView, meta: { requiresAuth: true } },
   { path: '/dashboard', component: DashboardView, meta: { requiresAuth: true }},

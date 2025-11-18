@@ -3,7 +3,6 @@ require_once "cors.php";
 require_once "../config/db.php";
 
 session_start();
-
 if (!isset($_SESSION['user_id'])) {
     echo json_encode([
         "success" => false,
@@ -12,39 +11,35 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-$userId = $_SESSION['user_id'];
-
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     echo json_encode([
         "success" => false,
-        "message" => "Missing or invalid result ID"
+        "message" => "Missing result ID"
     ]);
     exit;
 }
 
 $resultId = intval($_GET['id']);
+$userId = $_SESSION['user_id'];
 
 try {
-    // Fetch ONE quiz result
     $stmt = $pdo->prepare("
         SELECT 
-            sq.sq_id AS result_id,
-            sq.sq_quiz_fk AS quiz_id,
-            sq.sq_correct AS correct,
-            sq.sq_total AS total,
-            sq.sq_score AS score,
-            sq.sq_date,
+            r.result_id,
+            r.r_quiz_fk,
+            r.r_points,
+            r.r_max_points,
             q.quiz_name
-        FROM student_quiz sq
-        JOIN quiz q ON q.quiz_id = sq.sq_quiz_fk
-        WHERE sq.sq_id = ? AND sq.sq_student_fk = ?
+        FROM result r
+        JOIN quiz q ON r.r_quiz_fk = q.quiz_id
+        WHERE r.result_id = ? AND r.r_user_fk = ?
         LIMIT 1
     ");
 
     $stmt->execute([$resultId, $userId]);
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    $res = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if (!$result) {
+    if (!$res) {
         echo json_encode([
             "success" => false,
             "message" => "Result not found"
@@ -52,16 +47,22 @@ try {
         exit;
     }
 
+    $correct = intval($res['r_points']);
+    $total   = intval($res['r_max_points']);
+
     echo json_encode([
         "success" => true,
-        "result" => $result
+        "result_id" => $res['result_id'],
+        "quiz_id" => $res['r_quiz_fk'],
+        "quiz_name" => $res['quiz_name'],
+        "correct" => $correct,
+        "total" => $total
     ]);
 
-} catch (PDOException $e) {
+} catch (Exception $e) {
     echo json_encode([
         "success" => false,
         "message" => "Database error",
         "error" => $e->getMessage()
     ]);
 }
-?>  
