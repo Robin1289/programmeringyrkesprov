@@ -63,26 +63,24 @@
 
     <!-- MATCH QUESTION -->
     <div v-else-if="question.q_type === 'match'">
-      <p class="small text-muted mb-2">Matcha vänster kolumn med rätt alternativ.</p>
+      <p class="small text-muted mb-3">Matcha vänster kolumn med rätt alternativ.</p>
 
-      <div class="row">
-        <div class="col-md-6">
-          <ul class="list-unstyled">
-            <li v-for="pair in question.match_pairs" :key="pair.mp_id" class="mb-2">
-              <strong>{{ pair.mp_left_text }}</strong>
-            </li>
-          </ul>
-        </div>
+      <div class="match-grid">
+        <div v-for="pair in question.match_pairs" :key="pair.mp_id" class="match-row">
 
-        <div class="col-md-6">
-          <div v-for="pair in question.match_pairs" :key="pair.mp_id" class="mb-2">
+          <!-- LEFT TEXT -->
+          <div class="match-left-box">
+            {{ pair.mp_left_text }}
+          </div>
+
+          <!-- RIGHT SELECT -->
+          <div class="match-right-box">
             <select
-              class="form-select kitty-select"
+              class="kitty-select match-select"
               v-model="matchSelections[pair.mp_id]"
               @change="emitAnswer"
             >
               <option disabled value="">Välj...</option>
-
               <option
                 v-for="opt in shuffledRightSide"
                 :key="opt.value"
@@ -92,6 +90,7 @@
               </option>
             </select>
           </div>
+
         </div>
       </div>
     </div>
@@ -109,14 +108,11 @@ import Sortable from "sortablejs";
 
 const props = defineProps({
   question: { type: Object, required: true },
-  initialAnswer: { type: Object, default: null } // För att återställa svar vid back/next
+  initialAnswer: { type: Object, default: null }
 });
 
 const emit = defineEmits(["answer"]);
 
-/* ─────────────────────────────
-   LOCAL STATE
-───────────────────────────────*/
 const selectedSingle = ref(null);
 const selectedMultiple = ref([]);
 const textAnswer = ref("");
@@ -125,20 +121,14 @@ const matchSelections = ref({});
 const sortList = ref(null);
 let sortableInstance = null;
 
-/* ─────────────────────────────
-   SHUFFLED MATCH OPTIONS (FIXED!)
-───────────────────────────────*/
+/* MATCH OPTIONS */
 const shuffledRightSide = computed(() => {
   if (!props.question?.match_pairs) return [];
-
-  const base = props.question.match_pairs.map((p) => ({
+  const arr = props.question.match_pairs.map(p => ({
     value: p.mp_id,
     label: p.mp_right_text
   }));
-
-  const arr = [...base];
-
-  // Shuffle once per load
+  // shuffle
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [arr[i], arr[j]] = [arr[j], arr[i]];
@@ -146,9 +136,7 @@ const shuffledRightSide = computed(() => {
   return arr;
 });
 
-/* ─────────────────────────────
-   RESET WHEN NEW QUESTION LOADS
-───────────────────────────────*/
+/* RESET */
 function resetState() {
   selectedSingle.value = null;
   selectedMultiple.value = [];
@@ -159,9 +147,7 @@ function resetState() {
   sortableInstance = null;
 }
 
-/* ─────────────────────────────
-   APPLY PREVIOUS ANSWER (REMEMBER STATE)
-───────────────────────────────*/
+/* LOAD PREVIOUS ANSWER */
 function loadPreviousAnswer() {
   const a = props.initialAnswer;
   if (!a) return;
@@ -169,21 +155,17 @@ function loadPreviousAnswer() {
   if (a.type === "single") selectedSingle.value = a.answer_ids[0];
   if (a.type === "multiple") selectedMultiple.value = a.answer_ids || [];
   if (a.type === "text") textAnswer.value = a.text || "";
-  if (a.type === "sort") {
+  if (a.type === "sort")
     sortItems.value = a.order.map((txt, idx) => ({ id: idx + 1, text: txt }));
-  }
-  if (a.type === "match") matchSelections.value = { ...a.matches };
+
+  if (a.type === "match")
+    matchSelections.value = { ...a.matches };
 }
 
-/* ─────────────────────────────
-   SORTABLE INIT
-───────────────────────────────*/
+/* INIT SORT */
 function initSort(q) {
   if (q.answers?.length) {
-    sortItems.value = q.answers.map((a) => ({
-      id: a.a_id,
-      text: a.a_name
-    }));
+    sortItems.value = q.answers.map(a => ({ id: a.a_id, text: a.a_name }));
   } else if (q.q_correct_text) {
     sortItems.value = q.q_correct_text.split(",").map((txt, i) => ({
       id: i + 1,
@@ -198,9 +180,9 @@ function initSort(q) {
       animation: 150,
       handle: ".kitty-sort-handle",
       onEnd() {
-        const newOrder = [...sortList.value.children].map((li) => {
+        const newOrder = [...sortList.value.children].map(li => {
           const id = Number(li.getAttribute("data-id"));
-          return sortItems.value.find((i) => i.id === id);
+          return sortItems.value.find(i => i.id === id);
         });
 
         sortItems.value = newOrder;
@@ -210,9 +192,7 @@ function initSort(q) {
   });
 }
 
-/* ─────────────────────────────
-   BUILD PAYLOAD
-───────────────────────────────*/
+/* BUILD ANSWER */
 function buildAnswer() {
   const q = props.question;
 
@@ -226,7 +206,7 @@ function buildAnswer() {
     return { q_id: q.q_id, type: "text", text: textAnswer.value };
 
   if (q.q_type === "sort")
-    return { q_id: q.q_id, type: "sort", order: sortItems.value.map((i) => i.text) };
+    return { q_id: q.q_id, type: "sort", order: sortItems.value.map(i => i.text) };
 
   if (q.q_type === "match")
     return { q_id: q.q_id, type: "match", matches: matchSelections.value };
@@ -238,12 +218,10 @@ function emitAnswer() {
   emit("answer", buildAnswer());
 }
 
-/* ─────────────────────────────
-   WATCH QUESTION CHANGE
-───────────────────────────────*/
+/* WATCH QUESTION CHANGES */
 watch(
   () => props.question,
-  (q) => {
+  q => {
     resetState();
     if (!q) return;
 
@@ -254,6 +232,6 @@ watch(
   { immediate: true }
 );
 
-/* Emit answer changes */
+/* WATCH ANSWERS */
 watch([selectedSingle, selectedMultiple, textAnswer, matchSelections, sortItems], emitAnswer, { deep: true });
 </script>

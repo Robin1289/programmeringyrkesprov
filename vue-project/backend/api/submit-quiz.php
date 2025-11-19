@@ -15,9 +15,7 @@ $quiz_id = intval($data['quiz_id']);
 $student_id = intval($data['student_id']);
 $answers = $data['answers'] ?? [];
 
-/* -------------------------
-   🛑 1. Check if already done
---------------------------*/
+/*  Check if already done */
 $stmt = $pdo->prepare("SELECT sq_id FROM student_quiz WHERE sq_student_fk=? AND sq_quiz_fk=?");
 $stmt->execute([$student_id, $quiz_id]);
 if ($stmt->fetch()) {
@@ -75,36 +73,27 @@ try {
             }
         }
 
-        /* --------------------------
-            TEXT – keyword match
-        ---------------------------*/
-        elseif ($type === "text") {
-            $correctText = strtolower($question['q_correct_text']);
-            $givenText = strtolower($ans['text'] ?? "");
+        /* TEXT – keyword match */
+                    elseif ($type === "text") {
+                $userText = strtolower(trim($ans['text'] ?? ''));
+                $keyword = strtolower(trim($question['q_correct_text'] ?? ''));
 
-            // split into keyword tokens
-            $keywords = array_filter(array_map('trim', explode(" ", $correctText)));
-
-            // if at least 1 keyword appears → correct
-            foreach ($keywords as $word) {
-                if (strlen($word) > 3 && str_contains($givenText, $word)) {
+                // empty answer = wrong
+                if ($keyword !== '' && str_contains($userText, $keyword)) {
                     $isCorrect = 1;
-                    break;
+                } else {
+                    $isCorrect = 0;
                 }
             }
-        }
 
-        /* --------------------------
-            SORT
-        ---------------------------*/
+
+        /*  SORT */
         elseif ($type === "sort") {
             $correctArr = array_map("trim", explode(",", $question['q_correct_text']));
             if ($correctArr === $ans['order']) $isCorrect = 1;
         }
 
-        /* --------------------------
-            MATCH
-        ---------------------------*/
+        /*  MATCH */
         elseif ($type === "match") {
             $stmtM = $pdo->prepare("SELECT mp_id, mp_right_text FROM match_pair WHERE mp_question_fk=?");
             $stmtM->execute([$q_id]);
@@ -143,9 +132,7 @@ try {
         $correctCount += $isCorrect;
     }
 
-    /* --------------------------
-        SUMMARY
-    ---------------------------*/
+    /*  SUMMARY */
     $stmt = $pdo->prepare("
         INSERT INTO student_quiz
         (sq_student_fk, sq_quiz_fk, sq_score, sq_correct, sq_total, sq_date)

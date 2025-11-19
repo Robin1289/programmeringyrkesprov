@@ -21,14 +21,17 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-// Get the user's stored DB level (4–13)
-$user_level_db = $_SESSION['user_level'] ?? 4;
+$userId = $_SESSION['user_id'];
+$userLevelDb = $_SESSION['user_level'] ?? 4;
 
-// Convert DB-level (4–13) → Real level (1–10)
-$realLevel = max(1, $user_level_db - 3);
+// Convert DB level (4–13) → real level (1–10)
+$realLevel = max(1, $userLevelDb - 3);
 
-// Fetch quizzes the user is ALLOWED to see
 try {
+
+    //
+    // 1) Fetch all quizzes the user is allowed to see
+    //
     $stmt = $pdo->prepare("
         SELECT *
         FROM quiz
@@ -37,6 +40,40 @@ try {
     ");
     $stmt->execute([$realLevel]);
     $quizzes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    //
+    // 2) Fetch all completed quizzes INCLUDING result id
+    //
+    $stmt2 = $pdo->prepare("
+        SELECT sq_quiz_fk AS quiz_id, sq_id AS result_id
+        FROM student_quiz
+        WHERE sq_student_fk = ?
+    ");
+
+    $stmt2->execute([$userId]);
+    $done = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+
+    // Convert format:
+    // quiz_id => result_id
+    $completedMap = [];
+    foreach ($done as $d) {
+        $completedMap[(int)$d['quiz_id']] = (int)$d['result_id'];
+    }
+
+    //
+    // 3) Mark quizzes as completed + attach result_id
+    //
+    foreach ($quizzes as &$q) {
+        $qid = (int)$q['quiz_id'];
+
+        if (isset($completedMap[$qid])) {
+            $q['completed'] = true;
+            $q['result_id'] = $completedMap[$qid];
+        } else {
+            $q['completed'] = false;
+            $q['result_id'] = null;
+        }
+    }
 
     echo json_encode([
         "success" => true,

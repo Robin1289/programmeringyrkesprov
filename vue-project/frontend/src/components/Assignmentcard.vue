@@ -1,35 +1,44 @@
 <template>
   <div class="assignment-card shadow-sm rounded-2 mb-3">
 
-    <!-- QUIZ TITLE -->
     <div class="assignment-header">
       <h3 class="assignment-title mb-1">{{ quiz.quiz_name }}</h3>
 
-      <!-- Difficulty badge -->
-      <span
-        class="difficulty-badge"
-        :class="difficultyClass"
-      >
+      <span class="difficulty-badge" :class="difficultyClass">
         {{ difficultyText }}
       </span>
     </div>
 
-    <!-- Automatically generated teaser -->
     <p class="assignment-teaser text-muted mb-3">{{ teaser }}</p>
 
-    <!-- Start button -->
+    <!-- Badge if completed -->
+    <div v-if="quiz.completed" class="mb-3 text-center">
+      <span class="badge bg-success">Avklarad ✔</span>
+    </div>
+
+    <!-- Start Quiz button -->
     <router-link
+      v-if="!quiz.completed"
       :to="`/quiz/${quiz.quiz_id}`"
       class="btn btn-primary w-100"
     >
-      Start Quiz
+      Starta Quiz
+    </router-link>
+
+    <!-- Show Result button -->
+    <router-link
+      v-else
+      :to="`/results/${quiz.result_id}`"
+      class="btn btn-success w-100"
+    >
+      Visa resultat
     </router-link>
 
   </div>
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed } from "vue"
 
 const props = defineProps({
   quiz: { type: Object, required: true },
@@ -39,32 +48,22 @@ const props = defineProps({
 const teaser = computed(() => {
   const desc = props.quiz.quiz_description || ""
   if (desc.length <= 150) return desc
-
-  let text = desc.slice(0, 150)
-  const lastSpace = text.lastIndexOf(" ")
-  text = text.slice(0, lastSpace)
-  return text + "..."
+  return desc.slice(0, desc.lastIndexOf(" ", 150)) + "..."
 })
 
-
 const difficultyLevel = computed(() => {
-  const quizLevel = props.quiz.quiz_min_level_fk
-  const user = props.userLevel
-
-  if (quizLevel === user) return "recommended"
-  if (quizLevel < user) return "easy"
+  const ql = props.quiz.quiz_min_level_fk
+  const ul = props.userLevel
+  if (ql === ul) return "recommended"
+  if (ql < ul) return "easy"
   return "hard"
 })
 
-const difficultyText = computed(() => {
-  switch (difficultyLevel.value) {
-    case "recommended": return "Rekommenderad"
-    case "easy": return "Lättare"
-    case "hard": return "Utmanande"
-  }
-})
+const difficultyText = computed(() => ({
+  recommended: "Rekommenderad",
+  easy: "Lättare",
+  hard: "Utmanande"
+}[difficultyLevel.value]))
 
-const difficultyClass = computed(() => {
-  return "diff-" + difficultyLevel.value
-})
+const difficultyClass = computed(() => "diff-" + difficultyLevel.value)
 </script>

@@ -1,7 +1,6 @@
 <template>
   <div class="dashboard-container">
 
-    <!-- Header -->
     <div class="assignments-header-wrapper">
       <h1 class="assignments-header">Assignments</h1>
       <p class="assignments-subtitle">
@@ -9,83 +8,100 @@
       </p>
     </div>
 
-    <!-- Loading -->
     <div v-if="loading" class="text-center assignments-loading">
       Loading assignments...
     </div>
 
-    <!-- No assignments -->
-    <div v-else-if="assignments.length === 0" class="text-center assignments-empty">
-      No assignments available for your level.
-    </div>
+    <div v-else>
 
-    <!-- Assignment Cards Grid -->
-    <div class="row assignments-grid">
-      <div
-        class="col-md-6 col-lg-4 mb-3"
-        v-for="quiz in assignments"
-        :key="quiz.quiz_id"
-      >
-        <AssignmentCard :quiz="quiz" :user-level="realLevel" />
+      <!-- ✦ INCOMPLETE QUIZZES -->
+      <h2 class="mb-3">Uppgifter du inte gjort</h2>
+
+      <div v-if="incomplete.length === 0" class="text-muted mb-4">
+        Du har gjort alla uppgifter på din nivå! 🎉
       </div>
+
+      <div class="row assignments-grid">
+        <div
+          class="col-md-6 col-lg-4 mb-3"
+          v-for="quiz in incomplete"
+          :key="quiz.quiz_id"
+        >
+          <AssignmentCard :quiz="quiz" :user-level="realLevel" />
+        </div>
+      </div>
+
+      <hr class="my-4" />
+
+      <!-- ✦ COMPLETED QUIZZES -->
+      <h2 class="mb-3">Avklarade uppgifter</h2>
+
+      <div v-if="completed.length === 0" class="text-muted">
+        Du har inte gjort några uppgifter ännu.
+      </div>
+
+      <div class="row assignments-grid">
+        <div
+          class="col-md-6 col-lg-4 mb-3"
+          v-for="quiz in completed"
+          :key="quiz.quiz_id"
+        >
+          <AssignmentCard :quiz="quiz" :user-level="realLevel" />
+        </div>
+      </div>
+
     </div>
 
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useUserStore } from '../store/userstore.js'
-import AssignmentCard from '../components/Assignmentcard.vue'
+import { ref, onMounted } from "vue"
+import AssignmentCard from "../components/Assignmentcard.vue"
+import { useUserStore } from "../store/userstore.js"
 
-onMounted(async () => {
-  // Run level_up.php when dashboard loads
-  await fetch("http://localhost/yrkesprov/vue-project/backend/api/level_up.php", {
-    method: "POST",
-    credentials: "include"
-  });
-
-  // Fetch user only if not already loaded
-  if (!userStore.isLoggedIn) {
-    await userStore.fetchUser()
-  }
-})
 const userStore = useUserStore()
 
 const assignments = ref([])
+const incomplete = ref([])
+const completed = ref([])
 const loading = ref(true)
 const realLevel = ref(1)
 
 async function fetchAssignments() {
   try {
-    const response = await fetch(
-      'http://localhost/yrkesprov/vue-project/backend/api/assignment.php',
-      { credentials: 'include' }
+    const res = await fetch(
+      "http://localhost/yrkesprov/vue-project/backend/api/assignment.php",
+      { credentials: "include" }
     )
 
-    const data = await response.json()
+    const data = await res.json()
 
     if (data.success) {
-      // Real 1–10 level from backend
-      realLevel.value = data.user_real_level || 1
+      realLevel.value = data.user_real_level
 
-      // Sort quizzes so recommended appear first
-      assignments.value = data.quizzes.sort((a, b) => {
-        const diffA = Math.abs(a.quiz_min_level_fk - realLevel.value)
-        const diffB = Math.abs(b.quiz_min_level_fk - realLevel.value)
-        return diffA - diffB
-      })
-    } else {
-      assignments.value = []
+      // dela upp här
+      incomplete.value = data.quizzes.filter(q => !q.completed)
+      completed.value = data.quizzes.filter(q => q.completed)
     }
 
   } catch (err) {
     console.error(err)
-    assignments.value = []
   } finally {
     loading.value = false
   }
 }
 
-onMounted(fetchAssignments)
+onMounted(async () => {
+  await fetch("http://localhost/yrkesprov/vue-project/backend/api/level_up.php", {
+    method: "POST",
+    credentials: "include"
+  })
+
+  if (!userStore.isLoggedIn) {
+    await userStore.fetchUser()
+  }
+
+  await fetchAssignments()
+})
 </script>

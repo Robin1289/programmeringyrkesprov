@@ -6,7 +6,7 @@ import RegisterView from '../views/RegisterView.vue'
 import UserLevelView from '@/views/UserLevelView.vue'
 import AssignmentView from '@/views/AssignmentView.vue'
 import QuizView from '@/views/QuizView.vue' 
-import ResultCard from '@/views/ResultCard.vue'
+import ResultView from '@/views/ResultView.vue'
 import AdminDashboardView from '@/views/AdminDashboard.vue'
 import AdminResults from '@/components/AdminResults.vue'
 import AdminQuizzes from '@/components/AdminQuizzes.vue'
@@ -17,7 +17,7 @@ const routes = [
   { path: '/', redirect: '/dashboard' },
   { path: '/login', component: LoginView },
   { path: '/register', component: RegisterView },
-  { path: '/results', component: ResultCard, meta: { requiresAuth: true } },
+  { path: '/results', component: ResultView, meta: { requiresAuth: true } },
   { path: '/results/:id', name: 'results', component: QuizResultView, meta: { requiresAuth: true } },
   { path: '/level', component: UserLevelView, meta: { requiresAuth: true } },
   { path: '/assignments', component: AssignmentView, meta: { requiresAuth: true } },
