@@ -58,7 +58,13 @@ try {
             ORDER BY a_id ASC
         ");
         $stmtA->execute([$q['q_id']]);
-        $q['answers'] = $stmtA->fetchAll(PDO::FETCH_ASSOC);
+       $answers = $stmtA->fetchAll(PDO::FETCH_ASSOC);
+
+            // shuffle answers
+            shuffle($answers);
+
+            $q['answers'] = $answers;
+
 
         // MATCH QUESTIONS
 

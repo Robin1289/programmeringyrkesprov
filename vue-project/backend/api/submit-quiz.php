@@ -133,18 +133,24 @@ try {
     }
 
     /*  SUMMARY */
-    $stmt = $pdo->prepare("
-        INSERT INTO student_quiz
-        (sq_student_fk, sq_quiz_fk, sq_score, sq_correct, sq_total, sq_date)
-        VALUES (?, ?, ?, ?, ?, NOW())
-    ");
-    $stmt->execute([
-        $student_id,
-        $quiz_id,
-        $correctCount,
-        $correctCount,
-        $totalQuestions
-    ]);
+// PASS/FAIL LOGIC
+$percentage = $totalQuestions > 0 ? ($correctCount / $totalQuestions) * 100 : 0;
+$passed = $percentage >= 70 ? 1 : 0;
+
+$stmt = $pdo->prepare("
+    INSERT INTO student_quiz
+    (sq_student_fk, sq_quiz_fk, sq_score, sq_correct, sq_total, sq_date, sq_passed)
+    VALUES (?, ?, ?, ?, ?, NOW(), ?)
+");
+$stmt->execute([
+    $student_id,
+    $quiz_id,
+    $correctCount,
+    $correctCount,
+    $totalQuestions,
+    $passed
+]);
+
 
     $resultId = $pdo->lastInsertId();
     $pdo->commit();

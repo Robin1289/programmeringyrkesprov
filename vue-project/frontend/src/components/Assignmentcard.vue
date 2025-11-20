@@ -16,23 +16,32 @@
       <span class="badge bg-success">Avklarad ✔</span>
     </div>
 
-    <!-- Start Quiz button -->
-    <router-link
-      v-if="!quiz.completed"
-      :to="`/quiz/${quiz.quiz_id}`"
-      class="btn btn-primary w-100"
-    >
-      Starta Quiz
-    </router-link>
+      <!-- Not done -->
+      <router-link
+        v-if="!quiz.completed && !quiz.failed"
+        :to="`/quiz/${quiz.quiz_id}`"
+        class="btn btn-primary w-100"
+      >
+        Starta Quiz
+      </router-link>
 
-    <!-- Show Result button -->
-    <router-link
-      v-else
-      :to="`/results/${quiz.result_id}`"
-      class="btn btn-success w-100"
-    >
-      Visa resultat
-    </router-link>
+      <!-- Failed -->
+      <router-link
+        v-else-if="quiz.failed"
+        :to="`/quiz/${quiz.quiz_id}`"
+        class="btn btn-danger w-100"
+      >
+        Gör om quiz ❌
+      </router-link>
+
+      <!-- Completed -->
+      <router-link
+        v-else
+        :to="`/results/${quiz.result_id}`"
+        class="btn btn-success w-100"
+      >
+        Visa resultat
+      </router-link>
 
   </div>
 </template>

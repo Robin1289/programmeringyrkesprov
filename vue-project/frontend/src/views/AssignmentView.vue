@@ -33,6 +33,27 @@
 
       <hr class="my-4" />
 
+      <hr class="my-4" />
+
+      <h2 class="mb-3 text-danger">Misslyckade uppgifter ❌</h2>
+
+      <div v-if="failed.length === 0" class="text-muted">
+        Inga misslyckade uppgifter just nu.
+      </div>
+
+      <div class="row assignments-grid">
+        <div
+          class="col-md-6 col-lg-4 mb-3"
+          v-for="quiz in failed"
+          :key="quiz.quiz_id"
+        >
+          <AssignmentCard :quiz="quiz" :user-level="realLevel" />
+        </div>
+      </div>
+
+      <hr class="my-4" />
+
+
       <!-- ✦ COMPLETED QUIZZES -->
       <h2 class="mb-3">Avklarade uppgifter</h2>
 
@@ -65,6 +86,7 @@ const userStore = useUserStore()
 const assignments = ref([])
 const incomplete = ref([])
 const completed = ref([])
+const failed = ref([])
 const loading = ref(true)
 const realLevel = ref(1)
 
@@ -80,9 +102,9 @@ async function fetchAssignments() {
     if (data.success) {
       realLevel.value = data.user_real_level
 
-      // dela upp här
       incomplete.value = data.quizzes.filter(q => !q.completed)
       completed.value = data.quizzes.filter(q => q.completed)
+      failed.value = data.quizzes.filter(q => q.failed)  // <-- OK
     }
 
   } catch (err) {
@@ -91,6 +113,10 @@ async function fetchAssignments() {
     loading.value = false
   }
 }
+
+
+
+
 
 onMounted(async () => {
   await fetch("http://localhost/yrkesprov/vue-project/backend/api/level_up.php", {

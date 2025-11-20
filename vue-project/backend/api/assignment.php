@@ -1,6 +1,5 @@
 <?php
-
-require_once "cors.php";
+require_once __DIR__ . "/cors.php";
 require_once "../config/db.php";
 
 if (session_status() === PHP_SESSION_NONE) {
@@ -42,35 +41,47 @@ try {
     $quizzes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     //
-    // 2) Fetch all completed quizzes INCLUDING result id
+    // 2) Fetch all attempts
     //
     $stmt2 = $pdo->prepare("
-        SELECT sq_quiz_fk AS quiz_id, sq_id AS result_id
+        SELECT sq_quiz_fk AS quiz_id, sq_id AS result_id, sq_passed
         FROM student_quiz
         WHERE sq_student_fk = ?
     ");
-
     $stmt2->execute([$userId]);
-    $done = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+    $rows = $stmt2->fetchAll(PDO::FETCH_ASSOC);
 
-    // Convert format:
-    // quiz_id => result_id
     $completedMap = [];
-    foreach ($done as $d) {
-        $completedMap[(int)$d['quiz_id']] = (int)$d['result_id'];
+    $failedMap = [];
+
+    foreach ($rows as $r) {
+        $qid = (int)$r['quiz_id'];
+
+        if ($r['sq_passed'] == 1) {
+            if (!isset($completedMap[$qid]))
+                $completedMap[$qid] = $r['result_id'];
+        } else {
+            if (!isset($failedMap[$qid]))
+                $failedMap[$qid] = $r['result_id'];
+        }
     }
 
-    //
-    // 3) Mark quizzes as completed + attach result_id
-    //
     foreach ($quizzes as &$q) {
         $qid = (int)$q['quiz_id'];
 
         if (isset($completedMap[$qid])) {
             $q['completed'] = true;
+            $q['failed'] = false;
             $q['result_id'] = $completedMap[$qid];
-        } else {
+        }
+        elseif (isset($failedMap[$qid])) {
             $q['completed'] = false;
+            $q['failed'] = true;
+            $q['result_id'] = $failedMap[$qid];
+        }
+        else {
+            $q['completed'] = false;
+            $q['failed'] = false;
             $q['result_id'] = null;
         }
     }
@@ -81,10 +92,10 @@ try {
         "quizzes" => $quizzes
     ]);
 
-} catch (PDOException $e) {
+} catch (Exception $e) {
     echo json_encode([
         "success" => false,
-        "message" => "Database error: " . $e->getMessage()
+        "message" => "Database error",
+        "error" => $e->getMessage()
     ]);
 }
-?>
