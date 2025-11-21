@@ -67,24 +67,27 @@ try {
     }
 
     foreach ($quizzes as &$q) {
-        $qid = (int)$q['quiz_id'];
+    $qid = (int)$q['quiz_id'];
 
-        if (isset($completedMap[$qid])) {
-            $q['completed'] = true;
-            $q['failed'] = false;
-            $q['result_id'] = $completedMap[$qid];
-        }
-        elseif (isset($failedMap[$qid])) {
-            $q['completed'] = false;
-            $q['failed'] = true;
-            $q['result_id'] = $failedMap[$qid];
-        }
-        else {
-            $q['completed'] = false;
-            $q['failed'] = false;
-            $q['result_id'] = null;
-        }
+    if (isset($completedMap[$qid])) {
+        $q['completed'] = true;
+        $q['failed'] = false;
+        $q['result_id'] = $completedMap[$qid];
     }
+    elseif (isset($failedMap[$qid])) { 
+        // User actually attempted AND failed
+        $q['completed'] = false;
+        $q['failed'] = true;
+        $q['result_id'] = $failedMap[$qid];
+    }
+    else {
+        // User has NEVER attempted this quiz
+        $q['completed'] = false;
+        $q['failed'] = false;
+        $q['result_id'] = null;
+    }
+}
+
 
     echo json_encode([
         "success" => true,
