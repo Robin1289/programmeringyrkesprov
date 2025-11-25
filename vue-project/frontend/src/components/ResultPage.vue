@@ -1,4 +1,8 @@
 <template>
+    <!-- ✦ Kawaii Particle Animation -->
+  <div v-if="!loading" class="kawaii-particles">
+    <span v-for="n in 20" :key="n" class="kawaii-particle">🎀</span>
+  </div>
   <div class="container py-5 result-wrapper">
 
     <div
@@ -28,7 +32,7 @@
         Du fick {{ result.correct }} / {{ result.total }} rätt!
       </div>
 
-      <div class="result-percentage">
+      <div class="result-percentage mb-4">
         ({{ percentage }}%)
       </div>
 
@@ -40,7 +44,7 @@
         {{ percentage >= 70 ? 'Godkänt! 🎉' : 'Ej godkänt 😢' }}
       </div>
 
-      <div class="mt-4 d-flex justify-content-center gap-3">
+      <div class="mt-3 d-flex justify-content-center gap-3">
 
         <button class="result-back-btn kitty-btn" @click="goBack">
           Tillbaka till Dashboard
@@ -65,8 +69,8 @@
 import { ref, computed, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
-import confetti from "/../frontend/public/assets/animations/confetti.mp4"
-import rain from "/../frontend/public/assets/animations/rain.mp4"
+import confetti from "/../frontend/public/assets/animations/confetti.gif"
+import rain from "/../frontend/public/assets/animations/rain.gif"
 
 const route = useRoute();
 const router = useRouter();

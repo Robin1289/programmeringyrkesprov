@@ -15,13 +15,22 @@ $quiz_id = intval($data['quiz_id']);
 $student_id = intval($data['student_id']);
 $answers = $data['answers'] ?? [];
 
-/*  Check if already done */
-$stmt = $pdo->prepare("SELECT sq_id FROM student_quiz WHERE sq_student_fk=? AND sq_quiz_fk=?");
+// Check last attempt
+$stmt = $pdo->prepare("
+    SELECT sq_passed 
+    FROM student_quiz
+    WHERE sq_student_fk=? AND sq_quiz_fk=?
+    ORDER BY sq_date DESC
+    LIMIT 1
+");
 $stmt->execute([$student_id, $quiz_id]);
-if ($stmt->fetch()) {
+$attempt = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// If last attempt was PASSED → block retry
+if ($attempt && intval($attempt['sq_passed']) === 1) {
     echo json_encode([
         "success" => false,
-        "message" => "Quiz already completed"
+        "message" => "Du har redan klarat detta test!"
     ]);
     exit;
 }
@@ -43,9 +52,7 @@ try {
         $question = $stmt->fetch(PDO::FETCH_ASSOC);
         if (!$question) continue;
 
-        /* --------------------------
-            SINGLE
-        ---------------------------*/
+        /* SINGLE*/
         if ($type === "single") {
             $stmtA = $pdo->prepare("SELECT a_id FROM answer WHERE a_q_fk=? AND a_iscorrect=1");
             $stmtA->execute([$q_id]);
@@ -56,9 +63,7 @@ try {
             }
         }
 
-        /* --------------------------
-            MULTIPLE
-        ---------------------------*/
+        /* MULTIPLE */
         elseif ($type === "multiple") {
             $stmtA = $pdo->prepare("SELECT a_id FROM answer WHERE a_q_fk=? AND a_iscorrect=1");
             $stmtA->execute([$q_id]);
@@ -74,18 +79,16 @@ try {
         }
 
         /* TEXT – keyword match */
-                    elseif ($type === "text") {
-                $userText = strtolower(trim($ans['text'] ?? ''));
-                $keyword = strtolower(trim($question['q_correct_text'] ?? ''));
+        elseif ($type === "text") {
+            $userText = strtolower(trim($ans['text'] ?? ''));
+            $keyword = strtolower(trim($question['q_correct_text'] ?? ''));
 
-                // empty answer = wrong
-                if ($keyword !== '' && str_contains($userText, $keyword)) {
-                    $isCorrect = 1;
-                } else {
-                    $isCorrect = 0;
-                }
+            if ($keyword !== '' && str_contains($userText, $keyword)) {
+                $isCorrect = 1;
+            } else {
+                $isCorrect = 0;
             }
-
+        }
 
         /*  SORT */
         elseif ($type === "sort") {
@@ -132,25 +135,23 @@ try {
         $correctCount += $isCorrect;
     }
 
-    /*  SUMMARY */
-// PASS/FAIL LOGIC
-$percentage = $totalQuestions > 0 ? ($correctCount / $totalQuestions) * 100 : 0;
-$passed = $percentage >= 70 ? 1 : 0;
+    /*  SUMMARY + PASS/FAIL */
+    $percentage = $totalQuestions > 0 ? ($correctCount / $totalQuestions) * 100 : 0;
+    $passed = $percentage >= 70 ? 1 : 0;
 
-$stmt = $pdo->prepare("
-    INSERT INTO student_quiz
-    (sq_student_fk, sq_quiz_fk, sq_score, sq_correct, sq_total, sq_date, sq_passed)
-    VALUES (?, ?, ?, ?, ?, NOW(), ?)
-");
-$stmt->execute([
-    $student_id,
-    $quiz_id,
-    $correctCount,
-    $correctCount,
-    $totalQuestions,
-    $passed
-]);
-
+    $stmt = $pdo->prepare("
+        INSERT INTO student_quiz
+        (sq_student_fk, sq_quiz_fk, sq_score, sq_correct, sq_total, sq_date, sq_passed)
+        VALUES (?, ?, ?, ?, ?, NOW(), ?)
+    ");
+    $stmt->execute([
+        $student_id,
+        $quiz_id,
+        $correctCount,
+        $correctCount,
+        $totalQuestions,
+        $passed
+    ]);
 
     $resultId = $pdo->lastInsertId();
     $pdo->commit();
