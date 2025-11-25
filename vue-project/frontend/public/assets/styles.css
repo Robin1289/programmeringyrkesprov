@@ -1752,6 +1752,120 @@
   flex: 0 0 300px !important;
   max-width: 300px !important;
 }
+/* RESULT PAGE — GLOBAL ANIMATIONS & STYLES*/
+
+/* Pop-in animation for result card */
+@keyframes rp-popIn {
+  0% { transform: scale(0.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.result-pop {
+  animation: rp-popIn 0.6s ease forwards;
+}
+
+/*PASS styles*/
+.result-pass-box {
+  border: 3px solid #ff9ddb;
+  box-shadow: 0 0 20px #ffbde6;
+}
+
+.result-pass-text {
+  color: #ff4bb5;
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+/* Bounce animation */
+@keyframes rp-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.result-bounce {
+  animation: rp-bounce 1.2s infinite;
+}
+
+/* Confetti background */
+.result-confetti-bg {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  background-image: url("https://i.imgur.com/0YgXQKm.gif");
+  background-size: cover;
+  opacity: 0.4;
+  z-index: 0;
+  animation: rp-fadeIn 1s;
+}
+
+/* FAIL styles*/
+.result-fail-box {
+  border: 3px solid #ff6b6b;
+  box-shadow: 0 0 20px #ffb5b5;
+}
+
+.result-fail-text {
+  color: #e63946;
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+/* Wobble animation */
+@keyframes rp-wobble {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  50% { transform: translateX(6px); }
+  75% { transform: translateX(-4px); }
+  100% { transform: translateX(0); }
+}
+
+.result-wobble {
+  animation: rp-wobble 0.8s ease;
+}
+
+/* Sad rain background */
+.result-sadrain-bg {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  background-image: url("https://i.imgur.com/V4dYQfC.gif");
+  background-size: cover;
+  opacity: 0.3;
+  z-index: 0;
+  animation: rp-fadeIn 1s;
+}
+
+/* Fade animation shared */
+@keyframes rp-fadeIn {
+  from { opacity: 0; }
+  to { opacity: 0.4; }
+}
+
+/* Buttons — fits your Hello Kitty theme*/
+
+.kitty-btn {
+  background: #ff8ac7;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 12px;
+  color: white;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.kitty-btn:hover {
+  background: #ff6fb4;
+  box-shadow: 0 0 12px #ffbde6;
+}
+
+.tryagain-btn {
+  background: #e63946 !important;
+}
+
+.tryagain-btn:hover {
+  box-shadow: 0 0 12px #ff8a8a;
+}
+
 
 
 
