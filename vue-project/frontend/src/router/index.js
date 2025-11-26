@@ -53,14 +53,18 @@ router.beforeEach(async (to, from, next) => {
   if ((to.path === '/login' || to.path === '/register') && isLoggedIn) {
     return next('/dashboard')
   }
-
   // 4. Admin-only route?
   if (to.meta.adminOnly) {
+    console.log(userRole)
     if (!isLoggedIn) return next('/login')
-    if (userRole !== 'admin') return next('/dashboard')
+    if (userRole !== 3) return next('/dashboard')
   }
   // 5. User-only route?
-  
+  if (to.meta.userOnly) {
+    if (!isLoggedIn) return next('/login')
+    if (userRole !== 1) return next('/admin-dashboard')
+  }
+
 
   next()
 })

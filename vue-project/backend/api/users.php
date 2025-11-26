@@ -27,18 +27,22 @@ $action = $_POST['action'] ?? $_GET['action'] ?? '';
 try {
     switch ($action) {
 
-        case 'getUser':
+case 'getUser':
             if (!isset($_SESSION['user_id'])) {
                 echo json_encode(['success' => false, 'message' => 'No user logged in']);
                 exit;
             }
+
             echo json_encode([
                 'success' => true,
                 'user' => [
-                    'id' => $_SESSION['user_id'],
-                    'name' => $_SESSION['user_name'],
-                    'email' => $_SESSION['user_email']
-                    // add points, level, badges if you store them in session
+                    'id'     => $_SESSION['user_id'],
+                    'name'   => $_SESSION['user_name'],
+                    'email'  => $_SESSION['user_email'],
+                    'points' => $_SESSION['user_points'] ?? 0,
+                    'level'  => $_SESSION['user_level'] ?? 1,
+                    'role'   => $_SESSION['user_role']   ?? null,
+                    'badges' => $_SESSION['user_badges'] ?? []
                 ]
             ]);
             break;
