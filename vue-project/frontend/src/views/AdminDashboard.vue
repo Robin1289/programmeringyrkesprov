@@ -96,21 +96,21 @@ onMounted(async () => {
   await fetchLevelHeatmap();
 });
 
-// Fetch stats (users, quizzes, results)
 async function fetchStats() {
   const response = await fetch(
-    "http://localhost/yrkesprov/vue-project/backend/api/admin_get_levels.php",
+    "http://localhost/yrkesprov/vue-project/backend/api/admin_get_stats.php",
     { credentials: "include" }
   );
 
   const data = await response.json();
 
   if (data.success) {
-    stats.value.users = data.levels.reduce((sum, lvl) => sum + lvl.users, 0);
-    stats.value.quizzes = 18; // temporary
-    stats.value.results = 301; // temporary
+    stats.value.users   = data.stats.users;
+    stats.value.quizzes = data.stats.quizzes;
+    stats.value.results = data.stats.results;
   }
 }
+
 
 // Fetch data for heatmap
 async function fetchLevelHeatmap() {

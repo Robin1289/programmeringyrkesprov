@@ -1,11 +1,10 @@
 <template>
-  <div>
-    <div v-if="loading" class="text-center py-5">
-      <div class="spinner-border hk-spinner" role="status"></div>
-    </div>
+<div class="manage-users-container">
+  <h1 class="page-title">Manage Users</h1>
 
-    <table v-else class="table table-hover table-bordered hk-table">
-      <thead class="table-light">
+  <div class="users-card">
+    <table class="table users-table">
+      <thead>
         <tr>
           <th>ID</th>
           <th>Name</th>
@@ -25,14 +24,13 @@
           <td>{{ user.level }}</td>
           <td>{{ user.role }}</td>
           <td>
-            <button class="btn btn-sm hk-btn" @click="goToUser(user.id)">
-              Edit
-            </button>
+            <button class="edit-btn" @click="editUser(user.id)">Edit</button>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
+</div>
 </template>
 
 <script setup>
