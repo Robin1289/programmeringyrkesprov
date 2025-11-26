@@ -14,9 +14,7 @@
 
     <div v-else>
 
-      <!-- ================================
-           INCOMPLETE SECTION
-      ==================================-->
+      <!--INCOMPLETE SECTION-->
       <div class="assignment-section">
         <div class="section-header" @click="toggle('incomplete')">
           <h2>Uppgifter du inte gjort</h2>
@@ -46,9 +44,7 @@
       </div>
 
 
-      <!-- ================================
-           FAILED SECTION
-      ==================================-->
+      <!-- FAILED SECTION -->
       <div class="assignment-section">
         <div class="section-header failed-header" @click="toggle('failed')">
           <h2 class="text-danger">Misslyckade uppgifter ❌</h2>
@@ -78,9 +74,7 @@
       </div>
 
 
-      <!-- ================================
-           COMPLETED SECTION
-      ==================================-->
+      <!-- COMPLETED SECTION -->
       <div class="assignment-section">
         <div class="section-header" @click="toggle('completed')">
           <h2>Avklarade uppgifter</h2>

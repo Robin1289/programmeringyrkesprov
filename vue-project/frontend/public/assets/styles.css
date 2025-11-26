@@ -2017,6 +2017,96 @@
   transform: rotate(0deg); /* Open state → arrow points down */
 }
 
+/* LEVEL PROGRESS */
+
+.level-progress-container {
+  padding: 10px 0;
+  text-align: center;
+}
+
+.level-progress-title {
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: #ff69b4;
+}
+
+.level-progress-bar {
+  width: 100%;
+  height: 16px;
+  background: #ffe3ef;
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 8px 0;
+}
+
+.level-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ff7ac6, #ff4fa3);
+  border-radius: 12px;
+  transition: width 0.4s ease;
+}
+
+.level-progress-label {
+  font-size: 0.9rem;
+  color: #444;
+}
+
+/* BADGES */
+
+.badge-section {
+  margin-top: 40px;
+}
+
+.badge-header {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #ff4fa3;
+  text-align: center;
+}
+
+.badge-card {
+  background: #fff;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(255, 100, 150, 0.2);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.badge-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 20px rgba(255, 100, 150, 0.3);
+}
+
+.badge-img-wrapper {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto;
+}
+
+.badge-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.badge-title {
+  font-size: 1.2rem;
+  margin-top: 15px;
+  font-weight: 700;
+  color: #ff4fa3;
+}
+
+.badge-desc {
+  color: #555;
+  font-size: 0.9rem;
+}
+
+.badge-date {
+  margin-top: 10px;
+  font-size: 0.8rem;
+  color: #888;
+}
+
 
 
 

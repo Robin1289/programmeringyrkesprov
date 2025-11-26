@@ -26,22 +26,21 @@
         </section>
 
 
-    <!-- Level Cards -->
-    <div class="row g-4 mt-2 level-page">
-      <div class="col-md-6" v-if="currentLevel">
-        <div class="dashboard-card p-4">
-          <h3>Current Level: {{ currentLevel.l_name }}</h3>
-          <p>Points: {{ userPoints }} / {{ nextLevel?.l_min_points ?? 0 }}</p>
-        </div>
-      </div>
+        <!-- Badge Section -->
+        <section class="badge-section mt-5">
+          <h2 class="badge-header">🏅 Dina Badges</h2>
 
-      <div class="col-md-6" v-if="nextLevel">
-        <div class="dashboard-card p-4">
-          <h3>Next Level: {{ nextLevel.l_name }}</h3>
-          <p>Requires {{ nextLevel.l_min_points }} points</p>
-        </div>
-      </div>
-    </div>
+          <div v-if="badges.length === 0" class="text-muted">
+            Du har inga badges ännu — fortsätt göra quiz! 💖
+          </div>
+
+          <div class="row mt-3 g-3">
+            <div class="col-md-4" v-for="badge in badges" :key="badge.b_id">
+              <BadgeCard :badge="badge" />
+            </div>
+          </div>
+        </section>
+
 
   </div>
 </template>
@@ -83,10 +82,6 @@ async function fetchLevels() {
   }
 }
 
-onMounted(() => {
-  fetchLevels();
-});
-
 // ⭐ Motivational logic based on progress
 const motivationMessage = computed(() => {
   if (!currentLevel.value || !nextLevel.value) return "";
@@ -112,4 +107,30 @@ const motivationMessage = computed(() => {
   }
   return "✨ LEVEL-UP incoming — you're right at the finish line!";
 });
+import BadgeCard from "../components/BadgeCard.vue"
+
+const badges = ref([])
+
+async function fetchBadges() {
+  try {
+    const res = await fetch(
+      "http://localhost/yrkesprov/vue-project/backend/api/badges.php",
+      { credentials: "include" }
+    )
+
+    const data = await res.json()
+
+    if (data.success) {
+      badges.value = data.badges
+    }
+  } catch (err) {
+    console.error("Badge fetch failed", err)
+  }
+}
+
+onMounted(() => {
+  fetchLevels()
+  fetchBadges()
+})
+
 </script>
