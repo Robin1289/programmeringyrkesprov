@@ -10,8 +10,8 @@ import ResultView from '@/views/ResultView.vue'
 import AdminDashboardView from '@/views/AdminDashboard.vue'
 import AdminResults from '@/components/AdminResults.vue'
 import AdminQuizzes from '@/components/AdminQuizzes.vue'
-import AdminUsersView from '@/view/AdminUsersView.vue'
-import AdminEditUsersView from '@/view/AdminEditUsersView.vue'
+import AdminUsersView from '@/views/AdminUsersView.vue'
+import AdminEditUsersView from '@/views/AdminEditUsersView.vue'
 import QuizResultView from '@/views/QuizResultView.vue'
 
 const routes = [
