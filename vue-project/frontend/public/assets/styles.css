@@ -275,17 +275,6 @@
     }
   }
 
-  /* Auth Forms & Side Videos */
-  /* Auth Forms & Side Videos */
-  .auth-container {
-    display: flex;
-    width: 100%;
-    max-height: 90vh; /* tall but not scrollable */
-    align-items: stretch; /* stretch children to same height */
-    justify-content: center;
-    gap: 2rem;
-    padding: 2rem;
-  }
 
   .side-video {
     flex: 1;                /* fill available space */
@@ -296,17 +285,6 @@
     box-shadow: 0 8px 24px rgba(0,0,0,0.2);
   }
 
-  .auth-form {
-    flex: 0 0 500px;         /* fixed width */
-    min-height: 500px;       /* match desired video height */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    background: white;
-    padding: 3.5rem;
-    border-radius: 1rem;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-  }
 
   /* Login / Register Forms */
   .login-form, .register-form {
@@ -1502,14 +1480,6 @@
 }
 /* AUTH PAGES — HELLO KITTY THEME */
 
-  .auth-container {
-    display: flex;
-    min-height: 80vh;
-    box-shadow: 0 6px 20px rgba(255, 105, 180, 0.15);
-    border-radius: 1.5rem;
-    overflow: hidden;
-    background: #fff0f7;
-  }
 
   .side-video {
     flex: 0 0 45%;
@@ -1525,15 +1495,6 @@
     height: auto;
     border-radius: 1rem;
     box-shadow: 0 4px 12px rgba(255, 105, 180, 0.2);
-  }
-
-  .auth-form {
-    flex: 0 0 55%;
-    padding: 3rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    background: #fffafb;
   }
 
   .login-form, .register-form {
@@ -2242,11 +2203,230 @@
   transform: translateY(-2px) scale(1.03);
 }
 
-
 /* Container for spacing */
 .manage-users-container {
   padding: 40px 20px;
 }
+/* Layout wrapper */
+.login-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 0;
+  gap: 40px;
+}
+
+/* Side videos */
+.login-side-video {
+  width: 260px;            /* fixed visual size */
+  height: 420px;
+  border-radius: 20px;
+  overflow: hidden;        /* important: crop instead of stretch */
+  box-shadow: 0 5px 20px rgba(255, 120, 180, 0.25);
+}
+
+/* Video styling */
+.login-side-video video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;       /* fixes stretching */
+  display: block;
+}
+
+/* Center area */
+.login-center {
+  max-width: 420px;
+  width: 100%;
+}
+
+/* IMPORTANT: Prevent global img/video rules from affecting login */
+.login-wrapper img,
+.login-wrapper video {
+  max-width: none !important;
+}
+/* Wrapper around the form */
+.auth-container {
+  width: 430px;              /* Wider */
+  margin: 0 auto;
+  padding: 0;
+}
+
+/* The card itself */
+.auth-form {
+  background: #ffffff;
+  padding: 40px 35px;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(255, 120, 180, 0.15);
+  border: 2px solid #ffd6e9;
+  width: 100%;
+  transition: transform 0.15s ease;
+}
+
+.auth-form:hover {
+  transform: translateY(-4px);
+}
+
+/* Inputs */
+.auth-form .form-control {
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 2px solid #ffd5e4;
+}
+
+.auth-form .form-control:focus {
+  border-color: #ff8acb;
+  box-shadow: 0 0 0 3px rgba(255, 140, 200, 0.25);
+}
+
+/* Pink button */
+.auth-form button.btn-primary {
+  background: #ff66b2;
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-weight: 600;
+  border: none;
+  transition: 0.2s ease;
+}
+
+.auth-form button.btn-primary:hover {
+  background: #ff4aa3;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(255, 100, 170, 0.25);
+}
+
+/* Register button */
+.auth-form .btn-outline-secondary {
+  border-radius: 10px;
+  border-color: #ff66b2;
+  color: #ff66b2;
+  padding: 4px 10px;
+  transition: 0.2s ease;
+}
+
+.auth-form .btn-outline-secondary:hover {
+  background: #ff66b2;
+  color: white;
+}
+
+/* Keep things centered */
+.auth-form h2 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 25px;
+}
+/* Wrapper layout */
+.register-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 0;
+  gap: 40px;
+}
+
+/* Side videos */
+.register-side-video {
+  width: 260px;
+  height: 420px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 5px 20px rgba(255, 120, 180, 0.25);
+}
+
+.register-side-video video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Center content */
+.register-center {
+  max-width: 430px;
+  width: 100%;
+}
+
+/* Prevent layout interference from global styles */
+.register-wrapper video {
+  max-width: none !important;
+}
+/* Wrapper around the form (same as LoginForm) */
+.auth-container {
+  width: 430px;              /* Nice wide size */
+  margin: 0 auto;
+  padding: 0;
+}
+
+/* Form card */
+.auth-form {
+  background: #ffffff;
+  padding: 40px 35px;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(255, 120, 180, 0.15);
+  border: 2px solid #ffd6e9;
+  width: 100%;
+  transition: transform 0.15s ease;
+}
+
+.auth-form:hover {
+  transform: translateY(-4px);
+}
+
+/* Header */
+.auth-form h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #ff4fa8;
+  margin-bottom: 30px;
+}
+
+/* Inputs */
+.auth-form .form-control {
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 2px solid #ffd5e4;
+  transition: 0.2s ease;
+}
+
+.auth-form .form-control:focus {
+  border-color: #ff8acb;
+  box-shadow: 0 0 0 3px rgba(255, 140, 200, 0.25);
+}
+
+/* Pink primary button */
+.auth-form button.btn-primary {
+  background: #ff66b2;
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-weight: 600;
+  border: none;
+  transition: 0.2s ease;
+}
+
+.auth-form button.btn-primary:hover {
+  background: #ff4aa3;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(255, 100, 170, 0.25);
+}
+
+/* Secondary outline button */
+.auth-form .btn-outline-secondary {
+  border-radius: 10px;
+  border-color: #ff66b2;
+  color: #ff66b2;
+  padding: 4px 10px;
+  transition: 0.2s ease;
+  font-weight: 500;
+}
+
+.auth-form .btn-outline-secondary:hover {
+  background: #ff66b2;
+  color: white;
+}
+
+/* Improve spacing under bottom text */
+.auth-form .text-center {
+  margin-top: 10px;
+}
+
 
 
 

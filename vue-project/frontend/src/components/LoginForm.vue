@@ -1,11 +1,6 @@
 <template>
   <div class="auth-container">
 
-    <!-- Left looping video -->
-    <video autoplay muted loop class="side-video">
-      <source src="/media/login1.mp4" type="video/mp4" />
-      Your browser does not support the video tag.
-    </video>
 
     <!-- Login form -->
     <form @submit.prevent="handleLogin" class="auth-form">
@@ -49,13 +44,6 @@
         </router-link>
       </div>
     </form>
-
-    <!-- Right looping video -->
-    <video autoplay muted loop class="side-video">
-      <source src="/media/login2.mp4" type="video/mp4" />
-      Your browser does not support the video tag.
-    </video>
-
   </div>
 </template>
 

@@ -1,26 +1,45 @@
 <template>
-  <div class="container mt-5">
+  <div class="login-wrapper">
 
-    <!-- Login Form -->
-    <div v-if="!userStore.isLoggedIn && !showWelcomePopup">
-      <LoginForm />
+    <!-- Left Video -->
+    <div class="login-side-video left">
+      <video autoplay muted loop playsinline>
+        <source src="/media/login1.mp4" type="video/mp4">
+      </video>
     </div>
 
-    <!-- Loading / Redirect message -->
-    <div v-else-if="userStore.isLoggedIn && !showWelcomePopup" class="text-center">
-      <p>Redirecting...</p>
+    <!-- Login Form (center) -->
+    <div class="login-center">
+
+      <!-- Login Form -->
+      <div v-if="!userStore.isLoggedIn && !showWelcomePopup">
+        <LoginForm />
+      </div>
+
+      <!-- Redirect -->
+      <div v-else-if="userStore.isLoggedIn && !showWelcomePopup" class="text-center">
+        <p>Redirecting...</p>
+      </div>
+
+      <!-- Welcome Popup -->
+      <WelcomePopup
+        v-if="showWelcomePopup"
+        :username="userStore.name"
+        :video-src="'/media/cutevid.mp4'"
+        :sound-src="'/media/uwu.mp3'"
+      />
+
+      <div v-if="errorMessage" class="alert alert-danger mt-3 text-center">
+        {{ errorMessage }}
+      </div>
+
     </div>
 
-    <!-- Welcome Popup (3 seconds) -->
-    <WelcomePopup
-      v-if="showWelcomePopup"
-      :username="userStore.name"
-      :video-src="'/media/cutevid.mp4'"
-      :sound-src="'/media/uwu.mp3'"
-    />
-
-    <div v-if="errorMessage" class="alert alert-danger mt-3 text-center">
-      {{ errorMessage }}
+    <!-- Right Video -->
+    <div class="login-side-video right">
+      <video autoplay muted loop playsinline>
+        <source src="/media/login2.mp4" type="video/mp4">
+      </video>
     </div>
 
   </div>
