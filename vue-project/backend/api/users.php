@@ -46,12 +46,48 @@ case 'getUser':
                 ]
             ]);
             break;
+            case 'getAll':
+    // Require admin session to access
+    if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] != 3) {
+        echo json_encode(['success' => false, 'message' => 'Not authorized']);
+        exit;
+    }
+
+    $stmt = $pdo->query("
+        SELECT 
+            u_id,
+            u_name,
+            u_mail,
+            u_points,
+            u_level_fk,
+            u_role_fk
+        FROM users
+        ORDER BY u_id ASC
+    ");
+
+    $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    echo json_encode([
+        'success' => true,
+        'users' => array_map(fn($u) => [
+            'id'    => $u['u_id'],
+            'name'  => $u['u_name'],
+            'email' => $u['u_mail'],
+            'points'=> $u['u_points'],
+            'level' => $u['u_level_fk'],
+            'role'  => $u['u_role_fk']
+        ], $users)
+    ]);
+    break;
+
 
         case 'logout':
             session_unset();
             session_destroy();
             echo json_encode(['success' => true, 'message' => 'Logged out']);
             break;
+        
+            
 
         default:
             echo json_encode(['success' => false, 'message' => 'Invalid action']);

@@ -10,7 +10,8 @@ import ResultView from '@/views/ResultView.vue'
 import AdminDashboardView from '@/views/AdminDashboard.vue'
 import AdminResults from '@/components/AdminResults.vue'
 import AdminQuizzes from '@/components/AdminQuizzes.vue'
-import AdminUsers from '@/components/AdminUsers.vue'
+import AdminUsersView from '@/view/AdminUsersView.vue'
+import AdminEditUsersView from '@/view/AdminEditUsersView.vue'
 import QuizResultView from '@/views/QuizResultView.vue'
 
 const routes = [
@@ -26,7 +27,8 @@ const routes = [
   { path: '/quiz/:id', name: 'Quiz', component: QuizView, props: true , meta: { requiresAuth: true, userOnly: true } },
   { path: '/admin-quizzes', component: AdminQuizzes, meta: { requiresAuth: true, adminOnly: true }},
   { path: '/admin-results', component: AdminResults, meta: { requiresAuth: true, adminOnly: true }},
-  { path: '/admin-users', component: AdminUsers, meta: { requiresAuth: true, adminOnly: true }}
+  { path: '/admin-users', component: AdminUsersView, meta: { requiresAuth: true, adminOnly: true }},
+  { path: '/admin-users/:id', component: AdminEditUsersView, meta: { requiresAuth: true, adminOnly: true }},
 ]
 
 const router = createRouter({
