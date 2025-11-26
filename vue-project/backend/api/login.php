@@ -55,6 +55,7 @@ try {
         $_SESSION['user_name'] = $user['u_name'];
         $_SESSION['user_email'] = $user['u_mail'];
         $_SESSION['user_level'] = $user['u_level_fk']; 
+        $_SESSION['user_role'] = $user['u_role_fk'];    
         $_SESSION['last_activity'] = time();
 
 

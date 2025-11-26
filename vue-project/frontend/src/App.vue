@@ -1,7 +1,21 @@
 <template>
   <div id="app" class="d-flex min-vh-100">
-    <!-- Sidebar: only show if user is logged in -->
-    <Sidebar v-if="userStore.isLoggedIn" />
+
+    <!-- Sidebar -->
+    <Sidebar 
+      v-if="userStore.isLoggedIn"
+      :isOpen="sidebarOpen"
+      @toggleSidebar="toggleSidebar"
+    />
+
+    <!-- OPEN BUTTON (floating on app) -->
+    <button 
+      v-if="userStore.isLoggedIn && !sidebarOpen" 
+      class="sidebar-open-btn"
+      @click="toggleSidebar"
+    >
+      🎀
+    </button>
 
     <!-- Main content -->
     <div class="flex-grow-1">
@@ -13,21 +27,20 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useUserStore } from './store/userstore.js'
 import Navbar from './components/Navbar.vue'
 import Sidebar from './components/Sidebar.vue'
 import Footer from './components/Footer.vue'
 
 const userStore = useUserStore()
+const sidebarOpen = ref(true)
 
-// Auto-fetch logged-in user data on app start
+function toggleSidebar() {
+  sidebarOpen.value = !sidebarOpen.value
+}
+
 onMounted(() => {
   userStore.fetchUser()
 })
-
-// Optional global logout function
-function logout() {
-  userStore.logout()
-}
 </script>

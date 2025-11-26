@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import router from '../router'   // IMPORTANT: make sure this path is correct
+import router from '../router'
 
 export const useUserStore = defineStore('user', {
   state: () => ({
@@ -8,17 +8,31 @@ export const useUserStore = defineStore('user', {
     email: '',
     points: 0,
     level: 1,
-    role: 1,            // <-- You forgot this!
+    role: null,       // IMPORTANT: no default admin role
     badges: [],
     isLoggedIn: false,
     ready: false
   }),
 
-  actions: {
+  getters: {
+    // Allow router/user code to access "user.role"
+    user(state) {
+      return {
+        id: state.id,
+        name: state.name,
+        email: state.email,
+        points: state.points,
+        level: state.level,
+        role: state.role,
+        badges: state.badges
+      }
+    }
+  },
 
-    // ------------------------------------------------------
+  actions: {
+    // ------------------------------------------
     // LOGIN
-    // ------------------------------------------------------
+    // ------------------------------------------
     async login(credentials) {
       try {
         const response = await fetch(
@@ -28,7 +42,7 @@ export const useUserStore = defineStore('user', {
             credentials: "include",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              email: credentials.email,   // email OR username
+              email: credentials.email,
               password: credentials.password
             })
           }
@@ -40,34 +54,26 @@ export const useUserStore = defineStore('user', {
           throw new Error(data.message);
         }
 
-        // Backend returns:
-        // id, name, email, points, level, role
         this.id    = data.user.id;
         this.name  = data.user.name;
         this.email = data.user.email;
         this.points = data.user.points;
         this.level  = data.user.level;
         this.role   = data.user.role;
+        this.badges = data.user.badges || [];
 
         this.isLoggedIn = true;
-
-        // ------------------------------------------------------
-        // ROLE-BASED REDIRECT (Vue Router instead of page reload)
-        // ------------------------------------------------------
-        // Do NOT redirect here.
-        // LoginView.vue will handle redirection AFTER popup.
-        return { success: true }
-
+        return { success: true };
 
       } catch (err) {
         console.error("Login error:", err);
-        throw err; // sends error back to login page to display
+        throw err;
       }
     },
 
-    // ------------------------------------------------------
+    // ------------------------------------------
     // REGISTER
-    // ------------------------------------------------------
+    // ------------------------------------------
     async register(name, email, password) {
       try {
         const response = await fetch(
@@ -85,9 +91,9 @@ export const useUserStore = defineStore('user', {
       }
     },
 
-    // ------------------------------------------------------
+    // ------------------------------------------
     // LOGOUT
-    // ------------------------------------------------------
+    // ------------------------------------------
     async logout() {
       try {
         await fetch(
@@ -101,16 +107,15 @@ export const useUserStore = defineStore('user', {
       } catch (err) {
         console.error(err);
       } finally {
-        // Reset state
         this.$reset();
         this.isLoggedIn = false;
         router.push('/login');
       }
     },
 
-    // ------------------------------------------------------
-    // FETCH USER (SESSION CHECK)
-    // ------------------------------------------------------
+    // ------------------------------------------
+    // FETCH USER
+    // ------------------------------------------
     async fetchUser() {
       this.ready = false;
 
@@ -144,9 +149,9 @@ export const useUserStore = defineStore('user', {
       }
     },
 
-    // ------------------------------------------------------
+    // ------------------------------------------
     // HELPERS
-    // ------------------------------------------------------
+    // ------------------------------------------
     updatePoints(points) {
       this.points = points;
     },
@@ -161,4 +166,4 @@ export const useUserStore = defineStore('user', {
       }
     }
   }
-});
+})

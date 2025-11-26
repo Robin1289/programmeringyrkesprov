@@ -3,12 +3,10 @@
 require_once "cors.php";
 require_once '../config/db.php';
 
-// 🔥 Fetch DISTINCT levels from STUDENTS only, SORTED by DB-ID
 $levelStmt = $pdo->query("
     SELECT DISTINCT u_level_fk
     FROM user
-    WHERE u_role_fk = 1
-    AND u_level_fk IS NOT NULL
+    WHERE u_level_fk IS NOT NULL
     ORDER BY u_level_fk ASC
 ");
 
