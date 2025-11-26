@@ -2244,76 +2244,7 @@
 .login-wrapper video {
   max-width: none !important;
 }
-/* Wrapper around the form */
-.auth-container {
-  width: 430px;              /* Wider */
-  margin: 0 auto;
-  padding: 0;
-}
 
-/* The card itself */
-.auth-form {
-  background: #ffffff;
-  padding: 40px 35px;
-  border-radius: 18px;
-  box-shadow: 0 10px 30px rgba(255, 120, 180, 0.15);
-  border: 2px solid #ffd6e9;
-  width: 100%;
-  transition: transform 0.15s ease;
-}
-
-.auth-form:hover {
-  transform: translateY(-4px);
-}
-
-/* Inputs */
-.auth-form .form-control {
-  padding: 12px 14px;
-  border-radius: 12px;
-  border: 2px solid #ffd5e4;
-}
-
-.auth-form .form-control:focus {
-  border-color: #ff8acb;
-  box-shadow: 0 0 0 3px rgba(255, 140, 200, 0.25);
-}
-
-/* Pink button */
-.auth-form button.btn-primary {
-  background: #ff66b2;
-  border-radius: 12px;
-  padding: 10px 14px;
-  font-weight: 600;
-  border: none;
-  transition: 0.2s ease;
-}
-
-.auth-form button.btn-primary:hover {
-  background: #ff4aa3;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(255, 100, 170, 0.25);
-}
-
-/* Register button */
-.auth-form .btn-outline-secondary {
-  border-radius: 10px;
-  border-color: #ff66b2;
-  color: #ff66b2;
-  padding: 4px 10px;
-  transition: 0.2s ease;
-}
-
-.auth-form .btn-outline-secondary:hover {
-  background: #ff66b2;
-  color: white;
-}
-
-/* Keep things centered */
-.auth-form h2 {
-  font-size: 28px;
-  font-weight: 700;
-  margin-bottom: 25px;
-}
 /* Wrapper layout */
 .register-wrapper {
   display: flex;
