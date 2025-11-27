@@ -2503,3 +2503,147 @@
   background-color: #e6e6e6;
   transform: translateY(-2px);
 }
+.results-details-container {
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.details-card {
+  background: rgba(255, 255, 255, 0.12);
+  padding: 20px;
+  border-radius: 12px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid #ffffff30;
+  margin-bottom: 20px;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+}
+
+.detail-row .label {
+  font-weight: 600;
+  color: #ff69b4;
+}
+
+.passed {
+  color: #4caf50;
+  font-weight: bold;
+}
+.failed {
+  color: #ff4d4d;
+  font-weight: bold;
+}
+
+.answers-list {
+  margin-top: 20px;
+}
+
+.answer-item {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 14px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  border: 1px solid #ffffff20;
+}
+
+.question-title {
+  font-weight: bold;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.badge-correct {
+  color: #4caf50;
+  font-size: 20px;
+}
+
+.badge-wrong {
+  color: #ff4d4d;
+  font-size: 20px;
+}
+
+.btn-outline-pink {
+  border: 1px solid #ff69b4;
+  color: #ff69b4;
+}
+
+.btn-outline-pink:hover {
+  background: #ff69b4;
+  color: white;
+}
+/* --- Admin Result Details Page --- */
+
+.result-details-card {
+  background: #ffe6f2;
+  border: 2px solid #ff99cc;
+  border-radius: 15px;
+  padding: 25px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 12px rgba(255, 153, 204, 0.25);
+}
+
+.result-summary-table td {
+  padding: 6px 10px;
+  border: none;
+}
+
+.result-answer-table {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 2px solid #ff99cc;
+}
+
+.result-answer-table thead {
+  background: #ffb3d9;
+  color: #fff;
+  text-align: center;
+}
+
+.result-answer-table tbody td {
+  vertical-align: middle;
+}
+
+.correct-badge {
+  background: #8be28b;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+.incorrect-badge {
+  background: #ff6666;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+.delete-result-btn {
+  background: #ff4d4d;
+  border: 2px solid #ffffff;
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-weight: bold;
+  transition: 0.2s;
+  box-shadow: 0 4px 10px rgba(255, 0, 0, 0.25);
+}
+
+.delete-result-btn:hover {
+  background: #cc0000;
+  transform: scale(1.05);
+}
+
+/* Make the whole details layout consistent */
+.result-page-container {
+  max-width: 900px;
+  margin: 20px auto;
+}

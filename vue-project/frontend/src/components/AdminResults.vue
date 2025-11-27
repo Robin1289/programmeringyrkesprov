@@ -82,10 +82,13 @@
             <td>{{ formatDate(r.sq_date) }}</td>
 
             <td>
-              <button class="btn btn-sm btn-primary" @click="openDetails(r)">
-                Visa
-              </button>
-            </td>
+                <router-link
+                  :to="`/admin-results/${r.sq_id}`"
+                  class="btn btn-sm btn-outline-pink"
+                >
+                  Visa
+                </router-link>
+              </td>
           </tr>
 
           <tr v-if="processedResults.length === 0">
