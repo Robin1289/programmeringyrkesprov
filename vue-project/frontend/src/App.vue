@@ -1,46 +1,42 @@
 <template>
   <div id="app" class="d-flex min-vh-100">
 
-    <!-- Sidebar -->
-    <Sidebar 
+    <!-- SIDEBAR (collapsible) -->
+    <Sidebar
       v-if="userStore.isLoggedIn"
-      :isOpen="sidebarOpen"
-      @toggleSidebar="toggleSidebar"
+      :collapsed="collapsed"
+      @collapse="collapsed = true"
     />
 
-    <!-- OPEN BUTTON (floating on app) -->
-    <button 
-      v-if="userStore.isLoggedIn && !sidebarOpen" 
+    <!-- OPEN BUTTON (when sidebar is collapsed) -->
+    <button
+      v-if="collapsed && userStore.isLoggedIn"
       class="sidebar-open-btn"
-      @click="toggleSidebar"
+      @click="collapsed = false"
     >
       🎀
     </button>
 
-    <!-- Main content -->
+    <!-- MAIN CONTENT -->
     <div class="flex-grow-1">
       <Navbar />
       <router-view />
       <Footer />
     </div>
+
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import { useUserStore } from './store/userstore.js'
-import Navbar from './components/Navbar.vue'
+
 import Sidebar from './components/Sidebar.vue'
+import Navbar from './components/Navbar.vue'
 import Footer from './components/Footer.vue'
 
 const userStore = useUserStore()
-const sidebarOpen = ref(true)
 
-function toggleSidebar() {
-  sidebarOpen.value = !sidebarOpen.value
-}
-
-onMounted(() => {
-  userStore.fetchUser()
-})
+// Sidebar state
+const collapsed = ref(false)
 </script>
