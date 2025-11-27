@@ -1,20 +1,25 @@
 <template>
   <div class="container mt-4">
 
-    <h2 class="text-pink mb-4">📊 Användarresultat</h2>
+    <!-- Page Title -->
+    <h1 class="admin-page-title mb-4">📊 Användarresultat</h1>
 
-    <AdminResults
-      :results="results"
-      :loading="loading"
-      :error="error"
-      v-if="!loading"
-    />
+    <!-- Results List -->
+    <div v-if="!loading" class="admin-card mt-3">
+      <AdminResults
+        :results="results"
+        :loading="loading"
+        :error="error"
+      />
+    </div>
 
+    <!-- Loading State -->
     <div v-if="loading" class="text-center mt-5">
       <div class="spinner-border text-pink" role="status"></div>
       <p class="mt-3 text-muted">Hämtar resultat...</p>
     </div>
 
+    <!-- Error State -->
     <div v-if="error" class="alert alert-danger text-center mt-4">
       {{ error }}
     </div>

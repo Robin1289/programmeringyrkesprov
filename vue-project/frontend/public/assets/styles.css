@@ -236,7 +236,6 @@
     background: white;
     border-radius: 1.5rem;
     width: 700px;
-    max-width: 90%;
     box-shadow: 0 12px 36px rgba(0,0,0,0.35);
     animation: fadeInUp 0.6s ease-out;
   }
@@ -338,13 +337,12 @@
     }
 
     .side-video {
-      width: 90%;
       max-height: 300px;
       height: auto;
     }
 
     .auth-form {
-      flex: 0 0 90%;
+      flex: 0; 
       min-height: 400px;
       padding: 2.5rem;
     }
@@ -562,20 +560,6 @@
   /* Assignment Grid Spacing */
   .assignments-grid {
     margin-top: 1rem;
-  }
-
-  /* Assignment Cards */
-  .assignment-card {
-    background-color: #ffffff;
-    border-radius: 0.75rem;
-    padding: 1.5rem;
-    box-shadow: 0px 6px 14px rgba(0,0,0,0.10);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-
-  .assignment-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0px 10px 20px rgba(0,0,0,0.15);
   }
 
   /* Assignment Teaser Text */
@@ -927,6 +911,9 @@
     padding: 22px;
     border: 1px solid #f3d5df;
     transition: transform 0.15s ease, box-shadow 0.15s ease;
+    flex: 1 1 280px;     /* allow shrinking, allow wrapping */
+    max-width: 100%;
+    box-sizing: border-box;
   }
 
   .assignment-card:hover {
@@ -1896,10 +1883,13 @@
 .result-sadrain-bg {
   animation: bgScroll 8s linear infinite;
 }
-/* Section container */
 .assignment-section {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
   margin-bottom: 2rem;
 }
+
 
 /* Clickable header */
 .section-header {
@@ -2066,29 +2056,6 @@
   font-size: 0.8rem;
   color: #888;
 }
-/* Floating OPEN button (appears when sidebar is closed) */
-.sidebar-open-btn {
-  position: absolute;
-  top: 80px;
-  left: 10px;
-  z-index: 1000;
-  background: #ff66b2;
-  border: 3px solid white;
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
-  font-size: 20px;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 4px 10px rgba(255, 102, 178, 0.3);
-  transition: all 0.25s ease;
-}
-.sidebar-open-btn:hover {
-  transform: scale(1.1);
-  background: #ff4da6;
-}
 
 /* Base styling for action link */
 .sidebar-action-link {
@@ -2100,26 +2067,6 @@
   transition: all 0.2s ease;
 }
 
-.sidebar-close-btn {
-  width: 100%;
-  background: #ff6b6b;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  padding: 8px 0;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  text-align: center;
-  box-shadow: 0 4px 10px rgba(255, 90, 90, 0.3);
-}
-
-.sidebar-close-btn:hover {
-  background: #ff4d4d;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(255, 80, 80, 0.4);
-}
 /* Page Title */
 .page-title {
   text-align: center;
@@ -2368,19 +2315,17 @@
   overflow: hidden;
 }
 
-/* Sidebar inner content */
+/* INNER CONTENT — ONLY PADDING + DESIGN, NO HEIGHT OR BACKGROUND */
 .sidebar-content {
-  background: #ffcce5;
-  min-height: 100vh;
   padding: 20px;
-  border-right: 3px solid #ff99cc;
+  padding-right: 0;
 }
 
 /* CLOSE BUTTON (inside sidebar) */
 .sidebar-close-btn {
-  position: absolute;
-  top: 80px;
-  right: -20px;
+  position: fixed;
+  top: 50%;
+  left: 275px;
   z-index: 20;
   background: #ff66b2;
   border: 3px solid #ffffff;
@@ -2404,8 +2349,8 @@
 /* OPEN BUTTON (outside sidebar, in App.vue) */
 .sidebar-open-btn {
   position: fixed;
-  top: 80px;
-  left: 10px;
+  top: 50%;
+  left: 0.7%;
   z-index: 30;
   background: #ff66b2;
   border: 3px solid #ffffff;
@@ -2647,3 +2592,234 @@
   max-width: 900px;
   margin: 20px auto;
 }
+/* Cute themed back button */
+.kitty-back-btn {
+  background: #ffb3d9;
+  border: 2px solid #ff99cc;
+  color: #ffffff;
+  padding: 10px 18px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+  box-shadow: 0 3px 8px rgba(255, 153, 204, 0.3);
+}
+
+.kitty-back-btn:hover {
+  background: #ff99cc;
+  transform: translateY(-2px);
+}
+
+.kitty-back-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 5px rgba(255, 153, 204, 0.3);
+}
+/* Cute themed text colors */
+.text-kitty-title {
+  color: #ff66b2; /* strong pink */
+  font-weight: 700;
+}
+
+.text-kitty-sub {
+  color: #cc66ff; /* lavender purple */
+  font-weight: 600;
+}
+
+.text-kitty-accent {
+  color: #ff99cc; /* soft pink */
+  font-weight: 500;
+}
+
+.text-kitty-muted {
+  color: #b388c0; /* muted pastel purple */
+  font-weight: 500;
+}
+.result-summary-table td:first-child {
+  color: #cc66ff;
+  font-weight: 600;
+  width: 160px;
+}
+.result-answer-table td:first-child {
+  font-weight: 600;
+  color: #ff66b2;
+}
+.result-details-card {
+  background: linear-gradient(145deg, #ffe6f2, #fff0f7);
+}
+/* --- Shared Admin Page Styling --- */
+
+.admin-page-title {
+  color: #ff66b2;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 25px;
+  text-shadow: 0 2px 6px rgba(255, 153, 204, 0.35);
+}
+
+/* Cards for Admin Sections */
+.admin-card {
+  background: linear-gradient(145deg, #ffe6f2, #fff0f7);
+  border: 2px solid #ff99cc;
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 4px 12px rgba(255, 153, 204, 0.25);
+}
+
+/* Table styling (same as results details) */
+.kitty-table {
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 2px solid #ff99cc;
+}
+
+.kitty-table thead {
+  background: #ffb3d9;
+  color: #fff;
+  font-weight: 600;
+}
+
+.kitty-table tbody tr td {
+  padding: 10px 14px;
+  vertical-align: middle;
+}
+
+/* Hover effect for table rows */
+.kitty-table tbody tr:hover {
+  background: #ffe6f7;
+  transition: 0.2s;
+}
+
+/* Buttons */
+.kitty-btn-edit {
+  background: #cc66ff;
+  border: 2px solid #ffffff;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-weight: 600;
+  box-shadow: 0 3px 8px rgba(153, 51, 255, 0.25);
+  transition: 0.2s ease-in-out;
+}
+
+.kitty-btn-edit:hover {
+  background: #b84dff;
+  transform: translateY(-2px);
+}
+
+.kitty-btn-save {
+  background: #66d48b;
+  border: 2px solid #ffffff;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-weight: 600;
+  box-shadow: 0 3px 8px rgba(102, 212, 139, 0.25);
+  transition: 0.2s;
+}
+
+.kitty-btn-save:hover {
+  background: #46b96b;
+  transform: translateY(-2px);
+}
+
+.kitty-btn-delete {
+  background: #ff6666;
+  border: 2px solid #ffffff;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-weight: 600;
+  box-shadow: 0 3px 8px rgba(255, 102, 102, 0.25);
+  transition: 0.2s;
+}
+
+.kitty-btn-delete:hover {
+  background: #e04444;
+  transform: translateY(-2px);
+}
+
+/* Labels in edit user form */
+.kitty-label {
+  color: #cc66ff;
+  font-weight: 600;
+}
+/* Full page layout container */
+.admin-layout {
+    display: flex;
+    min-height: 100vh; /* sidebar always at least full screen */
+    width: 100%;
+}
+
+/* Main content */
+.admin-content {
+    flex: 1;
+    padding: 30px;
+}
+/* Full-height app wrapper */
+.app-layout {
+  display: flex;
+  min-height: 100vh;     /* full screen */
+  align-items: stretch;  /* THIS makes children equal height */
+}
+
+
+/* Collapsed state */
+.sidebar-container.collapsed {
+  width: 0;
+}
+
+
+
+/* OUTER SIDEBAR — FULL HEIGHT + BACKGROUND + BORDER */
+.sidebar-container {
+  width: 260px;
+  background: #ffcce5;
+  border-right: 2px solid #ff69b4;
+
+  min-height: 100vh;   /* REAL full-page height */
+  height: 100%;        /* Stretches naturally */
+  position: sticky;    /* Keeps visuals correct */
+  top: 0;
+
+  transition: width 0.3s ease;
+}
+/* Correct behavior */
+.main-wrapper {
+  min-height: 100vh;       /* Sidebar + content column should fill screen */
+  display: flex;
+  flex-direction: column;
+}
+
+.app-main {
+  flex-grow: 1;            /* This makes content stretch only as needed */
+  padding-left: 50px;
+  min-width: 0 !important; /* prevents flexbox overflow pushing layout */
+  overflow-x: hidden;       /* stops horizontal expansion */
+}
+.assignments-grid .col-md-6,
+.assignments-grid .col-lg-4 {
+  padding-left: 12px;
+  padding-right: 12px;
+  box-sizing: border-box;
+}
+.sidebar-container {
+  flex: 0 0 260px;       /* FIXED WIDTH, NO SHRINK */
+  width: 260px;
+  min-height: 100vh;
+}
+.sidebar-container.collapsed {
+  flex: 0 0 0;
+  width: 0;
+}
+.main-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-width: 0; /* IMPORTANT */
+}
+.app-main {
+  min-width: 0; /* IMPORTANT */
+  overflow-x: auto; /* or hidden if you don't want scroll */
+}
+

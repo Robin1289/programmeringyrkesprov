@@ -1,27 +1,35 @@
 <template>
-  <div id="app" class="d-flex min-vh-100">
+  <div id="app" class="d-flex">
 
-    <!-- SIDEBAR (collapsible) -->
+    <!-- SIDEBAR -->
     <Sidebar
       v-if="userStore.isLoggedIn"
       :collapsed="collapsed"
       @collapse="collapsed = true"
     />
 
-    <!-- OPEN BUTTON (when sidebar is collapsed) -->
+    <!-- BUTTON WHEN COLLAPSED -->
     <button
       v-if="collapsed && userStore.isLoggedIn"
       class="sidebar-open-btn"
       @click="collapsed = false"
     >
-      🎀
+      <i class="fa-solid fa-angle-right"></i>
     </button>
 
-    <!-- MAIN CONTENT -->
-    <div class="flex-grow-1">
+    <!-- EVERYTHING EXCEPT THE SIDEBAR -->
+    <div class="main-wrapper flex-grow-1">
+
+      <!-- NAVBAR OUTSIDE app-main -->
       <Navbar />
-      <router-view />
+
+      <!-- PAGE CONTENT ONLY -->
+      <div class="app-main">
+        <router-view />
+      </div>
+
       <Footer />
+
     </div>
 
   </div>
@@ -36,7 +44,5 @@ import Navbar from './components/Navbar.vue'
 import Footer from './components/Footer.vue'
 
 const userStore = useUserStore()
-
-// Sidebar state
 const collapsed = ref(false)
 </script>

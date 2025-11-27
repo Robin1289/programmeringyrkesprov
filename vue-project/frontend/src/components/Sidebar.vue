@@ -3,7 +3,7 @@
 
     <!-- Close button (inside sidebar) -->
     <button class="sidebar-close-btn" v-if="!collapsed" @click="$emit('collapse')">
-      🥺
+      <i class="fa-solid fa-angle-left"></i>
     </button>
 
     <!-- Sidebar content -->

@@ -1,9 +1,10 @@
 <template>
 <div class="manage-users-container">
-  <h1 class="page-title">Manage Users</h1>
+<h1 class="admin-page-title">Manage Users</h1>
 
-  <div class="users-card">
-    <table class="table users-table">
+<div class="admin-card">
+  <table class="table kitty-table">
+
       <thead>
         <tr>
           <th>ID</th>
@@ -24,7 +25,9 @@
           <td>{{ user.level }}</td>
           <td>{{ user.role }}</td>
           <td>
-            <button class="edit-btn" @click="editUser(user.id)">Edit</button>
+            <button class="kitty-btn-edit" @click="goToUser(user.id)">
+              Edit
+            </button>
           </td>
         </tr>
       </tbody>

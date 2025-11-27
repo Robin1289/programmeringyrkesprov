@@ -8,10 +8,16 @@
       {{ error }}
     </div>
 
+    
     <div v-else class="result-details-card">
 
+        <button class="kitty-back-btn my-0" @click="$router.back()">
+            ← Tillbaka
+        </button>
+
       <!-- Summary -->
-      <h2 class="mb-3 text-center">Resultatdetaljer</h2>
+      <h2 class="mb-3 text-center text-kitty-title">Resultatdetaljer</h2>
+
 
       <table class="table result-summary-table">
         <tbody>
@@ -33,7 +39,7 @@
       </table>
 
       <!-- Answers table -->
-      <h4 class="mt-4 mb-3">Svar per fråga</h4>
+      <h4 class="mt-4 mb-3 text-kitty-sub">Svar per fråga</h4>
 
       <table class="table result-answer-table">
         <thead>

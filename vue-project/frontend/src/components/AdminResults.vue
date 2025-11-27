@@ -46,7 +46,6 @@
             <th>Elev</th>
             <th>E-post</th>
             <th>Quiz</th>
-            <th>Poäng</th>
             <th>Rätt / Totalt</th>
             <th>Status</th>
             <th>Datum</th>
@@ -59,13 +58,6 @@
             <td class="fw-semibold">{{ r.student_name }}</td>
             <td>{{ r.student_email }}</td>
             <td>{{ r.quiz_name }}</td>
-
-            <td>
-              <span class="badge rounded-pill bg-pink text-white">
-                {{ r.sq_score }}
-              </span>
-            </td>
-
             <td>{{ r.sq_correct }} / {{ r.sq_total }}</td>
 
             <td>
