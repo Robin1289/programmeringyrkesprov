@@ -1,6 +1,7 @@
 <template>
   <div class="container py-4">
-    <h1 class="hk-title mb-4">Edit User</h1>
+  <div class="admin-card">
+    <h1 class="hk-title mb-4 kitty-label">Edit User</h1>
 
     <div v-if="loading" class="text-center py-5">
       <div class="spinner-border hk-spinner" role="status"></div>
@@ -10,32 +11,32 @@
     <form v-else-if="user" class="hk-form">
 
       <div class="mb-3">
-        <label class="form-label">User ID</label>
+        <label class="kitty-label">User ID</label>
         <input type="text" class="form-control" v-model="user.id" disabled>
       </div>
 
       <div class="mb-3">
-        <label class="form-label">Name</label>
+        <label class="kitty-label">Name</label>
         <input type="text" class="form-control" v-model="user.name">
       </div>
 
       <div class="mb-3">
-        <label class="form-label">Email</label>
+        <label class="kitty-label">Email</label>
         <input type="email" class="form-control" v-model="user.email">
       </div>
 
       <div class="mb-3">
-        <label class="form-label">Points</label>
+        <label class="kitty-label">Points</label>
         <input type="number" class="form-control" v-model="user.points">
       </div>
 
       <div class="mb-3">
-        <label class="form-label">Level</label>
+        <label class="kitty-label">Level</label>
         <input type="number" class="form-control" v-model="user.level">
       </div>
 
       <div class="mb-3">
-        <label class="form-label">Role</label>
+        <label class="kitty-label">Role</label>
         <select class="form-select" v-model="user.role">
           <option value="1">Student</option>
           <option value="2">Teacher</option>
@@ -44,7 +45,7 @@
       </div>
       <!-- Password Change Section -->
         <div class="mb-3">
-        <label class="form-label">New Password</label>
+        <label class="kitty-label">New Password</label>
         <input 
             type="password" 
             class="form-control" 
@@ -54,7 +55,7 @@
         </div>
 
         <div class="mb-3">
-        <label class="form-label">Repeat Password</label>
+        <label class="kitty-label">Repeat Password</label>
         <input 
             type="password" 
             class="form-control" 
@@ -65,8 +66,8 @@
 
 
       <div class="d-flex gap-3 mt-4">
-        <button type="button" class="btn hk-btn" @click="saveUser">Save</button>
-        <button type="button" class="btn btn-danger hk-delete" @click="deleteUser">Delete</button>
+        <button type="button" class="btn hk-btn kitty-btn-save" @click="saveUser">Save</button>
+        <button type="button" class="btn btn-danger hk-delete kitty-btn-delete" @click="deleteUser">Delete</button>
       </div>
 
     </form>
@@ -76,6 +77,7 @@
       Failed to load user.
     </div>
   </div>
+</div>
 </template>
 
 <script setup>

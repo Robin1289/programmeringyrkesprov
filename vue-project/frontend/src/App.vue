@@ -1,46 +1,48 @@
 <template>
-  <div id="app" class="d-flex min-vh-100">
+  <div id="app" class="d-flex">
 
-    <!-- Sidebar -->
-    <Sidebar 
+    <!-- SIDEBAR -->
+    <Sidebar
       v-if="userStore.isLoggedIn"
-      :isOpen="sidebarOpen"
-      @toggleSidebar="toggleSidebar"
+      :collapsed="collapsed"
+      @collapse="collapsed = true"
     />
 
-    <!-- OPEN BUTTON (floating on app) -->
-    <button 
-      v-if="userStore.isLoggedIn && !sidebarOpen" 
+    <!-- BUTTON WHEN COLLAPSED -->
+    <button
+      v-if="collapsed && userStore.isLoggedIn"
       class="sidebar-open-btn"
-      @click="toggleSidebar"
+      @click="collapsed = false"
     >
-      🎀
+      <i class="fa-solid fa-angle-right"></i>
     </button>
 
-    <!-- Main content -->
-    <div class="flex-grow-1">
+    <!-- EVERYTHING EXCEPT THE SIDEBAR -->
+    <div class="main-wrapper flex-grow-1">
+
+      <!-- NAVBAR OUTSIDE app-main -->
       <Navbar />
-      <router-view />
+
+      <!-- PAGE CONTENT ONLY -->
+      <div class="app-main">
+        <router-view />
+      </div>
+
       <Footer />
+
     </div>
+
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import { useUserStore } from './store/userstore.js'
-import Navbar from './components/Navbar.vue'
+
 import Sidebar from './components/Sidebar.vue'
+import Navbar from './components/Navbar.vue'
 import Footer from './components/Footer.vue'
 
 const userStore = useUserStore()
-const sidebarOpen = ref(true)
-
-function toggleSidebar() {
-  sidebarOpen.value = !sidebarOpen.value
-}
-
-onMounted(() => {
-  userStore.fetchUser()
-})
+const collapsed = ref(false)
 </script>

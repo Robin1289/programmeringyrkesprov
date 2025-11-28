@@ -26,11 +26,11 @@
 
         <transition name="dropdown">
           <div v-show="openIncomplete">
-            <div v-if="incomplete.length === 0" class="text-muted mb-4">
+            <div v-if="incomplete.length === 0" class="text-muted mx-3 my-2">
               Du har gjort alla uppgifter på din nivå! 🎉
             </div>
 
-            <div class="row assignments-grid">
+            <div class="row assignments-grid mt-4 m-0">
               <div
                 class="col-md-6 col-lg-4 mb-3"
                 v-for="quiz in incomplete"
@@ -56,11 +56,11 @@
 
         <transition name="dropdown">
           <div v-show="openFailed">
-            <div v-if="failed.length === 0" class="text-muted">
+            <div v-if="failed.length === 0" class="text-muted  mx-3 my-2 ">
               Inga misslyckade uppgifter just nu.
             </div>
 
-            <div class="row assignments-grid">
+            <div class="row assignments-grid mt-4 m-0">
               <div
                 class="col-md-6 col-lg-4 mb-3"
                 v-for="quiz in failed"
@@ -90,7 +90,7 @@
               Du har inte gjort några uppgifter ännu.
             </div>
 
-            <div class="row assignments-grid">
+            <div class="row assignments-grid mt-4 m-0">
               <div
                 class="col-md-6 col-lg-4 mb-3"
                 v-for="quiz in completed"

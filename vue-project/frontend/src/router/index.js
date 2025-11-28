@@ -8,11 +8,12 @@ import AssignmentView from '@/views/AssignmentView.vue'
 import QuizView from '@/views/QuizView.vue' 
 import ResultView from '@/views/ResultView.vue'
 import AdminDashboardView from '@/views/AdminDashboard.vue'
-import AdminResults from '@/components/AdminResults.vue'
+import AdminResultsView from '@/views/AdminResultsView.vue'
 import AdminQuizzes from '@/components/AdminQuizzes.vue'
 import AdminUsersView from '@/views/AdminUsersView.vue'
 import AdminEditUsersView from '@/views/AdminEditUsersView.vue'
 import QuizResultView from '@/views/QuizResultView.vue'
+import AdminResultsDetail from '@/views/AdminResultsDetail.vue'
 
 const routes = [
   { path: '/', redirect: '/dashboard' },
@@ -26,7 +27,8 @@ const routes = [
   { path: '/admin-dashboard', component: AdminDashboardView, meta: { requiresAuth: true, adminOnly: true }},
   { path: '/quiz/:id', name: 'Quiz', component: QuizView, props: true , meta: { requiresAuth: true, userOnly: true } },
   { path: '/admin-quizzes', component: AdminQuizzes, meta: { requiresAuth: true, adminOnly: true }},
-  { path: '/admin-results', component: AdminResults, meta: { requiresAuth: true, adminOnly: true }},
+  { path: '/admin-results', component: AdminResultsView, meta: { requiresAuth: true, adminOnly: true }},
+  { path: '/admin-results/:id', component: AdminResultsDetail, meta: { requiresAuth: true, adminOnly: true }},
   { path: '/admin-users', component: AdminUsersView, meta: { requiresAuth: true, adminOnly: true }},
   { path: '/admin-users/:id', component: AdminEditUsersView, meta: { requiresAuth: true, adminOnly: true }},
 ]
