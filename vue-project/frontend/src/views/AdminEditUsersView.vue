@@ -1,7 +1,7 @@
 <template>
   <div class="container py-4">
   <div class="admin-card">
-    <h1 class="hk-title mb-4 kitty-label">Edit User</h1>
+    <h1 class="hk-title mb-4 kitty-label">Redigera användare</h1>
 
     <div v-if="loading" class="text-center py-5">
       <div class="spinner-border hk-spinner" role="status"></div>
@@ -36,45 +36,45 @@
       </div>
 
       <div class="mb-3">
-        <label class="kitty-label">Role</label>
+        <label class="kitty-label">Roll</label>
         <select class="form-select" v-model="user.role">
-          <option value="1">Student</option>
-          <option value="2">Teacher</option>
+          <option value="1">Studerande</option>
+          <option value="2">Lärare</option>
           <option value="3">Admin</option>
         </select>
       </div>
       <!-- Password Change Section -->
         <div class="mb-3">
-        <label class="kitty-label">New Password</label>
+        <label class="kitty-label">Nytt lösenord</label>
         <input 
             type="password" 
             class="form-control" 
             v-model="password"
-            placeholder="Leave empty to keep current password"
+            placeholder="Lämna tomt för att behålla nuvarande lösenord"
         >
         </div>
 
         <div class="mb-3">
-        <label class="kitty-label">Repeat Password</label>
+        <label class="kitty-label">Upprepa lösenord</label>
         <input 
             type="password" 
             class="form-control" 
             v-model="password2"
-            placeholder="Repeat the new password"
+            placeholder="Upprepa det nya lösenordet"
         >
         </div>
 
 
       <div class="d-flex gap-3 mt-4">
-        <button type="button" class="btn hk-btn kitty-btn-save" @click="saveUser">Save</button>
-        <button type="button" class="btn btn-danger hk-delete kitty-btn-delete" @click="deleteUser">Delete</button>
+        <button type="button" class="btn hk-btn kitty-btn-save" @click="saveUser">Spara</button>
+        <button type="button" class="btn btn-danger hk-delete kitty-btn-delete" @click="deleteUser">Ta bort</button>
       </div>
 
     </form>
 
     <!-- Optional error fallback -->
     <div v-else class="alert alert-danger mt-4">
-      Failed to load user.
+      Det gick inte att ladda användaren.
     </div>
   </div>
 </div>

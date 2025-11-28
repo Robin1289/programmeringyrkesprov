@@ -22,7 +22,7 @@
         :to="`/quiz/${quiz.quiz_id}`"
         class="btn btn-primary w-100"
       >
-        Starta Quiz
+        Starta prov
       </router-link>
 
       <!-- Failed -->
@@ -31,7 +31,7 @@
         :to="`/quiz/${quiz.quiz_id}`"
         class="btn btn-danger w-100"
       >
-        Gör om quiz ❌
+        Gör om prov ❌
       </router-link>
 
       <!-- Completed -->

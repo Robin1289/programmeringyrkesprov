@@ -25,8 +25,8 @@
           <option value="worst">Lägsta poäng först</option>
           <option value="studentAZ">Elev (A–Ö)</option>
           <option value="studentZA">Elev (Ö–A)</option>
-          <option value="quizAZ">Quiz (A–Ö)</option>
-          <option value="quizZA">Quiz (Ö–A)</option>
+          <option value="quizAZ">Prov (A–Ö)</option>
+          <option value="quizZA">Prov (Ö–A)</option>
         </select>
       </div>
 
@@ -45,7 +45,7 @@
           <tr>
             <th>Elev</th>
             <th>E-post</th>
-            <th>Quiz</th>
+            <th>Prov</th>
             <th>Rätt / Totalt</th>
             <th>Status</th>
             <th>Datum</th>

@@ -43,7 +43,7 @@
         <table class="table kitty-table">
           <thead>
             <tr>
-              <th>Quiz</th>
+              <th>Prov</th>
               <th>Poäng</th>
               <th>Datum</th>
               <th></th>

@@ -8,12 +8,12 @@
       <thead>
         <tr>
           <th>ID</th>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Points</th>
-          <th>Level</th>
-          <th>Role</th>
-          <th>Edit</th>
+          <th>Namn</th>
+          <th>Epost</th>
+          <th>Poäng</th>
+          <th>Nivå</th>
+          <th>Roll</th>
+          <th>Redigera</th>
         </tr>
       </thead>
       <tbody>
@@ -26,7 +26,7 @@
           <td>{{ user.role }}</td>
           <td>
             <button class="kitty-btn-edit" @click="goToUser(user.id)">
-              Edit
+              Redigera
             </button>
           </td>
         </tr>

@@ -51,8 +51,8 @@
       <div class="col-md-4">
         <router-link to="/results" class="text-decoration-none">
           <div class="dashboard-card text-center p-5">
-            <h3>Results</h3>
-            <p>Your quiz and course performance overview.</p>
+            <h3>Resultat</h3>
+            <p>Översikt över dina resultat i frågesporter och kurser.</p>
           </div>
         </router-link>
       </div>
@@ -60,10 +60,10 @@
       <div class="col-md-4">
         <router-link to="/level" class="text-decoration-none">
           <div class="dashboard-card text-center p-5">
-            <h3>Level</h3>
+            <h3>Nivå</h3>
             <p>
-              Next Level: {{ nextLevel?.l_name ?? 'Loading...' }}
-              ({{ nextLevel?.l_min_points ?? 0 }} Points needed)
+              Nästa nivå: {{ nextLevel?.l_name ?? 'Loading...' }}
+              ({{ nextLevel?.l_min_points ?? 0 }} Poäng som behövs)
             </p>
           </div>
         </router-link>
@@ -72,8 +72,8 @@
       <div class="col-md-4">
         <router-link to="/assignments" class="text-decoration-none">
           <div class="dashboard-card text-center p-5">
-            <h3>Assignments</h3>
-            <p>View and manage your active and past assignments.</p>
+            <h3>Uppgifter</h3>
+            <p>Visa och hantera dina aktiva och tidigare uppgifter</p>
           </div>
         </router-link>
       </div>

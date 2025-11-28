@@ -35,17 +35,17 @@ defineProps({
 const userStore = useUserStore()
 
 const studentLinks = [
-  { name: 'Dashboard', to: '/dashboard', auth: true },
-  { name: 'Assignments', to: '/assignments', auth: true },
-  { name: 'Results', to: '/results', auth: true },
-  { name: 'Level', to: '/level', auth: true }
+  { name: 'Hemsida', to: '/dashboard', auth: true },
+  { name: 'Uppgifter', to: '/assignments', auth: true },
+  { name: 'Resultat', to: '/results', auth: true },
+  { name: 'Nivå', to: '/level', auth: true }
 ]
 
 const adminLinks = [
-  { name: 'Admin Dashboard', to: '/admin-dashboard', auth: true },
-  { name: 'Manage Quizzes', to: '/admin-quizzes', auth: true },
-  { name: 'User Results', to: '/admin-results', auth: true },
-  { name: 'Manage Users', to: '/admin-users', auth: true }
+  { name: 'Admin hemsida', to: '/admin-dashboard', auth: true },
+  { name: 'Hantera prov', to: '/admin-quizzes', auth: true },
+  { name: 'Hantera resultat', to: '/admin-results', auth: true },
+  { name: 'Hantera användare', to: '/admin-users', auth: true }
 ]
 
 const activeLinks = computed(() => {

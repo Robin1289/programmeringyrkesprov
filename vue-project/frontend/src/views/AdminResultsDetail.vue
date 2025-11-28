@@ -23,11 +23,10 @@
         <tbody>
           <tr><td><strong>Elev:</strong></td><td>{{ details.student_name }}</td></tr>
           <tr><td><strong>E-post:</strong></td><td>{{ details.student_email }}</td></tr>
-          <tr><td><strong>Quiz:</strong></td><td>{{ details.quiz_name }}</td></tr>
+          <tr><td><strong>Prov:</strong></td><td>{{ details.quiz_name }}</td></tr>
           <tr><td><strong>Kategori:</strong></td><td>{{ details.quiz_category }}</td></tr>
           <tr><td><strong>Datum:</strong></td><td>{{ formatDate(details.sq_date) }}</td></tr>
           <tr><td><strong>Poäng:</strong></td><td>{{ details.sq_correct }} / {{ details.sq_total }}</td></tr>
-          <tr><td><strong>Score:</strong></td><td>{{ details.sq_score }}</td></tr>
           <tr>
             <td><strong>Godkänd:</strong></td>
             <td>
