@@ -1,7 +1,7 @@
 <template>
   <div class="welcome-overlay">
     <div class="welcome-popup">
-      <h2>Welcome back, {{ username }}! 🎉</h2>
+      <h2>Välkommen tillbaka, {{ username }}! 🎉</h2>
 
       <video
         v-if="videoSrc"
@@ -10,7 +10,7 @@
         class="welcome-video"
       >
         <source :src="videoSrc" type="video/mp4" />
-        Your browser does not support the video tag.
+        Din webbläsare stöder inte videotaggen.
       </video>
 
       <audio v-if="soundSrc" autoplay>

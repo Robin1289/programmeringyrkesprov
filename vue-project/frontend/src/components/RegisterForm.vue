@@ -4,10 +4,10 @@
 
     <!-- Register form -->
     <form @submit.prevent="submitForm" class="auth-form">
-      <h2 class="mb-4 text-center text-pink">Create an Account</h2>
+      <h2 class="mb-4 text-center text-pink">Skapa ett konto</h2>
 
       <div class="mb-3">
-        <label for="name" class="form-label fw-semibold">Name</label>
+        <label for="name" class="form-label fw-semibold">Namn</label>
         <input
           id="name"
           v-model="name"
@@ -19,7 +19,7 @@
       </div>
 
       <div class="mb-3">
-        <label for="email" class="form-label fw-semibold">Email</label>
+        <label for="email" class="form-label fw-semibold">Epost</label>
         <input
           id="email"
           v-model="email"
@@ -31,7 +31,7 @@
       </div>
 
       <div class="mb-4">
-        <label for="password" class="form-label fw-semibold">Password</label>
+        <label for="password" class="form-label fw-semibold">Lösenord</label>
         <input
           id="password"
           v-model="password"
@@ -42,12 +42,12 @@
         />
       </div>
 
-      <button type="submit" class="btn btn-primary w-100 mb-3">Register</button>
+      <button type="submit" class="btn btn-primary w-100 mb-3">Registrera</button>
 
       <div class="text-center">
-        <span>Already have an account?</span>
+        <span>Har du redan ett konto?</span>
         <router-link to="/login" class="btn btn-outline-secondary ms-2">
-          Log in
+          Logga in
         </router-link>
       </div>
     </form>

@@ -9,7 +9,7 @@
 
       <div class="d-flex flex-column justify-content-center w-100">
         <div class="level-title mb-1">
-          Hello, {{ userName }}! Your Progress Towards the Next Level.
+          Hej, {{ userName }}! Dina framsteg mot nästa nivå.
         </div>
 
         <LevelProgress
@@ -21,17 +21,17 @@
     </div>
 
         <section class="motivation-card mt-5 p-4 mb-0">
-          <h2 class="motivation-title">✨ Keep Going!</h2>
+          <h2 class="motivation-title">✨ Fortsätt så!</h2>
           <p class="motivation-message">{{ motivationMessage }}</p>
         </section>
 
 
         <!-- Badge Section -->
         <section class="badge-section mt-5">
-          <h2 class="badge-header">🏅 Dina Badges</h2>
+          <h2 class="badge-header">🏅 Dina märken</h2>
 
           <div v-if="badges.length === 0" class="text-muted">
-            Du har inga badges ännu — fortsätt göra quiz! 💖
+            Du har inga märken ännu — fortsätt göra quiz! 💖
           </div>
 
           <div class="row mt-3 g-3">
@@ -91,21 +91,21 @@ const motivationMessage = computed(() => {
   const progress = ((userPoints.value - min) / (max - min)) * 100;
 
   if (progress < 20) {
-    return "You’ve just started this level — great things begin with small steps!";
+    return "Du har precis börjat denna nivå, stora saker börjar med små steg!";
   }
   if (progress < 40) {
-    return "Nice work! You’re building solid momentum. Keep pushing forward!";
+    return "Bra jobbat! Du bygger upp en stabil fart. Fortsätt så!";
   }
   if (progress < 60) {
-    return "You're halfway there! Stay focused — you’re doing great!";
+    return "Du är halvvägs! Håll fokus, du klarar det galant!";
   }
   if (progress < 80) {
-    return "Awesome progress! The next level is getting closer!";
+    return "Fantastiska framsteg! Nästa nivå närmar sig!";
   }
   if (progress < 95) {
-    return "You're so close! One last push and you’ll level up!";
+    return "Du är så nära! En sista ansträngning och du går upp en nivå!";
   }
-  return "✨ LEVEL-UP incoming — you're right at the finish line!";
+  return "✨ LEVEL-UP på väg, du är precis vid mållinjen!";
 });
 import BadgeCard from "../components/BadgeCard.vue"
 

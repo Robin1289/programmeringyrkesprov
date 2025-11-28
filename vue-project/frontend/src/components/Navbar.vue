@@ -29,10 +29,10 @@
 
         <template v-else>
           <li class="nav-item" v-if="route.path !== '/login'">
-            <router-link to="/login" class="nav-link text-white">Login</router-link>
+            <router-link to="/login" class="nav-link text-white">Logga in</router-link>
           </li>
           <li class="nav-item" v-if="route.path !== '/register'">
-            <router-link to="/register" class="nav-link text-white">Register</router-link>
+            <router-link to="/register" class="nav-link text-white">Registrera</router-link>
           </li>
         </template>
       </ul>

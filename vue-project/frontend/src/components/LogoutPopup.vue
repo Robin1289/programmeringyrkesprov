@@ -1,7 +1,7 @@
 <template>
   <div class="logout-overlay">
     <div class="logout-popup">
-      <h2>Goodbye, {{ username }}! ❤️</h2>
+      <h2>Farväl, {{ username }}! ❤️</h2>
 
       <!-- Video if provided -->
       <video
@@ -11,7 +11,7 @@
         class="logout-video"
       >
         <source :src="videoSrc" type="video/mp4" />
-        Your browser does not support the video tag.
+        Din webbläsare stöder inte videotaggen.
       </video>
 
       <!-- Sound if provided -->

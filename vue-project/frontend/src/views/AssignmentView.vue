@@ -2,14 +2,14 @@
   <div class="dashboard-container">
 
     <div class="assignments-header-wrapper">
-      <h1 class="assignments-header">Assignments</h1>
+      <h1 class="assignments-header">Uppgifter</h1>
       <p class="assignments-subtitle">
-        Your current level: <span class="user-level">{{ realLevel }}</span>
+        Din nuvarande nivå: <span class="user-level">{{ realLevel }}</span>
       </p>
     </div>
 
     <div v-if="loading" class="text-center assignments-loading">
-      Loading assignments...
+     Laddar uppgifter...
     </div>
 
     <div v-else>

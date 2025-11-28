@@ -35,7 +35,7 @@
     </div>
 
     <div class="footer-bottom">
-      <p>Made with ❤️ in Finland — © 2025</p>
+      <p>Tillverkad med ❤️ i Finland — © 2025</p>
     </div>
   </footer>
 </template>
@@ -48,18 +48,18 @@ const userStore = useUserStore();
 
 // ----- Student Links -----
 const studentLinks = [
-  { name: "Dashboard", to: "/dashboard" },
-  { name: "Assignments", to: "/assignments" },
-  { name: "Results", to: "/results" },
-  { name: "Level", to: "/level" }
+  { name: "Hemsida", to: "/dashboard" },
+  { name: "Uppgifter", to: "/assignments" },
+  { name: "Resultat", to: "/results" },
+  { name: "Nivå", to: "/level" }
 ];
 
 // ----- Admin / Teacher Links -----
 const adminLinks = [
-  { name: "Admin Dashboard", to: "/admin-dashboard" },
-  { name: "Quizzes", to: "/admin-quizzes" },
-  { name: "Results", to: "/admin-results" },
-  { name: "Users", to: "/admin-users" }
+  { name: "Admin Hemsida", to: "/admin-dashboard" },
+  { name: " Hantera prov", to: "/admin-quizzes" },
+  { name: "Hantera resultat", to: "/admin-results" },
+  { name: "Hantera användare", to: "/admin-users" }
 ];
 
 // ----- Choose which list to show -----
