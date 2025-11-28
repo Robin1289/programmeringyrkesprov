@@ -8,10 +8,21 @@
       </video>
     </div>
 
-    <!-- Center Form -->
+    <!-- CENTER FORM -->
     <div class="register-center">
-      <RegisterForm @register="handleRegister" />
+      <RegisterForm
+        @register="handleRegister"
+        :errorMessage="errorMessage"
+      />
     </div>
+
+    <!-- Welcome Popup -->
+    <WelcomePopup
+      v-if="showWelcomePopup"
+      :username="tempName"
+      :video-src="'/media/cutevid.mp4'"
+      :sound-src="'/media/uwu.mp3'"
+    />
 
     <!-- Right Video -->
     <div class="register-side-video right">
@@ -24,39 +35,46 @@
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import { useUserStore } from '../store/userstore.js'
 import { useRouter } from 'vue-router'
+
 import RegisterForm from '../components/RegisterForm.vue'
+import WelcomePopup from '../components/WelcomePopup.vue'
 
 const userStore = useUserStore()
 const router = useRouter()
 
+const errorMessage = ref("")       // visible error on screen
+const showWelcomePopup = ref(false)
+const tempName = ref("")           // for popup before login
+
 async function handleRegister({ name, email, password }) {
-  // Register user
+
+  errorMessage.value = ""          // reset error
+
   const result = await userStore.register(name, email, password)
 
+  // REGISTRATION FAILED → show error on page
   if (!result.success) {
-    alert(result.message)
+    errorMessage.value = result.message
     return
   }
 
-  // Auto-login
-  try {
-    await userStore.login({
-      email: email,
-      password: password
-    })
+  // Save name for popup
+  tempName.value = name
+  showWelcomePopup.value = true
 
-    // Redirect based on role (login already loads role)
-    if (userStore.role === 1) {
-      router.push('/dashboard')
-    } else {
-      router.push('/admin-dashboard')
+  // Login after popup
+  setTimeout(async () => {
+    try {
+      await userStore.login({ email, password })
+
+      router.push(userStore.role === 1 ? "/dashboard" : "/admin-dashboard")
+
+    } catch (err) {
+      errorMessage.value = "Registreringen lyckades, men inloggningen misslyckades."
     }
-
-  } catch (err) {
-    alert("Registration worked, but auto-login failed. Try logging in manually.")
-  }
+  }, 3000)
 }
 </script>
-

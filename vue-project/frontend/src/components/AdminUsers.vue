@@ -1,6 +1,6 @@
 <template>
 <div class="manage-users-container">
-<h1 class="admin-page-title">Manage Users</h1>
+<h1 class="admin-page-title">Hantera användare</h1>
 
 <div class="admin-card">
   <table class="table kitty-table">
