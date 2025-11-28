@@ -1,10 +1,17 @@
 <template>
   <div class="auth-container">
 
+    <!-- Visible error message -->
+    <div
+      v-if="errorMessage"
+      class="register-error-message text-center mb-3"
+    >
+      {{ errorMessage }}
+    </div>
 
     <!-- Register form -->
     <form @submit.prevent="submitForm" class="auth-form">
-      <h2 class="mb-4 text-center text-pink">Skapa ett konto</h2>
+      <h2 class="mb-4 text-center text-pink">Skapa konto</h2>
 
       <div class="mb-3">
         <label for="name" class="form-label fw-semibold">Namn</label>
@@ -13,19 +20,19 @@
           v-model="name"
           type="text"
           class="form-control"
-          placeholder="Your full name"
+          placeholder="Ditt namn"
           required
         />
       </div>
 
       <div class="mb-3">
-        <label for="email" class="form-label fw-semibold">Epost</label>
+        <label for="email" class="form-label fw-semibold">E-post</label>
         <input
           id="email"
           v-model="email"
           type="email"
           class="form-control"
-          placeholder="you@example.com"
+          placeholder="du@example.com"
           required
         />
       </div>
@@ -37,7 +44,7 @@
           v-model="password"
           type="password"
           class="form-control"
-          placeholder="********"
+          placeholder="*******"
           required
         />
       </div>
@@ -52,12 +59,15 @@
       </div>
     </form>
 
-
   </div>
 </template>
 
 <script setup>
-import { ref, defineEmits } from 'vue'
+import { ref, defineEmits, defineProps } from 'vue'
+
+const props = defineProps({
+  errorMessage: String
+})
 
 const name = ref('')
 const email = ref('')

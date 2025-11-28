@@ -29,9 +29,12 @@
         :sound-src="'/media/uwu.mp3'"
       />
 
+      <!-- ❌ REMOVED: duplicate error message box -->
+      <!-- it was this:
       <div v-if="errorMessage" class="alert alert-danger mt-3 text-center">
         {{ errorMessage }}
       </div>
+      -->
 
     </div>
 
@@ -58,7 +61,6 @@ const userStore = useUserStore()
 const errorMessage = ref('')
 const showWelcomePopup = ref(false)
 
-
 // If already logged in → redirect
 onMounted(() => {
   if (userStore.isLoggedIn) {
@@ -69,7 +71,6 @@ onMounted(() => {
     }
   }
 })
-
 
 // Listen for login via Pinia
 userStore.$onAction(({ name, after, onError }) => {
@@ -94,8 +95,6 @@ userStore.$onAction(({ name, after, onError }) => {
   }
 })
 
-
-// Redirect based on user role
 function redirectAfterPopup() {
   showWelcomePopup.value = false
 

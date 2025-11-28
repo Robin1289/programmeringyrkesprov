@@ -1,9 +1,17 @@
 <template>
   <div class="auth-container">
 
+    <!-- Styled Error Message (same as RegisterForm) -->
+    <div
+      v-if="errorMessage"
+      class="register-error-message text-center mb-3"
+    >
+      {{ errorMessage }}
+    </div>
 
     <!-- Login form -->
     <form @submit.prevent="handleLogin" class="auth-form">
+
       <h2 class="mb-4 text-center text-pink">Logga in</h2>
 
       <!-- Username OR Email -->
@@ -34,37 +42,33 @@
 
       <button type="submit" class="btn btn-primary w-100 mb-3">Logga in</button>
 
-      <!-- Error message -->
-      <p v-if="errorMessage" class="text-danger text-center">{{ errorMessage }}</p>
-
       <div class="text-center mt-2">
         <span>Har du inget konto?</span>
         <router-link to="/register" class="btn btn-outline-secondary ms-2">
           Registrera
         </router-link>
       </div>
+
     </form>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-import { useUserStore } from '../store/userstore'
+import { useUserStore } from '../store/userstore.js'
 
 const userStore = useUserStore()
 
-// Values
 const identifier = ref('')
 const password = ref('')
 const errorMessage = ref('')
 
-// Submit handler
 async function handleLogin() {
-  errorMessage.value = "" // Reset
+  errorMessage.value = ""
 
   try {
     await userStore.login({
-      email: identifier.value,    // username OR email
+      email: identifier.value,
       password: password.value
     })
   } catch (err) {
