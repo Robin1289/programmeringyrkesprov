@@ -1,8 +1,6 @@
 <template>
   <div class="container mt-4 admin-page">
 
-    <h1 class="page-title">Hantera Quiz</h1>
-
     <AdminQuizzes />
 
   </div>

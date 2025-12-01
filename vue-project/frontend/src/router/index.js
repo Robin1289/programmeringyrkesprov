@@ -14,6 +14,8 @@ import AdminUsersView from '@/views/AdminUsersView.vue'
 import AdminEditUsersView from '@/views/AdminEditUsersView.vue'
 import QuizResultView from '@/views/QuizResultView.vue'
 import AdminResultsDetail from '@/views/AdminResultsDetail.vue'
+import AdminCreateQuizView from '@/views/AdminCreateQuizView.vue'
+import AdminEditQuizView from '@/views/AdminManageQuizView.vue'
 
 const routes = [
   { path: '/', redirect: '/dashboard' },
@@ -27,6 +29,8 @@ const routes = [
   { path: '/admin-dashboard', component: AdminDashboardView, meta: { requiresAuth: true, adminOnly: true }},
   { path: '/quiz/:id', name: 'Quiz', component: QuizView, props: true , meta: { requiresAuth: true, userOnly: true } },
   { path: '/admin-quizzes', component: AdminQuizzesView, meta: { requiresAuth: true, adminOnly: true }},
+  { path: '/admin-quizzes/create', component: AdminCreateQuizView , meta: { requiresAuth: true, adminOnly: true }},
+  { path: '/admin-quizzes/edit/:id', component: AdminEditQuizView, meta: { requiresAuth: true, adminOnly: true }},
   { path: '/admin-results', component: AdminResultsView, meta: { requiresAuth: true, adminOnly: true }},
   { path: '/admin-results/:id', component: AdminResultsDetail, meta: { requiresAuth: true, adminOnly: true }},
   { path: '/admin-users', component: AdminUsersView, meta: { requiresAuth: true, adminOnly: true }},

@@ -2878,6 +2878,31 @@
   color: #cc0066;
   font-weight: 600;
 }
+/* Admin page wrapper */
+.admin-page-wrapper {
+  max-width: 1200px;
+}
+
+/* Pink panel container */
+.admin-panel {
+  background: #ffe4f1;
+  padding: 20px;
+  border-radius: 18px;
+  border: 2px solid #ff8dc6;
+  box-shadow: 0 8px 20px rgba(255, 102, 178, 0.15);
+}
+
+/* Admin tables */
+.admin-table thead th {
+  color: #ff4da6;
+  border-bottom: 2px solid #ff8dc6;
+  width: 120px;
+  padding: 0.8rem;
+}
+
+.admin-table tbody td {
+  vertical-align: middle;
+}
 
 
 
