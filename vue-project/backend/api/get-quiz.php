@@ -51,14 +51,14 @@ try {
 
         // MULTIPLE, SINGLE, SORT, TEXT
 
-        $stmtA = $pdo->prepare("
-            SELECT a_id, a_name, a_iscorrect
-            FROM answer
-            WHERE a_q_fk = ?
-            ORDER BY a_id ASC
-        ");
-        $stmtA->execute([$q['q_id']]);
-       $answers = $stmtA->fetchAll(PDO::FETCH_ASSOC);
+            $stmtA = $pdo->prepare("
+                SELECT a_id, a_name, a_iscorrect
+                FROM answer
+                WHERE a_q_fk = ?
+                ORDER BY a_sort_order ASC, a_id ASC
+            ");
+            $stmtA->execute([$q['q_id']]);
+            $q['answers'] = $stmtA->fetchAll(PDO::FETCH_ASSOC);
 
             // shuffle answers
             shuffle($answers);
