@@ -1327,9 +1327,9 @@
 .container {
     max-width: 900px;
 }
-/* ---------------------- */
+
 /* RESULTS PAGE STYLING   */
-/* ---------------------- */
+
 
 .results-page {
   max-width: 900px;
@@ -1412,9 +1412,9 @@
   background: #fff;
   box-shadow: 0 4px 10px rgba(255,105,180,0.15);
 }
-/* --------------------------------------- */
+
 /* FIX QUIZ CHECKBOX/RADIO STYLING         */
-/* --------------------------------------- */
+
 
 /* Remove Bootstrap's weird left padding */
 .quiz-question-card .form-check {
@@ -1505,9 +1505,9 @@
     border: 1px solid #ff69b4;
     background: #fffafb;
   }
-  /* --------------------------------------- */
+
 /* MATCH QUESTION — ALIGNMENT + DESIGN FIX */
-/* --------------------------------------- */
+
 
 .quiz-question-card .match-left-column {
   display: flex;
@@ -2945,7 +2945,144 @@
 .mc-block input[type="radio"] + .form-control {
   margin-left: 4px;
 }
+/* ================================
+   ADMIN QUESTION EDITOR STYLES
+================================ */
 
+/* Overall question card */
+.questions-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 20px 22px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.04);
+}
 
+/* Section title */
+.section-title {
+  color: #e91e63;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
 
+/* Each question row */
+.question-row {
+  border: 1px solid #f0f0f0;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 16px;
+  background: #fafafa;
+}
+
+/*MULTIPLE CHOICE BLOCK*/
+
+.mc-block input[type="radio"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+/* Tighten option rows */
+.mc-block .form-control {
+  min-height: 34px;
+  font-size: 14px;
+}
+
+/* SORT QUESTION STYLING*/
+
+/* Wrapper list */
+.sort-list {
+  list-style: none;
+  padding: 0;
+  margin: 6px 0 0 0;
+}
+
+/* Sort item row */
+.sort-item {
+  background: #ffffff;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  padding: 6px 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+/* Drag handle */
+.kitty-sort-handle {
+  cursor: grab;
+  user-select: none;
+  font-size: 13px;
+  color: #999;
+  padding: 0 4px;
+  transition: color 0.2s ease;
+}
+
+.kitty-sort-handle:hover {
+  color: #e91e63;
+}
+
+/* While dragging */
+.sort-item.sortable-ghost {
+  opacity: 0.4;
+}
+
+/* Input inside sort items */
+.sort-item .form-control {
+  height: 32px;
+  font-size: 14px;
+}
+
+/* Remove buttons */
+.sort-item .btn-outline-danger {
+  padding: 2px 8px;
+  font-size: 12px;
+  line-height: 1;
+}
+
+/*BUTTONS*/
+
+.btn-outline-pink {
+  color: #e91e63;
+  border-color: #e91e63;
+}
+
+.btn-outline-pink:hover {
+  background-color: #e91e63;
+  color: #fff;
+}
+
+.admin-container .btn {
+  border-radius: 8px;
+}
+
+/* Add spacing beneath action buttons */
+.question-row > button {
+  margin-top: 6px;
+}
+
+/* FORMS*/
+
+.form-control,
+.form-select {
+  border-radius: 8px;
+}
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 60px;
+}
+
+/* Reduce vertical clutter */
+.form-control,
+.form-select {
+  margin-bottom: 6px;
+}
+
+/* SMALL HELP TEXT*/
+
+.text-muted,
+.small {
+  font-size: 0.85rem;
+}
 
