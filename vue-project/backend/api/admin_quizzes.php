@@ -46,10 +46,7 @@ try {
             break;
 
 
-
-        /* ----------------------------------------
-           GET SINGLE QUIZ + QUESTIONS
-        -----------------------------------------*/
+            /* GET SINGLE QUIZ + QUESTIONS */
             case "get":
 
                 $quizId = intval($_GET["quiz_id"] ?? 0);
@@ -67,7 +64,6 @@ try {
                 if (!$quiz) throw new Exception("Quiz not found");
 
                 // --- Fetch questions ---
-                // Quiz questions
                 $stmt = $pdo->prepare("
                     SELECT 
                         q.q_id,
@@ -84,16 +80,15 @@ try {
                 ");
 
                 $stmt->execute(["id" => $quizId]);
-
                 $questions = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                // --- Attach answers for each question ---
+                // --- Attach answers ---
                 foreach ($questions as &$q) {
 
-                    if ($q["q_type"] === "multiple_choice") {
+                    if (in_array($q["q_type"], ["multiple", "sort", "single"])) {
 
                         $stmt2 = $pdo->prepare("
-                            SELECT 
+                            SELECT
                                 a_id,
                                 a_name,
                                 a_iscorrect
@@ -107,16 +102,62 @@ try {
                         $q["answers"] = $stmt2->fetchAll(PDO::FETCH_ASSOC);
 
                     } else {
+
                         $q["answers"] = [];
+
                     }
 
                 }
+
 
                 echo json_encode([
                     "success" => true,
                     "quiz" => $quiz,
                     "questions" => $questions
                 ]);
+                break;
+
+
+            /* ----------------------------------------
+            SAVE MULTIPLE CHOICE ANSWERS
+            -----------------------------------------*/
+            case "save_answers":
+
+                $data = json_decode(file_get_contents("php://input"), true);
+
+                if (!isset($data["q_id"], $data["answers"]))
+                    throw new Exception("Missing data");
+
+                $qid = intval($data["q_id"]);
+                if ($qid <= 0)
+                    throw new Exception("Invalid q_id");
+
+                $answers = $data["answers"];
+
+                // Clear old answers
+                $pdo->prepare("
+                    DELETE FROM answer WHERE a_q_fk = :qid
+                ")->execute(["qid" => $qid]);
+
+                // Insert answers
+                $stmt = $pdo->prepare("
+                    INSERT INTO answer
+                        (a_q_fk, a_name, a_iscorrect)
+                    VALUES
+                        (:qid, :name, :correct)
+                ");
+
+                foreach ($answers as $a) {
+
+                    $stmt->execute([
+                        "qid"     => $qid,
+                        "name"    => $a["a_name"] ?? "",
+                        "correct" => !empty($a["a_iscorrect"]) ? 1 : 0
+                    ]);
+
+                }
+
+                echo json_encode(["success" => true]);
                 break;
 
 

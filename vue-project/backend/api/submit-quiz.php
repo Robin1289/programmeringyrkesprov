@@ -92,9 +92,24 @@ try {
 
         /*  SORT */
         elseif ($type === "sort") {
-            $correctArr = array_map("trim", explode(",", $question['q_correct_text']));
-            if ($correctArr === $ans['order']) $isCorrect = 1;
+
+            $stmtS = $pdo->prepare("
+                SELECT a_name
+                FROM answer
+                WHERE a_q_fk = ?
+                AND a_iscorrect = 1
+                ORDER BY a_sort_order ASC
+            ");
+            $stmtS->execute([$q_id]);
+
+            $correctArr = $stmtS->fetchAll(PDO::FETCH_COLUMN);
+            $userArr = $ans['order'] ?? [];
+
+            if ($correctArr === $userArr) {
+                $isCorrect = 1;
+            }
         }
+
 
         /*  MATCH */
         elseif ($type === "match") {

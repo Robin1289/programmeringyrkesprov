@@ -151,24 +151,25 @@ async function saveQuestion(question) {
 
 
   /* Save multiple choice answers */
-  if (question.q_type === "multiple_choice") {
+/* Save multiple & sort answers */
+if (question.q_type === "multiple" || question.q_type === "sort") {
 
-    await fetch(
-      "http://localhost/yrkesprov/vue-project/backend/api/admin_quizzes.php?action=save_answers",
-      {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          q_id: question.q_id,
-          answers: question.answers
-        })
-      }
-    )
+  await fetch(
+    "http://localhost/yrkesprov/vue-project/backend/api/admin_quizzes.php?action=save_answers",
+    {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        q_id: question.q_id,
+        answers: question.answers
+      })
+    }
+  );
+}
 
-  }
 }
 
 
