@@ -49,73 +49,80 @@ try {
             /* GET SINGLE QUIZ + QUESTIONS */
             case "get":
 
-                $quizId = intval($_GET["quiz_id"] ?? 0);
-                if (!$quizId) throw new Exception("Missing quiz_id");
+            $quizId = intval($_GET["quiz_id"] ?? 0);
+            if (!$quizId) throw new Exception("Missing quiz_id");
 
-                // --- Fetch quiz ---
-                $stmt = $pdo->prepare("
-                    SELECT *
-                    FROM quiz
-                    WHERE quiz_id = :id
-                ");
-                $stmt->execute(["id" => $quizId]);
-                $quiz = $stmt->fetch(PDO::FETCH_ASSOC);
+            $stmt = $pdo->prepare("
+                SELECT *
+                FROM quiz
+                WHERE quiz_id = :id
+            ");
+            $stmt->execute(["id" => $quizId]);
+            $quiz = $stmt->fetch(PDO::FETCH_ASSOC);
 
-                if (!$quiz) throw new Exception("Quiz not found");
+            if (!$quiz) throw new Exception("Quiz not found");
 
-                // --- Fetch questions ---
-                $stmt = $pdo->prepare("
-                    SELECT 
-                        q.q_id,
-                        q.q_name,
-                        q.q_type,
-                        q.q_points,
-                        q.q_correct_text,
-                        qq.qq_order
-                    FROM quiz_questions qq
-                    INNER JOIN question q 
-                        ON qq.qq_question_fk = q.q_id
-                    WHERE qq.qq_quiz_fk = :id
-                    ORDER BY qq.qq_order
-                ");
+            $stmt = $pdo->prepare("
+                SELECT 
+                    q.q_id,
+                    q.q_name,
+                    q.q_type,
+                    q.q_points,
+                    q.q_correct_text,
+                    qq.qq_order
+                FROM quiz_questions qq
+                JOIN question q 
+                    ON qq.qq_question_fk = q.q_id
+                WHERE qq.qq_quiz_fk = :id
+                ORDER BY qq.qq_order
+            ");
+            $stmt->execute(["id" => $quizId]);
 
-                $stmt->execute(["id" => $quizId]);
-                $questions = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $questions = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                // --- Attach answers ---
-                foreach ($questions as &$q) {
+            foreach ($questions as &$q) {
 
-                    if (in_array($q["q_type"], ["multiple", "sort", "single"])) {
+                // Multiple & sort use answers table
+                if ($q["q_type"] === "multiple" || $q["q_type"] === "sort") {
 
-                        $stmt2 = $pdo->prepare("
-                            SELECT
-                                a_id,
-                                a_name,
-                                a_iscorrect
-                            FROM answer
-                            WHERE a_q_fk = :qid
-                            ORDER BY a_id
-                        ");
+                    $stmt2 = $pdo->prepare("
+                        SELECT a_id, a_name, a_iscorrect
+                        FROM answer
+                        WHERE a_q_fk = :qid
+                        ORDER BY a_id
+                    ");
+                    $stmt2->execute(["qid" => $q["q_id"]]);
+                    $q["answers"] = $stmt2->fetchAll(PDO::FETCH_ASSOC);
 
-                        $stmt2->execute(["qid" => $q["q_id"]]);
-
-                        $q["answers"] = $stmt2->fetchAll(PDO::FETCH_ASSOC);
-
-                    } else {
-
-                        $q["answers"] = [];
-
-                    }
-
+                } else {
+                    $q["answers"] = [];
                 }
 
+                // Match uses match_pair table
+                if ($q["q_type"] === "match") {
 
-                echo json_encode([
-                    "success" => true,
-                    "quiz" => $quiz,
-                    "questions" => $questions
-                ]);
-                break;
+                    $stmt3 = $pdo->prepare("
+                        SELECT mp_id, mp_left_text, mp_right_text
+                        FROM match_pair
+                        WHERE mp_question_fk = :qid
+                        ORDER BY mp_id
+                    ");
+                    $stmt3->execute(["qid" => $q["q_id"]]);
+                    $q["match_pairs"] = $stmt3->fetchAll(PDO::FETCH_ASSOC);
+
+                } else {
+                    $q["match_pairs"] = [];
+                }
+
+            }
+
+            echo json_encode([
+                "success" => true,
+                "quiz" => $quiz,
+                "questions" => $questions
+            ]);
+            break;
+
 
 
             /* ----------------------------------------
@@ -352,6 +359,39 @@ try {
 
             echo json_encode(["success" => true]);
             break;
+            
+            case "save_match_pairs":
+
+            $data = json_decode(file_get_contents("php://input"), true);
+
+            if (!isset($data["q_id"], $data["pairs"]))
+                throw new Exception("Missing data");
+
+            $qid = intval($data["q_id"]);
+
+            $pdo->prepare("
+                DELETE FROM match_pair 
+                WHERE mp_question_fk = :qid
+            ")->execute(["qid"=>$qid]);
+
+            $stmt = $pdo->prepare("
+                INSERT INTO match_pair
+                    (mp_question_fk, mp_left_text, mp_right_text)
+                VALUES
+                    (:qid, :l, :r)
+            ");
+
+            foreach ($data["pairs"] as $p) {
+                $stmt->execute([
+                    "qid" => $qid,
+                    "l" => $p["mp_left_text"],
+                    "r" => $p["mp_right_text"]
+                ]);
+            }
+
+            echo json_encode(["success"=>true]);
+            break;
+
 
 
 

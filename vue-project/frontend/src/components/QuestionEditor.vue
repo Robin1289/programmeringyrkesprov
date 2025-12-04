@@ -118,6 +118,44 @@
 
       </div>
 
+      <!-- MATCH -->
+      <div v-if="q.q_type === 'match'" class="match-editor">
+
+        <div
+          v-for="(p, i) in q.match_pairs"
+          :key="p.mp_id ?? p.temp_id"
+          class="d-flex gap-2 align-items-center mb-2"
+        >
+
+          <input
+            v-model="p.mp_left_text"
+            class="form-control"
+            placeholder="Vänster"
+          />
+
+          <span>→</span>
+
+          <input
+            v-model="p.mp_right_text"
+            class="form-control"
+            placeholder="Höger"
+          />
+
+          <button
+            class="btn btn-sm btn-outline-danger"
+            @click="q.match_pairs.splice(i,1)"
+          >✕</button>
+
+        </div>
+
+        <button
+          class="btn btn-sm btn-outline-pink"
+          @click="addMatchPair(q)"
+        >
+          + Lägg till par
+        </button>
+
+      </div>
 
       <!-- DELETE QUESTION -->
       <button
@@ -190,6 +228,16 @@ function setCorrectAnswer(q, a) {
   q.answers.forEach(x => x.a_iscorrect = 0)
   a.a_iscorrect = 1
 }
+
+function addMatchPair(q) {
+  if (!q.match_pairs) q.match_pairs = [];
+  q.match_pairs.push({
+    temp_id: crypto.randomUUID(),
+    mp_left_text: "",
+    mp_right_text: ""
+  });
+}
+
 
 
 window.vueQuestions = null

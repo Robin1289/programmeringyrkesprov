@@ -150,7 +150,6 @@ async function saveQuestion(question) {
     question.q_id = data.q_id
 
 
-  /* Save multiple choice answers */
 /* Save multiple & sort answers */
 if (question.q_type === "multiple" || question.q_type === "sort") {
 
@@ -169,6 +168,22 @@ if (question.q_type === "multiple" || question.q_type === "sort") {
     }
   );
 }
+
+if (question.q_type === "match") {
+  await fetch(
+    "http://localhost/yrkesprov/vue-project/backend/api/admin_quizzes.php?action=save_match_pairs",
+    {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        q_id: question.q_id,
+        pairs: question.match_pairs
+      })
+    }
+  );
+}
+
 
 }
 

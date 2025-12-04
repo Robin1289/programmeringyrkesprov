@@ -1330,7 +1330,6 @@
 
 /* RESULTS PAGE STYLING   */
 
-
 .results-page {
   max-width: 900px;
   margin: 0 auto;
@@ -1648,6 +1647,7 @@
   position: fixed;
   inset: 0;
   background: rgba(255, 182, 193, 0.55);
+  -webkit-backdrop-filter: blur(3px);
   backdrop-filter: blur(3px);
   display: flex;
   justify-content: center;
@@ -1806,6 +1806,7 @@
   font-size: 1.8rem;
   animation: kawaiiFloat 6s linear infinite;
   opacity: 0.8;
+  -webkit-user-select: none;
   user-select: none;
   color: #ff91c8; /* Soft Hello Kitty pink */
 }
@@ -2458,8 +2459,8 @@
   background: rgba(255, 255, 255, 0.12);
   padding: 20px;
   border-radius: 12px;
-  backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
   border: 1px solid #ffffff30;
   margin-bottom: 20px;
 }
@@ -2907,9 +2908,8 @@
 
 /* Base radio */
 .mc-block input[type="radio"] {
-  appearance: none;
   -webkit-appearance: none;
-
+  appearance: none;
   width: 14px;
   height: 14px;
   border: 2px solid #ff8fc7;
@@ -3011,6 +3011,7 @@
 /* Drag handle */
 .kitty-sort-handle {
   cursor: grab;
+  -webkit-user-select: none;
   user-select: none;
   font-size: 13px;
   color: #999;
