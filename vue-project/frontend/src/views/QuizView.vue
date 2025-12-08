@@ -22,9 +22,11 @@
     </div>
 
     <div v-else>
-      
+
       <div v-if="questions.length > 0">
-        <h2 class="mb-4">Fråga {{ currentIndex + 1 }} / {{ questions.length }}</h2>
+        <h2 class="mb-4">
+          Fråga {{ currentIndex + 1 }} / {{ questions.length }}
+        </h2>
 
         <QuestionForm
           v-if="questions[currentIndex]"
@@ -35,7 +37,6 @@
 
         <div class="mt-4 d-flex justify-content-between">
 
-          <!-- PREVIOUS -->
           <button
             class="btn btn-secondary"
             :disabled="currentIndex === 0"
@@ -44,7 +45,6 @@
             Föregående
           </button>
 
-          <!-- NEXT -->
           <button
             v-if="currentIndex < questions.length - 1"
             class="btn btn-primary kitty-btn"
@@ -54,7 +54,6 @@
             Nästa
           </button>
 
-          <!-- FINISH -->
           <button
             v-else
             class="btn btn-success kitty-btn"
@@ -74,14 +73,26 @@
     </div>
 
   </div>
-  <!-- Kitty Warning Popup -->
-<div v-if="showWarning" class="kitty-warning-overlay">
-  <div class="kitty-warning-box">
-    <h3>💖 Vänta lite! 💖</h3>
-    <p>Du måste välja ett svar innan du kan gå vidare.</p>
-    <button class="kitty-btn mt-3" @click="showWarning = false">Okej!</button>
+
+  <!-- Warning Popup -->
+  <div v-if="showWarning" class="kitty-warning-overlay">
+    <div class="kitty-warning-box">
+      <h3>💖 Vänta lite! 💖</h3>
+      <p>Du måste välja ett svar innan du kan gå vidare.</p>
+      <button class="kitty-btn mt-3" @click="showWarning = false">Okej!</button>
+    </div>
   </div>
-</div>
+
+  <!-- XP Popup -->
+  <XpPopup
+    v-if="showXpPopup && xpSummary"
+    :xp-gained="xpSummary.xpGained"
+    :levels-gained="xpSummary.levelsGained"
+    :new-level-name="xpSummary.newLevelName"
+    :current-points="xpSummary.currentPoints"
+    :next-level-points="xpSummary.nextLevelPoints"
+    @close="goToResults"
+  />
 
 </template>
 
@@ -89,6 +100,7 @@
 import { ref, computed, onMounted, onBeforeUnmount } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import QuestionForm from "../components/QuestionForm.vue";
+import XpPopup from "../components/XpPopup.vue";
 import { useUserStore } from "../store/userstore.js";
 
 const userStore = useUserStore();
@@ -105,10 +117,10 @@ const answersGiven = ref([]);
 
 const showWarning = ref(false);
 
+const showXpPopup = ref(false);
+const xpSummary = ref(null);
+const lastResultId = ref(null);
 
-/* -----------------------------------------
-   Soft Refresh Warning (Option B)
------------------------------------------- */
 function refreshWarning(e) {
   e.preventDefault();
   e.returnValue = "Lämnar du sidan försvinner dina svar!";
@@ -124,9 +136,6 @@ function startQuiz() {
   window.addEventListener("beforeunload", refreshWarning);
 }
 
-/* -----------------------------------------
-   Load quiz
------------------------------------------- */
 async function loadQuiz() {
   loading.value = true;
 
@@ -147,10 +156,6 @@ async function loadQuiz() {
   loading.value = false;
 }
 
-/* -----------------------------------------
-   Answer management
------------------------------------------- */
-
 function getPreviousAnswer(q) {
   return answersGiven.value.find(a => a.q_id === q.q_id) || null;
 }
@@ -160,10 +165,6 @@ function handleAnswer(ans) {
   if (idx >= 0) answersGiven.value[idx] = ans;
   else answersGiven.value.push(ans);
 }
-
-/* -----------------------------------------
-   Validation – MUST be answered
------------------------------------------- */
 
 const canProceed = computed(() => {
   const q = questions.value[currentIndex.value];
@@ -175,17 +176,11 @@ const canProceed = computed(() => {
   if (q.q_type === "single") return a.answer_ids?.length === 1;
   if (q.q_type === "multiple") return a.answer_ids?.length > 0;
   if (q.q_type === "text") return a.text?.trim().length > 0;
-  if (q.q_type === "match") {
-    return Object.values(a.matches || {}).every(v => v !== "");
-  }
-  if (q.q_type === "sort") return true; // always allowed
+  if (q.q_type === "match") return Object.values(a.matches || {}).every(v => v !== "");
+  if (q.q_type === "sort") return true;
 
   return false;
 });
-
-/* -----------------------------------------
-   Navigation
------------------------------------------- */
 
 function nextQuestion() {
   if (!canProceed.value) {
@@ -195,18 +190,11 @@ function nextQuestion() {
   currentIndex.value++;
 }
 
-
-/* -----------------------------------------
-   Submit quiz
------------------------------------------- */
-
 async function finishQuiz() {
   if (!canProceed.value) {
     showWarning.value = true;
     return;
   }
-
-
 
   const payload = {
     quiz_id: quiz.value.quiz_id,
@@ -232,12 +220,26 @@ async function finishQuiz() {
     return;
   }
 
-  router.push(`/results/${data.result_id}`);
+  window.removeEventListener("beforeunload", refreshWarning);
+
+  lastResultId.value = data.result_id;
+
+  xpSummary.value = {
+    xpGained: data.xp_gained,
+    levelsGained: data.levels_gained,
+    newLevelName: data.new_level_name,
+    currentPoints: data.points_after,
+    nextLevelPoints: data.next_level_points
+  };
+
+  showXpPopup.value = true;
 }
 
-/* -----------------------------------------
-   Init
------------------------------------------- */
+function goToResults() {
+  showXpPopup.value = false;
+  if (lastResultId.value) router.push(`/results/${lastResultId.value}`);
+}
+
 onMounted(async () => {
   await userStore.fetchUser();
   await loadQuiz();

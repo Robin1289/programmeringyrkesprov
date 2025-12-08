@@ -11,61 +11,98 @@ if (!$data || !isset($data['quiz_id']) || !isset($data['student_id'])) {
     exit;
 }
 
-$quiz_id = intval($data['quiz_id']);
+$quiz_id    = intval($data['quiz_id']);
 $student_id = intval($data['student_id']);
-$answers = $data['answers'] ?? [];
-
-// Check last attempt
-$stmt = $pdo->prepare("
-    SELECT sq_passed 
-    FROM student_quiz
-    WHERE sq_student_fk=? AND sq_quiz_fk=?
-    ORDER BY sq_date DESC
-    LIMIT 1
-");
-$stmt->execute([$student_id, $quiz_id]);
-$attempt = $stmt->fetch(PDO::FETCH_ASSOC);
-
-// If last attempt was PASSED → block retry
-if ($attempt && intval($attempt['sq_passed']) === 1) {
-    echo json_encode([
-        "success" => false,
-        "message" => "Du har redan klarat detta test!"
-    ]);
-    exit;
-}
+$answers    = $data['answers'] ?? [];
 
 try {
     $pdo->beginTransaction();
 
-    $correctCount = 0;
+    // Load quiz xp and min level
+    $stmt = $pdo->prepare("
+        SELECT quiz_min_level_fk, COALESCE(quiz_xp, 50) AS quiz_xp
+        FROM quiz
+        WHERE quiz_id = ?
+        LIMIT 1
+    ");
+    $stmt->execute([$quiz_id]);
+    $quizRow = $stmt->fetch(PDO::FETCH_ASSOC);
+    if (!$quizRow) {
+        throw new Exception("Quiz not found");
+    }
+
+    $quizMinLevel = intval($quizRow['quiz_min_level_fk']);
+    $quizBaseXp   = intval($quizRow['quiz_xp']);
+
+    // Load user points and level
+    $stmt = $pdo->prepare("
+        SELECT u_points, u_level_fk
+        FROM user
+        WHERE u_id = ?
+        LIMIT 1
+        FOR UPDATE
+    ");
+    $stmt->execute([$student_id]);
+    $userRow = $stmt->fetch(PDO::FETCH_ASSOC);
+    if (!$userRow) {
+        throw new Exception("User not found");
+    }
+
+    $currentPoints = intval($userRow['u_points']);
+    $currentLevel  = intval($userRow['u_level_fk']);
+
+    // Previous attempts for replay scaling
+    $stmt = $pdo->prepare("
+        SELECT COUNT(*) AS attempts, MAX(sq_correct) AS best_correct
+        FROM student_quiz
+        WHERE sq_student_fk = ? AND sq_quiz_fk = ?
+    ");
+    $stmt->execute([$student_id, $quiz_id]);
+    $prevRow = $stmt->fetch(PDO::FETCH_ASSOC);
+    $prevAttempts   = intval($prevRow['attempts'] ?? 0);
+    $bestCorrectOld = intval($prevRow['best_correct'] ?? 0);
+
+    $correctCount   = 0;
     $totalQuestions = count($answers);
 
+    // Grade answers
     foreach ($answers as $ans) {
-        $q_id = $ans['q_id'];
-        $type = $ans['type'];
+        $q_id   = intval($ans['q_id']);
+        $type   = $ans['type'] ?? '';
         $isCorrect = 0;
 
-        // fetch question
-        $stmt = $pdo->prepare("SELECT * FROM question WHERE q_id=?");
+        // Fetch question
+        $stmt = $pdo->prepare("SELECT * FROM question WHERE q_id = ?");
         $stmt->execute([$q_id]);
         $question = $stmt->fetch(PDO::FETCH_ASSOC);
-        if (!$question) continue;
+        if (!$question) {
+            continue;
+        }
 
-        /* SINGLE*/
+        // Single choice
         if ($type === "single") {
-            $stmtA = $pdo->prepare("SELECT a_id FROM answer WHERE a_q_fk=? AND a_iscorrect=1");
+            $stmtA = $pdo->prepare("
+                SELECT a_id
+                FROM answer
+                WHERE a_q_fk = ? AND a_iscorrect = 1
+                LIMIT 1
+            ");
             $stmtA->execute([$q_id]);
             $correctId = $stmtA->fetchColumn();
 
-            if (in_array($correctId, $ans['answer_ids'])) {
+            $given = $ans['answer_ids'] ?? [];
+            if ($correctId && in_array($correctId, $given)) {
                 $isCorrect = 1;
             }
         }
 
-        /* MULTIPLE */
+        // Multiple choice
         elseif ($type === "multiple") {
-            $stmtA = $pdo->prepare("SELECT a_id FROM answer WHERE a_q_fk=? AND a_iscorrect=1");
+            $stmtA = $pdo->prepare("
+                SELECT a_id
+                FROM answer
+                WHERE a_q_fk = ? AND a_iscorrect = 1
+            ");
             $stmtA->execute([$q_id]);
             $correctIds = $stmtA->fetchAll(PDO::FETCH_COLUMN);
 
@@ -73,67 +110,72 @@ try {
             sort($given);
             sort($correctIds);
 
-            if ($given == $correctIds) {
+            if ($given === $correctIds) {
                 $isCorrect = 1;
             }
         }
 
-        /* TEXT – keyword match */
+        // Text answer
         elseif ($type === "text") {
             $userText = strtolower(trim($ans['text'] ?? ''));
-            $keyword = strtolower(trim($question['q_correct_text'] ?? ''));
+            $keyword  = strtolower(trim($question['q_correct_text'] ?? ''));
 
             if ($keyword !== '' && str_contains($userText, $keyword)) {
                 $isCorrect = 1;
-            } else {
-                $isCorrect = 0;
             }
         }
 
-        /*  SORT */
+        // Sort question
         elseif ($type === "sort") {
-
-            $stmtS = $pdo->prepare("
-                SELECT a_name
-                FROM answer
-                WHERE a_q_fk = ?
-                AND a_iscorrect = 1
-                ORDER BY a_sort_order ASC
-            ");
-            $stmtS->execute([$q_id]);
-
-            $correctArr = $stmtS->fetchAll(PDO::FETCH_COLUMN);
-            $userArr = $ans['order'] ?? [];
-
-            if ($correctArr === $userArr) {
+            $correctArr = array_map("trim", explode(",", $question['q_correct_text'] ?? ''));
+            $userOrder  = $ans['order'] ?? [];
+            if ($correctArr && $userOrder && $correctArr === $userOrder) {
                 $isCorrect = 1;
             }
         }
 
-
-        /*  MATCH */
+        // Match question
         elseif ($type === "match") {
-            $stmtM = $pdo->prepare("SELECT mp_id, mp_right_text FROM match_pair WHERE mp_question_fk=?");
+            $stmtM = $pdo->prepare("
+                SELECT mp_id, mp_right_text
+                FROM match_pair
+                WHERE mp_question_fk = ?
+            ");
             $stmtM->execute([$q_id]);
             $pairs = $stmtM->fetchAll(PDO::FETCH_ASSOC);
 
             $ok = true;
+            $userMatches = $ans['matches'] ?? [];
+
             foreach ($pairs as $pair) {
-                $left = $pair['mp_id'];
-                $correct = $pair['mp_right_text'];
+                $leftId      = intval($pair['mp_id']);
+                $correctText = $pair['mp_right_text'];
 
-                $chosenRightId = $ans['matches'][$left] ?? null;
+                $chosenRightId = $userMatches[$leftId] ?? null;
+                if (!$chosenRightId) {
+                    $ok = false;
+                    break;
+                }
 
-                $stmtR = $pdo->prepare("SELECT mp_right_text FROM match_pair WHERE mp_id=?");
+                $stmtR = $pdo->prepare("
+                    SELECT mp_right_text
+                    FROM match_pair
+                    WHERE mp_id = ?
+                    LIMIT 1
+                ");
                 $stmtR->execute([$chosenRightId]);
-                $text = $stmtR->fetchColumn();
+                $chosenText = $stmtR->fetchColumn();
 
-                if ($text !== $correct) $ok = false;
+                if ($chosenText !== $correctText) {
+                    $ok = false;
+                    break;
+                }
             }
+
             $isCorrect = $ok ? 1 : 0;
         }
 
-        // save answer
+        // Save per-question answer
         $stmt = $pdo->prepare("
             INSERT INTO student_answer
             (sa_student_fk, sa_quiz_fk, sa_question_fk, sa_is_correct, sa_answer_text)
@@ -150,10 +192,89 @@ try {
         $correctCount += $isCorrect;
     }
 
-    /*  SUMMARY + PASS/FAIL */
+    // Score and pass
     $percentage = $totalQuestions > 0 ? ($correctCount / $totalQuestions) * 100 : 0;
-    $passed = $percentage >= 70 ? 1 : 0;
+    $passed     = $percentage >= 70 ? 1 : 0;
 
+    // XP ratio with 11→10 rule and 120% for perfect
+    if ($totalQuestions > 0) {
+        $denom = $totalQuestions >= 11 ? $totalQuestions - 1 : $totalQuestions;
+        if ($denom < 1) {
+            $denom = $totalQuestions;
+        }
+        $ratio = $denom > 0 ? min($correctCount / $denom, 1.0) : 0.0;
+        if ($correctCount === $totalQuestions && $totalQuestions >= 2) {
+            $ratio = 1.2;
+        }
+    } else {
+        $ratio = 0.0;
+    }
+
+    // XP scaling for overlevel quizzes
+    $levelDiff = $currentLevel - $quizMinLevel;
+    if ($levelDiff <= 0) {
+        $levelMult = 1.0;
+    } elseif ($levelDiff == 1) {
+        $levelMult = 0.75;
+    } elseif ($levelDiff == 2) {
+        $levelMult = 0.5;
+    } else {
+        $levelMult = 0.25;
+    }
+
+    $xpBase = $quizBaseXp * $ratio * $levelMult;
+
+    // Replay scaling if no improvement
+    $replayFactor = 1.0;
+    if ($prevAttempts > 0 && $correctCount <= $bestCorrectOld) {
+        $replayFactor = max(0.1, 1.0 - 0.2 * $prevAttempts);
+    }
+
+    $xpGain = (int)round($xpBase * $replayFactor);
+    if ($xpGain < 0) {
+        $xpGain = 0;
+    }
+
+    $pointsBefore = $currentPoints;
+    $pointsTemp   = $currentPoints + $xpGain;
+    $newLevel     = $currentLevel;
+    $newPoints    = $pointsTemp;
+    $levelsGained = 0;
+
+    // Level up loop
+    while (true) {
+        $stmt = $pdo->prepare("
+            SELECT l_id, l_min_points
+            FROM level
+            WHERE l_id > ?
+            ORDER BY l_id ASC
+            LIMIT 1
+        ");
+        $stmt->execute([$newLevel]);
+        $next = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!$next) {
+            break;
+        }
+
+        $cost = intval($next['l_min_points']);
+        if ($newPoints < $cost) {
+            break;
+        }
+
+        $newPoints -= $cost;
+        $newLevel   = intval($next['l_id']);
+        $levelsGained++;
+    }
+
+    // Update user
+    $stmt = $pdo->prepare("
+        UPDATE user
+        SET u_points = ?, u_level_fk = ?
+        WHERE u_id = ?
+    ");
+    $stmt->execute([$newPoints, $newLevel, $student_id]);
+
+    // Save quiz attempt
     $stmt = $pdo->prepare("
         INSERT INTO student_quiz
         (sq_student_fk, sq_quiz_fk, sq_score, sq_correct, sq_total, sq_date, sq_passed)
@@ -167,17 +288,45 @@ try {
         $totalQuestions,
         $passed
     ]);
-
     $resultId = $pdo->lastInsertId();
+
+    // Level name and next requirement for progress bar
+    $stmt = $pdo->prepare("SELECT l_name FROM level WHERE l_id = ? LIMIT 1");
+    $stmt->execute([$newLevel]);
+    $newLevelName = $stmt->fetchColumn();
+
+    $stmt = $pdo->prepare("
+        SELECT l_min_points
+        FROM level
+        WHERE l_id > ?
+        ORDER BY l_id ASC
+        LIMIT 1
+    ");
+    $stmt->execute([$newLevel]);
+    $nextRow = $stmt->fetch(PDO::FETCH_ASSOC);
+    $nextCost = $nextRow ? intval($nextRow['l_min_points']) : null;
+
     $pdo->commit();
 
     echo json_encode([
-        "success" => true,
-        "result_id" => $resultId
+        "success"           => true,
+        "result_id"         => $resultId,
+        "correct"           => $correctCount,
+        "total"             => $totalQuestions,
+        "percentage"        => $percentage,
+        "passed"            => $passed,
+        "xp_gained"         => $xpGain,
+        "levels_gained"     => $levelsGained,
+        "new_level_id"      => $newLevel,
+        "new_level_name"    => $newLevelName,
+        "points_before"     => $pointsBefore,
+        "points_after"      => $newPoints,
+        "next_level_points" => $nextCost
     ]);
 
 } catch (Exception $e) {
-    $pdo->rollBack();
+    if ($pdo->inTransaction()) {
+        $pdo->rollBack();
+    }
     echo json_encode(["success" => false, "message" => $e->getMessage()]);
 }
-?>

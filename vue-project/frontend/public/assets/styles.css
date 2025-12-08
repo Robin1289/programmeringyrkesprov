@@ -3086,4 +3086,112 @@ textarea.form-control {
 .small {
   font-size: 0.85rem;
 }
+/* XP popup overlay */
+.xp-popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+/* XP popup card */
+.xp-popup-card {
+  background: linear-gradient(135deg, #ffe6f3, #ffd1ec);
+  border-radius: 24px;
+  box-shadow: 0 12px 30px rgba(255, 105, 180, 0.35);
+  padding: 24px 28px 28px;
+  max-width: 420px;
+  width: 90%;
+  border: 2px solid #ff7ab8;
+}
+
+/* XP popup header */
+.xp-popup-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.xp-kitty-icon {
+  font-size: 28px;
+}
+
+.xp-popup-card h2 {
+  margin: 0;
+  font-weight: 700;
+  color: #c2185b;
+}
+
+/* XP popup text */
+.xp-popup-text {
+  margin: 4px 0 16px;
+  font-size: 15px;
+}
+
+/* XP bar wrapper */
+.xp-bar-wrapper {
+  margin-bottom: 16px;
+}
+
+.xp-bar-label {
+  font-size: 13px;
+  margin-bottom: 4px;
+  color: #a0004f;
+}
+
+/* XP bar track */
+.xp-bar-track {
+  width: 100%;
+  height: 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.8);
+  overflow: hidden;
+  border: 1px solid #ff9acb;
+}
+
+/* XP bar fill */
+.xp-bar-fill {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, #ff66b2, #ff9ad5);
+  transition: width 0.8s ease-out;
+}
+
+/* XP bar caption */
+.xp-bar-caption {
+  margin-top: 4px;
+  font-size: 12px;
+  color: #7b0040;
+}
+
+/* Level up box */
+.xp-levelup-box {
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 16px;
+  padding: 10px 12px;
+  border: 1px dashed #ff7ab8;
+  margin-bottom: 12px;
+}
+
+.xp-levelup-main {
+  margin: 0;
+  font-weight: 600;
+  color: #d81b60;
+}
+
+.xp-levelup-sub {
+  margin: 2px 0 0;
+  font-size: 13px;
+}
+
+/* XP popup button */
+.xp-popup-button {
+  display: block;
+  width: 100%;
+  margin-top: 4px;
+}
 
