@@ -290,6 +290,10 @@ try {
     ]);
     $resultId = $pdo->lastInsertId();
 
+    require_once "award_badges.php";
+    $newBadges = awardBadges($pdo, $student_id);
+
+
     // Level name and next requirement for progress bar
     $stmt = $pdo->prepare("SELECT l_name FROM level WHERE l_id = ? LIMIT 1");
     $stmt->execute([$newLevel]);
