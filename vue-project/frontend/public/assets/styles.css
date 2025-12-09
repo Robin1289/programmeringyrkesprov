@@ -3194,4 +3194,27 @@ textarea.form-control {
   width: 100%;
   margin-top: 4px;
 }
+.badge-toast{
+  position: fixed;
+  bottom:20px;
+  right:20px;
+  display:flex;
+  align-items:center;
+  gap:.75rem;
+  background:white;
+  padding:.75rem 1rem;
+  border-radius:12px;
+  box-shadow:0 8px 20px rgba(0,0,0,.12);
+  animation: badge-slide-in .4s ease;
+  z-index:9999;
+}
+.badge-toast img{
+  width:48px;
+  height:48px;
+  object-fit:contain;
+}
+@keyframes badge-slide-in{
+  from{transform:translateX(120%);}
+  to{transform:translateX(0);}
+}
 

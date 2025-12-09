@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import router from '../router'
+import BadgePopup from '@/components/BadgePopup.vue';
 
 export const useUserStore = defineStore('user', {
   state: () => ({
@@ -10,6 +11,7 @@ export const useUserStore = defineStore('user', {
     level: 1,
     role: null,       // IMPORTANT: no default admin role
     badges: [],
+    BadgePopup: null,
     isLoggedIn: false,
     ready: false
   }),
@@ -30,9 +32,9 @@ export const useUserStore = defineStore('user', {
   },
 
   actions: {
-    // ------------------------------------------
+ 
     // LOGIN
-    // ------------------------------------------
+
     async login(credentials) {
       try {
         const response = await fetch(
@@ -71,9 +73,9 @@ export const useUserStore = defineStore('user', {
       }
     },
 
-    // ------------------------------------------
+
     // REGISTER
-    // ------------------------------------------
+
     async register(name, email, password) {
       try {
         const response = await fetch(
@@ -91,9 +93,9 @@ export const useUserStore = defineStore('user', {
       }
     },
 
-    // ------------------------------------------
+
     // LOGOUT
-    // ------------------------------------------
+
     async logout() {
       try {
         await fetch(
@@ -113,9 +115,8 @@ export const useUserStore = defineStore('user', {
       }
     },
 
-    // ------------------------------------------
     // FETCH USER
-    // ------------------------------------------
+
     async fetchUser() {
       this.ready = false;
 
@@ -149,9 +150,8 @@ export const useUserStore = defineStore('user', {
       }
     },
 
-    // ------------------------------------------
     // HELPERS
-    // ------------------------------------------
+
     updatePoints(points) {
       this.points = points;
     },
@@ -165,5 +165,11 @@ export const useUserStore = defineStore('user', {
         this.badges.push(badge);
       }
     }
+    showBadge(badge) {
+      this.badgePopup = badge;
+      setTimeout(() => {
+        this.badgePopup = null;
+      }, 3500);
+    },
   }
 })

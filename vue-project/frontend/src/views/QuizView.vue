@@ -193,7 +193,13 @@ function nextQuestion() {
 async function finishQuiz() {
   if (!canProceed.value) {
     showWarning.value = true;
+
+
+    if (data.new_badges && data.new_badges.length) {
+     data.new_badges.forEach(b => userStore.showBadge(b));
+    }
     return;
+
   }
 
   const payload = {
