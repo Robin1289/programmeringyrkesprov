@@ -37,13 +37,6 @@
 
         <div class="mt-4 d-flex justify-content-between">
 
-          <button
-            class="btn btn-secondary"
-            :disabled="currentIndex === 0"
-            @click="currentIndex--"
-          >
-            Föregående
-          </button>
 
           <button
             v-if="currentIndex < questions.length - 1"
@@ -83,6 +76,13 @@
     </div>
   </div>
 
+  <!-- Answer Feedback Popup -->
+    <div v-if="showFeedback" class="kitty-feedback-overlay">
+      <div class="kitty-feedback-card" :class="feedbackCorrect ? 'correct' : 'wrong'">
+        <h2>{{ feedbackCorrect ? 'Rätt svar!' : 'Fel svar' }}</h2>
+      </div>
+    </div>
+
   <!-- XP Popup -->
   <XpPopup
     v-if="showXpPopup && xpSummary"
@@ -102,6 +102,13 @@ import { useRoute, useRouter } from "vue-router";
 import QuestionForm from "../components/QuestionForm.vue";
 import XpPopup from "../components/XpPopup.vue";
 import { useUserStore } from "../store/userstore.js";
+
+const showFeedback = ref(false);
+const feedbackCorrect = ref(false);
+
+const correctSound = new Audio("/sounds/correct.mp3");
+const wrongSound = new Audio("/sounds/wrong.mp3");
+
 
 const userStore = useUserStore();
 const route = useRoute();
@@ -134,6 +141,20 @@ onBeforeUnmount(() => {
 function startQuiz() {
   started.value = true;
   window.addEventListener("beforeunload", refreshWarning);
+}
+
+function isCurrentAnswerCorrect() {
+  const q = questions.value[currentIndex.value];
+  const a = answersGiven.value.find(x => x.q_id === q.q_id);
+  if (!q || !a) return false;
+
+  if (q.q_type === "single") return a.answer_ids?.length === 1 && q.answers.find(x => x.a_iscorrect == 1)?.a_id === a.answer_ids[0];
+  if (q.q_type === "multiple") return true;
+  if (q.q_type === "text") return a.text?.trim();
+  if (q.q_type === "match") return Object.values(a.matches || {}).every(v => v !== "");
+  if (q.q_type === "sort") return true;
+
+  return false;
 }
 
 async function loadQuiz() {
@@ -187,7 +208,20 @@ function nextQuestion() {
     showWarning.value = true;
     return;
   }
-  currentIndex.value++;
+
+  feedbackCorrect.value = isCurrentAnswerCorrect();
+  showFeedback.value = true;
+
+  if (feedbackCorrect.value) {
+    correctSound.play();
+  } else {
+    wrongSound.play();
+  }
+
+  setTimeout(() => {
+    showFeedback.value = false;
+    currentIndex.value++;
+  }, 1000);
 }
 
 async function finishQuiz() {

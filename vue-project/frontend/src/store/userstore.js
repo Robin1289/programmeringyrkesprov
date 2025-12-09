@@ -164,7 +164,7 @@ export const useUserStore = defineStore('user', {
       if (!this.badges.includes(badge)) {
         this.badges.push(badge);
       }
-    }
+    },
     showBadge(badge) {
       this.badgePopup = badge;
       setTimeout(() => {

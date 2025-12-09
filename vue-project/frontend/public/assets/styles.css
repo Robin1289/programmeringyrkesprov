@@ -3217,4 +3217,41 @@ textarea.form-control {
   from{transform:translateX(120%);}
   to{transform:translateX(0);}
 }
+.kitty-feedback-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255,192,203,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
 
+.kitty-feedback-card {
+  padding: 40px 60px;
+  border-radius: 20px;
+  background: #fff;
+  animation: kitty-pop 0.35s ease-out;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+}
+
+.kitty-feedback-card.correct {
+  border: 3px solid #68e377;
+}
+
+.kitty-feedback-card.wrong {
+  border: 3px solid #ff7a7a;
+}
+
+.kitty-feedback-card h2 {
+  margin: 0;
+  font-size: 2rem;
+  color: #f08dbb;
+  text-align: center;
+}
+
+@keyframes kitty-pop {
+  0% { transform: scale(0.4); opacity: 0 }
+  80% { transform: scale(1.1); opacity: 1 }
+  100% { transform: scale(1) }
+}
