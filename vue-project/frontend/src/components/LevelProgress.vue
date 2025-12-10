@@ -1,13 +1,13 @@
 <template>
   <div class="level-progress-container" v-if="currentLevel && nextLevel">
 
-    <h3 class="level-progress-title">
-      {{ currentLevel.l_name }} → {{ nextLevel.l_name }}
-    </h3>
-
     <div class="level-progress-bar">
       <div class="level-progress-fill" :style="{ width: progressPercentage + '%' }"></div>
     </div>
+
+    <p class="level-progress-label py-1 m-0">
+      {{ currentLevel.l_name }} → {{ nextLevel.l_name }}
+    </p>
 
     <p class="level-progress-label">
       {{ userPoints }} / {{ nextLevel.l_min_points }} XP

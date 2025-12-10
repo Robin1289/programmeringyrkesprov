@@ -23,10 +23,11 @@
       <div v-for="ans in question.answers" :key="ans.a_id" class="form-check mb-2">
         <input
           class="form-check-input"
-          type="checkbox"
+          type="radio"
+          :name="`q${question.q_id}`"
           :id="`q${question.q_id}-a${ans.a_id}`"
           :value="ans.a_id"
-          v-model="selectedMultiple"
+          v-model="selectedSingle"
         />
         <label class="form-check-label" :for="`q${question.q_id}-a${ans.a_id}`">
           {{ ans.a_name }}
@@ -114,7 +115,6 @@ const props = defineProps({
 const emit = defineEmits(["answer"]);
 
 const selectedSingle = ref(null);
-const selectedMultiple = ref([]);
 const textAnswer = ref("");
 const sortItems = ref([]);
 const matchSelections = ref({});
@@ -139,7 +139,6 @@ const shuffledRightSide = computed(() => {
 /* RESET */
 function resetState() {
   selectedSingle.value = null;
-  selectedMultiple.value = [];
   textAnswer.value = "";
   matchSelections.value = {};
 
@@ -147,20 +146,7 @@ function resetState() {
   sortableInstance = null;
 }
 
-/* LOAD PREVIOUS ANSWER */
-function loadPreviousAnswer() {
-  const a = props.initialAnswer;
-  if (!a) return;
 
-  if (a.type === "single") selectedSingle.value = a.answer_ids[0];
-  if (a.type === "multiple") selectedMultiple.value = a.answer_ids || [];
-  if (a.type === "text") textAnswer.value = a.text || "";
-  if (a.type === "sort")
-    sortItems.value = a.order.map((txt, idx) => ({ id: idx + 1, text: txt }));
-
-  if (a.type === "match")
-    matchSelections.value = { ...a.matches };
-}
 
 /* INIT SORT */
 function initSort(q) {
@@ -200,7 +186,7 @@ function buildAnswer() {
     return { q_id: q.q_id, type: "single", answer_ids: selectedSingle.value ? [selectedSingle.value] : [] };
 
   if (q.q_type === "multiple")
-    return { q_id: q.q_id, type: "multiple", answer_ids: selectedMultiple.value };
+  return { q_id: q.q_id, type: "multiple", answer_ids: selectedSingle.value ? [selectedSingle.value] : [] };
 
   if (q.q_type === "text")
     return { q_id: q.q_id, type: "text", text: textAnswer.value };
@@ -226,12 +212,11 @@ watch(
     if (!q) return;
 
     if (q.q_type === "sort") initSort(q);
-    loadPreviousAnswer();
     emitAnswer();
   },
   { immediate: true }
 );
 
 /* WATCH ANSWERS */
-watch([selectedSingle, selectedMultiple, textAnswer, matchSelections, sortItems], emitAnswer, { deep: true });
+watch([selectedSingle, textAnswer, matchSelections, sortItems], emitAnswer, { deep: true });
 </script>

@@ -2000,6 +2000,9 @@
 .level-progress-label {
   font-size: 0.9rem;
   color: #444;
+  text-align: left;
+  padding-left: 5px;
+  color: #ff69b4;
 }
 
 /* BADGES */
@@ -2305,69 +2308,97 @@
 .auth-form .text-center {
   margin-top: 10px;
 }
+
 /* Sidebar container */
 .sidebar-container {
   width: 240px;
-  transition: width 0.3s ease;
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  background: #ffd6ec;
+  transform: translateX(0);
+  transition: transform 0.35s ease;
+  z-index: 15;
 }
+
+/* Closed state */
 .sidebar-container.collapsed {
-  width: 0;
-  overflow: hidden;
+  transform: translateX(-100%);
 }
+
 
 /* INNER CONTENT — ONLY PADDING + DESIGN, NO HEIGHT OR BACKGROUND */
 .sidebar-content {
   padding: 20px;
   padding-right: 0;
 }
-
-/* CLOSE BUTTON (inside sidebar) */
+/* BASE BUTTON STYLE */
+.sidebar-open-btn,
 .sidebar-close-btn {
   position: fixed;
   top: 50%;
-  left: 275px;
-  z-index: 20;
-  background: #ff66b2;
-  border: 3px solid #ffffff;
+  transform: translateY(-50%);
+  z-index: 50;
+  background: linear-gradient(135deg, #ff5fad, #ff8ccf);
+  border: 3px solid #fff;
   color: white;
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
-  box-shadow: 0 4px 10px rgba(255, 102, 178, 0.4);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 18px;
+  font-size: 20px;
+  box-shadow: 0 6px 18px rgba(255, 90, 180, 0.45);
   cursor: pointer;
-  transition: all 0.25s ease;
-}
-.sidebar-close-btn:hover {
-  background: #ff4da6;
-  transform: scale(1.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    transform 0.35s ease,
+    background 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
-/* OPEN BUTTON (outside sidebar, in App.vue) */
-.sidebar-open-btn {
-  position: fixed;
-  top: 50%;
-  left: 0.7%;
-  z-index: 30;
-  background: #ff66b2;
-  border: 3px solid #ffffff;
-  color: white;
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
-  font-size: 22px;
-  box-shadow: 0 4px 12px rgba(255, 102, 178, 0.4);
-  cursor: pointer;
-  transition: all 0.25s ease;
+/* ICON */
+.sidebar-open-btn i,
+.sidebar-close-btn i {
+  transition: transform 0.35s cubic-bezier(.6,-0.55,.265,1.55);
 }
-.sidebar-open-btn:hover {
-  background: #ff4da6;
-  transform: scale(1.08);
+
+/* POSITIONING */
+.sidebar-open-btn { left: 12px; }
+
+.sidebar-close-btn { left: 240px; }
+
+@media (max-width: 768px) {
+  .sidebar-close-btn {
+    left: calc(80% - 24px);
+  }
 }
+/* ----------- STATE ROTATIONS ----------- */
+.sidebar-btn-opened i {
+  transform: rotate(180deg);
+}
+
+.sidebar-btn-closed i {
+  transform: rotate(0deg);
+}
+/* ----------- HOVER MICRO EFFECT ----------- */
+.sidebar-open-btn:hover,
+.sidebar-close-btn:hover {
+  background: linear-gradient(135deg, #ff4da6, #ff7abf);
+  transform: translateY(-50%) scale(1.08);
+  box-shadow: 0 8px 22px rgba(255, 50, 150, 0.6);
+}
+/* ----------- ACTIVE CLICK ----------- */
+.sidebar-open-btn:active,
+.sidebar-close-btn:active {
+  transform: translateY(-50%) scale(0.95);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+
+
+
 /* Pink theme badge */
 .bg-pink {
   background-color: #ff66b2 !important;
@@ -2765,27 +2796,6 @@
   align-items: stretch;  /* THIS makes children equal height */
 }
 
-
-/* Collapsed state */
-.sidebar-container.collapsed {
-  width: 0;
-}
-
-
-
-/* OUTER SIDEBAR — FULL HEIGHT + BACKGROUND + BORDER */
-.sidebar-container {
-  width: 260px;
-  background: #ffcce5;
-  border-right: 2px solid #ff69b4;
-
-  min-height: 100vh;   /* REAL full-page height */
-  height: 100%;        /* Stretches naturally */
-  position: sticky;    /* Keeps visuals correct */
-  top: 0;
-
-  transition: width 0.3s ease;
-}
 /* Correct behavior */
 .main-wrapper {
   min-height: 100vh;       /* Sidebar + content column should fill screen */
@@ -2805,15 +2815,7 @@
   padding-right: 12px;
   box-sizing: border-box;
 }
-.sidebar-container {
-  flex: 0 0 260px;       /* FIXED WIDTH, NO SHRINK */
-  width: 260px;
-  min-height: 100vh;
-}
-.sidebar-container.collapsed {
-  flex: 0 0 0;
-  width: 0;
-}
+
 .main-wrapper {
   display: flex;
   flex-direction: column;
@@ -3254,4 +3256,39 @@ textarea.form-control {
   0% { transform: scale(0.4); opacity: 0 }
   80% { transform: scale(1.1); opacity: 1 }
   100% { transform: scale(1) }
+}
+.level-header {
+  align-items: flex-start;
+}
+
+.level-header .level-progress-card {
+  min-height: auto;
+  text-align: left;
+  padding: 8px 12px;
+}
+
+.level-header .level-progress-title,
+.level-header .level-progress-subtitle,
+.level-header .level-progress-text {
+  text-align: left;
+  padding-left: 5px;
+}
+
+.level-header .progress {
+  height: 10px;
+}
+
+.level-header .progress-wrapper {
+  margin-top: 4px;
+}
+
+@media (max-width: 768px) {
+
+  .sidebar-container {
+    width: 80%;
+    max-width: 280px;
+    height: 100vh;
+    box-shadow: 4px 0 16px rgba(0,0,0,0.08);
+  }
+
 }

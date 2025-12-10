@@ -105,9 +105,11 @@ import { useUserStore } from "../store/userstore.js";
 
 const showFeedback = ref(false);
 const feedbackCorrect = ref(false);
+const quizStartTime = ref(null);
 
-const correctSound = new Audio("/sounds/correct.mp3");
-const wrongSound = new Audio("/sounds/wrong.mp3");
+const correctSound = new Audio("/media/rightanswer.mp3");
+const wrongSound = new Audio("/media/wronganswer.mp3");
+const quizStartSound = new Audio("/media/quizstart.mp3");
 
 
 const userStore = useUserStore();
@@ -139,6 +141,8 @@ onBeforeUnmount(() => {
 });
 
 function startQuiz() {
+  quizStartTime.value = new Date().toISOString();
+  quizStartSound.cloneNode().play();
   started.value = true;
   window.addEventListener("beforeunload", refreshWarning);
 }
@@ -148,14 +152,43 @@ function isCurrentAnswerCorrect() {
   const a = answersGiven.value.find(x => x.q_id === q.q_id);
   if (!q || !a) return false;
 
-  if (q.q_type === "single") return a.answer_ids?.length === 1 && q.answers.find(x => x.a_iscorrect == 1)?.a_id === a.answer_ids[0];
-  if (q.q_type === "multiple") return true;
-  if (q.q_type === "text") return a.text?.trim();
-  if (q.q_type === "match") return Object.values(a.matches || {}).every(v => v !== "");
-  if (q.q_type === "sort") return true;
+  if (q.q_type === "single" || q.q_type === "multiple") {
+    const correct = q.answers.find(x => x.a_iscorrect == 1);
+    if (!correct) return false;
+    return a.answer_ids?.[0] === correct.a_id;
+  }
+
+  if (q.q_type === "text") {
+    return (a.text || "").toLowerCase().includes(
+      (q.q_correct_text || "").toLowerCase()
+    );
+  }
+
+  if (q.q_type === "sort") {
+    const correct = q.answers
+      .slice()
+      .sort((a, b) => a.a_sort_order - b.a_sort_order)
+      .map(a => a.a_id);
+
+    const given = a.order || [];
+
+    if (correct.length !== given.length) return false;
+
+    for (let i = 0; i < correct.length; i++) {
+      if (Number(correct[i]) !== Number(given[i])) return false;
+    }
+
+    return true;
+  }
+
+
+  if (q.q_type === "match") {
+    return Object.values(a.matches || {}).every(v => v !== "");
+  }
 
   return false;
 }
+
 
 async function loadQuiz() {
   loading.value = true;
@@ -213,9 +246,9 @@ function nextQuestion() {
   showFeedback.value = true;
 
   if (feedbackCorrect.value) {
-    correctSound.play();
+    correctSound.cloneNode().play();
   } else {
-    wrongSound.play();
+    wrongSound.cloneNode().play();
   }
 
   setTimeout(() => {
@@ -239,6 +272,7 @@ async function finishQuiz() {
   const payload = {
     quiz_id: quiz.value.quiz_id,
     student_id: userStore.id,
+    start_time: quizStartTime.value,
     answers: answersGiven.value
   };
 
@@ -253,7 +287,6 @@ async function finishQuiz() {
   );
 
   const data = await res.json();
-  console.log("SUBMIT:", data);
 
   if (!data.success) {
     alert("Fel: " + data.message);

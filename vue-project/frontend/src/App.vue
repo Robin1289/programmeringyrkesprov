@@ -4,28 +4,26 @@
     <!-- SIDEBAR -->
     <Sidebar
       v-if="userStore.isLoggedIn"
-      :collapsed="collapsed"
-      @collapse="collapsed = true"
+      :open="isSidebarOpen"
+      @close="closeSidebar"
     />
 
-    <!-- BUTTON WHEN COLLAPSED -->
     <button
-      v-if="collapsed && userStore.isLoggedIn"
-      class="sidebar-open-btn"
-      @click="collapsed = false"
+      v-if="!isSidebarOpen"
+      class="sidebar-open-btn sidebar-btn-closed"
+      @click="openSidebar"
     >
       <i class="fa-solid fa-angle-right"></i>
     </button>
 
-    <!-- EVERYTHING EXCEPT THE SIDEBAR -->
+
+    <!-- MAIN CONTENT -->
     <div class="main-wrapper flex-grow-1">
 
-      <!-- NAVBAR OUTSIDE app-main -->
       <Navbar />
 
       <BadgePopup :badge="userStore.badgePopup" />
 
-      <!-- PAGE CONTENT ONLY -->
       <div class="app-main">
         <router-view />
       </div>
@@ -44,8 +42,17 @@ import { useUserStore } from './store/userstore.js'
 import Sidebar from './components/Sidebar.vue'
 import Navbar from './components/Navbar.vue'
 import Footer from './components/Footer.vue'
-import BadgePopup from "./components/BadgePopup.vue";
+import BadgePopup from "./components/BadgePopup.vue"
 
 const userStore = useUserStore()
-const collapsed = ref(false)
+const isSidebarOpen = ref(false);
+
+function openSidebar() {
+  isSidebarOpen.value = true;
+}
+
+function closeSidebar() {
+  isSidebarOpen.value = false;
+}
+
 </script>

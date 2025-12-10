@@ -1,13 +1,16 @@
 <template>
-  <div class="sidebar-container" :class="{ collapsed }">
+  <div class="sidebar-container" :class="{ collapsed: !open }">
 
-    <!-- Close button (inside sidebar) -->
-    <button class="sidebar-close-btn" v-if="!collapsed" @click="$emit('collapse')">
-      <i class="fa-solid fa-angle-left"></i>
+    <button
+      v-if="open"
+      class="sidebar-close-btn sidebar-btn-opened"
+      @click="emit('close')"
+    >
+      <i class="fa-solid fa-angle-right"></i>
     </button>
 
     <!-- Sidebar content -->
-    <div class="sidebar-content" v-if="!collapsed">
+    <div class="sidebar-content" v-if="open">
       <ul class="nav nav-pills flex-column mb-auto">
         <li class="nav-item" v-for="link in activeLinks" :key="link.name">
           <router-link
@@ -25,27 +28,28 @@
 </template>
 
 <script setup>
-import { computed, defineProps } from 'vue'
+import { computed, defineProps, defineEmits } from 'vue'
 import { useUserStore } from '../store/userstore.js'
 
 defineProps({
-  collapsed: Boolean
+  open: Boolean
 })
 
+const emit = defineEmits(["close"])
 const userStore = useUserStore()
 
 const studentLinks = [
-  { name: 'Hemsida', to: '/dashboard', auth: true },
-  { name: 'Uppgifter', to: '/assignments', auth: true },
-  { name: 'Resultat', to: '/results', auth: true },
-  { name: 'Nivå', to: '/level', auth: true }
+  { name: 'Hemsida', to: '/dashboard' },
+  { name: 'Uppgifter', to: '/assignments' },
+  { name: 'Resultat', to: '/results' },
+  { name: 'Nivå', to: '/level' }
 ]
 
 const adminLinks = [
-  { name: 'Admin hemsida', to: '/admin-dashboard', auth: true },
-  { name: 'Hantera prov', to: '/admin-quizzes', auth: true },
-  { name: 'Hantera resultat', to: '/admin-results', auth: true },
-  { name: 'Hantera användare', to: '/admin-users', auth: true }
+  { name: 'Admin hemsida', to: '/admin-dashboard' },
+  { name: 'Hantera prov', to: '/admin-quizzes' },
+  { name: 'Hantera resultat', to: '/admin-results' },
+  { name: 'Hantera användare', to: '/admin-users' }
 ]
 
 const activeLinks = computed(() => {

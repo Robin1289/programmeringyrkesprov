@@ -14,6 +14,7 @@
     $quiz_id    = intval($data['quiz_id']);
     $student_id = intval($data['student_id']);
     $answers    = $data['answers'] ?? [];
+    $startTime = $data['start_time'] ?? null;
 
     try {
         $pdo->beginTransaction();
@@ -125,14 +126,24 @@
                 }
             }
 
-            // Sort question
             elseif ($type === "sort") {
-                $correctArr = array_map("trim", explode(",", $question['q_correct_text'] ?? ''));
-                $userOrder  = $ans['order'] ?? [];
-                if ($correctArr && $userOrder && $correctArr === $userOrder) {
+
+                $stmtA = $pdo->prepare("
+                    SELECT a_id
+                    FROM answer
+                    WHERE a_q_fk = ?
+                    ORDER BY a_sort_order ASC
+                ");
+                $stmtA->execute([$q_id]);
+
+                $correctOrder = $stmtA->fetchAll(PDO::FETCH_COLUMN);
+                $userOrder = $ans['order'] ?? [];
+
+                if ($correctOrder === $userOrder) {
                     $isCorrect = 1;
                 }
             }
+
 
             // Match question
             elseif ($type === "match") {
@@ -277,8 +288,8 @@
         // Save quiz attempt
         $stmt = $pdo->prepare("
             INSERT INTO student_quiz
-            (sq_student_fk, sq_quiz_fk, sq_score, sq_correct, sq_total, sq_date, sq_passed)
-            VALUES (?, ?, ?, ?, ?, NOW(), ?)
+            (sq_student_fk, sq_quiz_fk, sq_score, sq_correct, sq_total,sq_start_time, sq_date, sq_passed)
+            VALUES (?, ?, ?, ?, ?, ?, NOW(), ?)
         ");
         $stmt->execute([
             $student_id,
@@ -286,6 +297,7 @@
             $correctCount,
             $correctCount,
             $totalQuestions,
+            $startTime,
             $passed
         ]);
         $resultId = $pdo->lastInsertId();
