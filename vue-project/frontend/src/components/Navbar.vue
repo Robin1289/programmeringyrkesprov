@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light bg-pink mb-4 py-3 px-4 shadow-sm">
+  <nav class="navbar navbar-expand-lg  navbar-light bg-pink mb-4 py-3 px-4 shadow-sm">
     <!-- Brand / Logo -->
     <a class="navbar-brand fw-bold text-white" href="#">Läroportal</a>
 

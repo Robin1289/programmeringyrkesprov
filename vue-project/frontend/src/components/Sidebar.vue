@@ -1,10 +1,10 @@
 <template>
-  <div class="sidebar-container" :class="{ collapsed: !open }">
+  <div class="sidebar-container" :class="{ open: open }">
 
     <button
       v-if="open"
       class="sidebar-close-btn sidebar-btn-opened"
-      @click="emit('close')"
+      @click="$emit('close')"
     >
       <i class="fa-solid fa-angle-right"></i>
     </button>
