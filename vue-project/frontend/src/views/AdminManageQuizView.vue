@@ -48,9 +48,7 @@ const error = ref(null)
 
 
 
-/* ---------------------------
-   LOAD QUIZ + QUESTIONS
------------------------------*/
+/*LOAD QUIZ + QUESTIONS*/
 async function loadQuiz() {
 
   try {
@@ -80,9 +78,7 @@ async function loadQuiz() {
 
 
 
-/* ---------------------------
-   SAVE QUIZ SETTINGS
------------------------------*/
+/* QUIZ SETTINGS*/
 async function saveQuiz(updated) {
 
   await fetch(
@@ -104,9 +100,7 @@ async function saveQuiz(updated) {
 
 
 
-/* ---------------------------
-   ADD DRAFT QUESTION
------------------------------*/
+/*  ADD DRAFT QUESTION*/
 function addQuestion() {
 
   questions.value.push({
@@ -122,9 +116,7 @@ function addQuestion() {
 
 
 
-/* ---------------------------
-   SAVE QUESTION + ANSWERS
------------------------------*/
+/* SAVE QUESTION + ANSWERS*/
 async function saveQuestion(question) {
 
   const action = question.q_id ? "update_question" : "create_question"
@@ -189,9 +181,7 @@ if (question.q_type === "match") {
 
 
 
-/* ---------------------------
-   DELETE QUESTION
------------------------------*/
+/* DELETE QUESTION*/
 async function deleteQuestion(questionId) {
 
   const ok = confirm("Ta bort denna fråga?")

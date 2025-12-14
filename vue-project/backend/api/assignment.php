@@ -27,10 +27,7 @@ $userLevelDb = $_SESSION['user_level'] ?? 4;
 $realLevel = max(1, $userLevelDb - 3);
 
 try {
-
-    //
     // 1) Fetch all quizzes the user is allowed to see
-    //
     $stmt = $pdo->prepare("
         SELECT *
         FROM quiz
@@ -39,10 +36,8 @@ try {
     ");
     $stmt->execute([$realLevel]);
     $quizzes = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    //
+    
     // 2) Fetch all attempts
-    //
     $stmt2 = $pdo->prepare("
         SELECT sq_quiz_fk AS quiz_id, sq_id AS result_id, sq_passed
         FROM student_quiz
