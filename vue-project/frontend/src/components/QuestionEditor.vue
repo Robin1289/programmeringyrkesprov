@@ -30,7 +30,7 @@
 
       <!-- TEXT / SINGLE -->
       <textarea
-        v-if="q.q_type !== 'multiple' && q.q_type !== 'sort'"
+        v-if="q.q_type !== 'multiple' && q.q_type !== 'sort' && q.q_type !== 'match'"
         v-model="q.q_correct_text"
         class="form-control mb-2"
         placeholder="Rätt svar"

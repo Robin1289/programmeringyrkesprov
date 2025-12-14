@@ -3,9 +3,7 @@
 require_once "cors.php";
 require_once '../config/db.php';
 
-// -------------------------------
 // SESSION
-// -------------------------------
 if (session_status() === PHP_SESSION_NONE) {
     session_start([
         'cookie_httponly' => true,
@@ -15,14 +13,12 @@ if (session_status() === PHP_SESSION_NONE) {
     ]);
 }
 
-// -------------------------------
 // READ JSON INPUT (FIXED)
-// -------------------------------
+
 $raw = file_get_contents('php://input');
 $input = json_decode($raw, true);
 
-// Debug (optional):
-// file_put_contents("debug_login.txt", "RAW: $raw\n", FILE_APPEND);
+
 
 $identifier = trim($input['email'] ?? '');   // email OR username
 $password   = $input['password'] ?? '';
@@ -35,9 +31,8 @@ if ($identifier === '' || $password === '') {
     exit;
 }
 
-// -------------------------------
 // LOGIN LOGIC
-// -------------------------------
+
 try {
     // username OR email
     $stmt = $pdo->prepare("

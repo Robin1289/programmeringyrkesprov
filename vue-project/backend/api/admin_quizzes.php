@@ -17,9 +17,7 @@ try {
 
     switch ($action) {
 
-        /* ----------------------------------------
-           GET ALL QUIZZES (ADMIN LIST)
-        -----------------------------------------*/
+        /* GET ALL QUIZZES (ADMIN LIST)*/
         case "list":
 
             $stmt = $pdo->prepare("
@@ -125,9 +123,7 @@ try {
 
 
 
-            /* ----------------------------------------
-            SAVE MULTIPLE CHOICE ANSWERS
-            -----------------------------------------*/
+            /* SAVE MULTIPLE CHOICE ANSWERS*/
             case "save_answers":
 
                 $data = json_decode(file_get_contents("php://input"), true);
@@ -170,9 +166,7 @@ try {
 
 
 
-        /* ----------------------------------------
-           CREATE QUIZ
-        -----------------------------------------*/
+        /* CREATE QUIZ*/
         case "create":
 
             $data = json_decode(file_get_contents("php://input"), true);
@@ -199,9 +193,7 @@ try {
 
 
 
-        /* ----------------------------------------
-           UPDATE QUIZ
-        -----------------------------------------*/
+        /* UPDATE QUIZ*/
         case "update":
 
             $data = json_decode(file_get_contents("php://input"), true);
@@ -229,9 +221,7 @@ try {
 
 
 
-        /* ----------------------------------------
-           DELETE QUIZ
-        -----------------------------------------*/
+        /* DELETE QUIZ*/
         case "delete":
 
             $quizId = intval($_GET["quiz_id"] ?? 0);
@@ -245,9 +235,7 @@ try {
 
 
 
-        /* ----------------------------------------
-           ADD QUESTION TO QUIZ
-        -----------------------------------------*/
+        /* ADD QUESTION TO QUIZ*/
         case "attach_question":
 
             $data = json_decode(file_get_contents("php://input"), true);
@@ -270,9 +258,7 @@ try {
 
 
 
-        /* ----------------------------------------
-           REMOVE QUESTION FROM QUIZ
-        -----------------------------------------*/
+        /* REMOVE QUESTION FROM QUIZ*/
         case "detach_question":
 
             $data = json_decode(file_get_contents("php://input"), true);

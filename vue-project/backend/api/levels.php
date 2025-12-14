@@ -1,7 +1,7 @@
 <?php
 
 require_once "cors.php";
-require_once "../config/db.php"; // adjust path if needed
+require_once "../config/db.php"; 
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start([
