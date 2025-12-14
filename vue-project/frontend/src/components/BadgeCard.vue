@@ -23,7 +23,7 @@ const props = defineProps({
 })
 
 const badgeImage = computed(() => {
-  return `/assets/badges/${props.badge.b_image}`
+  return `public/assets/img/${props.badge.b_image}`
 })
 
 const formattedDate = computed(() => {

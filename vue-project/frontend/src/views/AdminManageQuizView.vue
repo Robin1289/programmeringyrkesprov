@@ -3,6 +3,9 @@
 
     <h1 class="page-title">Redigera quiz</h1>
 
+    <BackButton :to="`/admin-quizzes`" />
+
+
     <!-- Loading -->
     <p v-if="loading" class="text-center">Hämtar quiz...</p>
 
@@ -28,6 +31,13 @@
       @save-question="saveQuestion"
     />
 
+    <button
+      class="btn btn-danger ms-auto m-4 px-3 py-2"
+      @click="deleteQuiz(quizId)"
+    >
+      Delete quiz
+    </button>
+
   </div>
 </template>
 
@@ -37,6 +47,7 @@ import { useRoute } from "vue-router"
 
 import QuizForm from "../components/QuizForm.vue"
 import QuestionEditor from "../components/QuestionEditor.vue"
+import BackButton from "../components/BackButton.vue"
 
 const route = useRoute()
 const quizId = route.params.id
@@ -197,6 +208,20 @@ async function deleteQuestion(questionId) {
 
   questions.value = questions.value.filter(q => q.q_id !== questionId)
 
+}
+
+function deleteQuiz(id) {
+  if (!confirm("Är du säker på att du vill ta bort detta quiz?")) return
+
+  fetch(
+    `http://localhost/yrkesprov/vue-project/backend/api/admin_quizzes.php?action=delete&quiz_id=${id}`,
+    {
+      method: "POST",
+      credentials: "include"
+    }
+  ).then(() => {
+    window.location.href = "/admin-quizzes"
+  })
 }
 
 

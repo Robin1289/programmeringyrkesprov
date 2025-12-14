@@ -29,16 +29,19 @@
 
 <script setup>
 import { ref, onMounted } from "vue"
+import { useRoute } from 'vue-router'
 import AdminResults from "../components/AdminResults.vue"
 
+const route = useRoute()
 const results = ref([])
 const loading = ref(true)
 const error = ref(null)
+const userId = route.params.id
 
 async function fetchResults() {
   try {
     const response = await fetch(
-      "http://localhost/yrkesprov/vue-project/backend/api/admin_get_results.php",
+      `http://localhost/yrkesprov/vue-project/backend/api/admin_data.php?action=get-results`,
       { credentials: "include" }
     )
 

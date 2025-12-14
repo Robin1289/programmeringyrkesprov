@@ -9,9 +9,11 @@
     </div>
 
     
-    <div v-else class="result-details-card">
+    <div v-else-if="details" class="result-details-card">
 
-        <button class="kitty-back-btn my-0" @click="$router.back()">
+
+        <button class="kitty-back-btn my-0" @click="router.push('/admin-results')">
+
             ← Tillbaka
         </button>
 
@@ -53,7 +55,7 @@
         <tbody>
           <tr v-for="a in details.answers" :key="a.q_id">
             <td>{{ a.q_name }}</td>
-            <td>{{ formatAnswer(a.student_answer) }}</td>
+            <td>{{ a.student_answer }}</td>
             <td>{{ a.correct_answer }}</td>
             <td>
               <span v-if="a.correct" class="correct-badge">✓</span>
@@ -89,24 +91,13 @@ function formatDate(date) {
   return new Date(date).toLocaleString("sv-FI");
 }
 
-// Student answers are sometimes JSON → we need to clean it
-function formatAnswer(value) {
-  try {
-    const parsed = JSON.parse(value);
-    if (parsed.text) return parsed.text;
-    if (parsed.answer_ids) return parsed.answer_ids.join(", ");
-    if (Array.isArray(parsed.order)) return parsed.order.join(" → ");
-    if (parsed.matches) return JSON.stringify(parsed.matches);
-  } catch {}
-  return value;
-}
 
 async function fetchDetails() {
   const id = route.params.id;
 
   try {
     const res = await fetch(
-      `http://localhost/yrkesprov/vue-project/backend/api/admin_get_result_details.php?id=${id}`,
+      `http://localhost/yrkesprov/vue-project/backend/api/admin_data.php?action=get-result-details&id=${id}`,
       { credentials: "include" }
     );
 
@@ -131,7 +122,7 @@ async function deleteResult() {
   const id = route.params.id;
 
   const res = await fetch(
-    "http://localhost/yrkesprov/vue-project/backend/api/admin_delete_result.php",
+    "http://localhost/yrkesprov/vue-project/backend/api/admin_data.php?action=delete-result",
     {
       method: "POST",
       credentials: "include",

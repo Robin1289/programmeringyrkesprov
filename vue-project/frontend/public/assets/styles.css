@@ -3290,3 +3290,11 @@ textarea.form-control {
     margin-left: 0;
   }
 }
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table {
+  min-width: 700px;
+}
