@@ -3,6 +3,8 @@
   <div class="admin-card">
     <h1 class="hk-title mb-4 kitty-label">Redigera användare</h1>
 
+    <BackButton :to="`/admin-users`" />
+
     <div v-if="loading" class="text-center py-5">
       <div class="spinner-border hk-spinner" role="status"></div>
     </div>
@@ -11,7 +13,7 @@
     <form v-else-if="user" class="hk-form">
 
       <div class="mb-3">
-        <label class="kitty-label">User ID</label>
+        <label class="kitty-label">Användar ID</label>
         <input type="text" class="form-control" v-model="user.id" disabled>
       </div>
 
@@ -83,6 +85,8 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+
+import BackButton from '../components/BackButton.vue'
 
 const route = useRoute()
 const userId = route.params.id
