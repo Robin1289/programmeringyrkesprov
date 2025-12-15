@@ -29,13 +29,6 @@
         :sound-src="'/media/uwu.mp3'"
       />
 
-      <!-- ❌ REMOVED: duplicate error message box -->
-      <!-- it was this:
-      <div v-if="errorMessage" class="alert alert-danger mt-3 text-center">
-        {{ errorMessage }}
-      </div>
-      -->
-
     </div>
 
     <!-- Right Video -->

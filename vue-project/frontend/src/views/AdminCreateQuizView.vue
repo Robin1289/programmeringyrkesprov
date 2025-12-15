@@ -3,12 +3,15 @@
 
     <h1 class="page-title">Skapa nytt quiz</h1>
 
+    <BackButton />
+
     <QuizForm title="Nytt quiz" @save="createQuiz" />
 
   </div>
 </template>
 
 <script setup>
+import BackButton from "@/components/BackButton.vue"
 import QuizForm from "../components/QuizForm.vue"
 import router from "@/router"
 
@@ -30,6 +33,6 @@ async function createQuiz(quiz) {
     return
   }
 
-  router.push(`/admin-quizzes/${data.quiz_id}`)
+  router.push(`/admin-quizzes/edit/${data.quiz_id}`)
 }
 </script>

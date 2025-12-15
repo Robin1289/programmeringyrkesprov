@@ -6,7 +6,7 @@ require_once "cors.php";
 require_once "../config/db.php";
 
 /* Admin only */
-if (!isset($_SESSION["user_id"]) || $_SESSION["user_role"] != 3) {
+if (!isset($_SESSION["user_id"]) || $_SESSION["user_role"] == 1) {
     echo json_encode(["success" => false, "message" => "Access denied"]);
     exit;
 }
