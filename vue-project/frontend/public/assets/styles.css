@@ -3385,7 +3385,26 @@ textarea.form-control {
   .result-answer-table td:nth-child(3)::before { content: "Korrekt svar"; }
   .result-answer-table td:nth-child(4)::before { content: "Rätt?"; }
 }
-.table-scroll {
+
+
+.admin-table {
+  min-width: 600px;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.admin-table th,
+.admin-table td {
+  white-space: nowrap;
+  padding: 12px 14px;
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .admin-table {
+    min-width: 720px;
+  }
+}.table-scroll {
   width: 100%;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
@@ -3410,3 +3429,9 @@ textarea.form-control {
     min-width: 720px;
   }
 }
+@media (max-width: 768px) {
+  .hide-mobile {
+    display: none;
+  }
+}
+

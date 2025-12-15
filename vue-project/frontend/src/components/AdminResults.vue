@@ -39,7 +39,7 @@
     </div>
 
     <!-- Table -->
-    <div class="table-responsive">
+    <div class="table-scroll">
       <table class="table table-hover results-table">
         <thead>
           <tr>

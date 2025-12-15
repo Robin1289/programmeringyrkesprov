@@ -3,7 +3,7 @@
 
     <h1 class="page-title">Skapa nytt quiz</h1>
 
-    <BackButton />
+    <BackButton :to="`/admin-quizzes7`" />
 
     <QuizForm title="Nytt quiz" @save="createQuiz" />
 

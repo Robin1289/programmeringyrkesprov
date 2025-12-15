@@ -7,7 +7,7 @@
 
       <thead>
         <tr>
-          <th>ID</th>
+          <th class="hide-mobile">ID</th>
           <th>Namn</th>
           <th>Epost</th>
           <th>Poäng</th>

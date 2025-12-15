@@ -30,11 +30,12 @@
       <!-- Table -->
       <div v-if="!loading" class="table-responsive">
 
+        <div class="table-scroll">
         <table class="table table-hover admin-table">
 
           <thead>
             <tr>
-              <th>ID</th>
+              <th class="hide-mobile">ID</th>
               <th>Namn</th>
               <th>Kategori</th>
               <th>Miniminivå</th>
@@ -75,6 +76,7 @@
           </tbody>
 
         </table>
+        </div>
 
       </div>
 
