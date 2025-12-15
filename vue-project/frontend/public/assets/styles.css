@@ -2597,27 +2597,30 @@
 }
 /* Cute themed back button */
 .kitty-back-btn {
-  background: #ffb3d9;
-  border: 2px solid #ff99cc;
-  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   padding: 10px 18px;
-  border-radius: 12px;
+  background: linear-gradient(135deg, #ffb6d9, #ff9acb);
+  color: #fff;
   font-weight: 600;
-  font-size: 15px;
+  border: none;
+  border-radius: 14px;
+  box-shadow: 0 4px 10px rgba(255, 105, 180, 0.35);
   cursor: pointer;
-  transition: 0.2s ease-in-out;
-  box-shadow: 0 3px 8px rgba(255, 153, 204, 0.3);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .kitty-back-btn:hover {
-  background: #ff99cc;
-  transform: translateY(-2px);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(255, 105, 180, 0.45);
 }
 
 .kitty-back-btn:active {
   transform: translateY(0);
-  box-shadow: 0 2px 5px rgba(255, 153, 204, 0.3);
+  box-shadow: 0 3px 8px rgba(255, 105, 180, 0.35);
 }
+
 /* Cute themed text colors */
 .text-kitty-title {
   color: #ff66b2; /* strong pink */
@@ -3297,4 +3300,88 @@ textarea.form-control {
 
 .table {
   min-width: 700px;
+}
+.delete-result-btn,
+.kitty-delete-btn {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #ff6b6b, #ff4d4d);
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  border-radius: 14px;
+  box-shadow: 0 4px 10px rgba(255, 80, 80, 0.35);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.delete-result-btn:hover,
+.kitty-delete-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(255, 80, 80, 0.45);
+}
+
+.delete-result-btn:active,
+.kitty-delete-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 8px rgba(255, 80, 80, 0.35);
+}
+.result-details-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 10px 25px rgba(255, 182, 217, 0.25);
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.result-summary-table td {
+  padding: 10px 12px;
+  vertical-align: middle;
+}
+
+.result-summary-table td:first-child {
+  color: #c85fa6;
+  font-weight: 600;
+  width: 140px;
+}
+.result-answer-table th {
+  background: #ffe3f1;
+  color: #c85fa6;
+  font-weight: 700;
+  border-bottom: 2px solid #ffd1e6;
+}
+
+.result-answer-table td {
+  padding: 10px;
+  vertical-align: top;
+}
+
+@media (max-width: 768px) {
+  .result-answer-table thead {
+    display: none;
+  }
+
+  .result-answer-table tr {
+    display: block;
+    margin-bottom: 16px;
+    border-radius: 14px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    padding: 12px;
+    background: #fff;
+  }
+
+  .result-answer-table td {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+  }
+
+  .result-answer-table td::before {
+    font-weight: 600;
+    color: #c85fa6;
+  }
+
+  .result-answer-table td:nth-child(1)::before { content: "Fråga"; }
+  .result-answer-table td:nth-child(2)::before { content: "Ditt svar"; }
+  .result-answer-table td:nth-child(3)::before { content: "Korrekt svar"; }
+  .result-answer-table td:nth-child(4)::before { content: "Rätt?"; }
 }

@@ -80,6 +80,7 @@ try {
         case "get-result-details": 
             if (!isset($_GET["id"])) {
             echo json_encode(["success" => false, "message" => "Missing id"]);
+            exit;
 
         }
             $id = intval($_GET["id"]);
@@ -102,6 +103,7 @@ try {
 
             if (!$details) {
                 echo json_encode(["success" => false, "message" => "Not found"]);
+                exit;
 
             }
 
@@ -118,12 +120,15 @@ try {
                     q.q_points
                 FROM student_answer sa
                 INNER JOIN question q ON sa.sa_question_fk = q.q_id
-                WHERE sa.sa_quiz_fk = :attempt_id
+                WHERE sa.sa_quiz_fk = :quiz_id
+                AND sa.sa_student_fk = :student_id
+
             ";
 
                 $stmt2 = $pdo->prepare($sql2);
                 $stmt2->execute([
-                    "attempt_id" => $details["sq_id"]
+                    "quiz_id" => $details["sq_quiz_fk"],
+                    "student_id" => $details["sq_student_fk"]
                 ]);
 
             $formattedAnswers = [];

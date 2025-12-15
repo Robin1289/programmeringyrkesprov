@@ -1,6 +1,6 @@
 <template>
-  <button class="btn btn-outline-secondary mb-3" @click="goBack">
-    ← Back
+  <button class="kitty-back-btn mb-3" @click="goBack">
+    ← Tillbaka
   </button>
 </template>
 
