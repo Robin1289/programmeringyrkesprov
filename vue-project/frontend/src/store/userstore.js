@@ -122,7 +122,7 @@ export const useUserStore = defineStore('user', {
 
       try {
         const response = await fetch(
-          'https://yrkesprov.fwh.is/yrkesprov/vue-project/backend/api/users.php?action=getUser',
+          'https://yrkesprov.fwh.is/backend/api/users.php?action=getUser',
           { credentials: 'include' }
         );
 
