@@ -117,7 +117,7 @@ const rankMessage = computed(() => {
 
 async function fetchLevels() {
   const response = await fetch(
-    `http://localhost/yrkesprov/vue-project/backend/api/levels.php?user_id=${userStore.id}`,
+    `https://yrkesprov.fwh.is/backend/api/levels.php?user_id=${userStore.id}`,
     { credentials: "include" }
   );
   const data = await response.json();
@@ -130,7 +130,7 @@ async function fetchLevels() {
 
 async function fetchRank() {
   const res = await fetch(
-    "http://localhost/yrkesprov/vue-project/backend/api/user_rank.php",
+    "https://yrkesprov.fwh.is/backend/api/user_rank.php",
     { credentials: "include" }
   );
   const data = await res.json();

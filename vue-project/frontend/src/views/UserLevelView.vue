@@ -64,7 +64,7 @@ const loading = ref(true);
 async function fetchLevels() {
   try {
     const response = await fetch(
-      `http://localhost/yrkesprov/vue-project/backend/api/levels.php?user_id=${userStore.id}`,
+      `https://yrkesprov.fwh.is/backend/api/levels.php?user_id=${userStore.id}`,
       { credentials: "include" }
     );
 
@@ -114,7 +114,7 @@ const badges = ref([])
 async function fetchBadges() {
   try {
     const res = await fetch(
-      "http://localhost/yrkesprov/vue-project/backend/api/badges.php",
+      "https://yrkesprov.fwh.is/backend/api/badges.php",
       { credentials: "include" }
     )
 

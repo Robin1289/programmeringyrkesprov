@@ -195,7 +195,7 @@ async function loadQuiz() {
 
   try {
     const res = await fetch(
-      `http://localhost/yrkesprov/vue-project/backend/api/get-quiz.php?id=${route.params.id}`
+      `https://yrkesprov.fwh.is/backend/api/get-quiz.php?id=${route.params.id}`
     );
     const data = await res.json();
 
@@ -277,7 +277,7 @@ async function finishQuiz() {
   };
 
   const res = await fetch(
-    "http://localhost/yrkesprov/vue-project/backend/api/submit-quiz.php",
+    "https://yrkesprov.fwh.is/backend/api/submit-quiz.php",
     {
       method: "POST",
       credentials: "include",
@@ -316,7 +316,7 @@ function goToResults() {
 onMounted(async () => {
   await userStore.fetchUser();
   await loadQuiz();
-  await fetch("http://localhost/yrkesprov/vue-project/backend/api/level_up.php", {
+  await fetch("https://yrkesprov.fwh.is/backend/api/level_up.php", {
     method: "POST",
     credentials: "include"
   });

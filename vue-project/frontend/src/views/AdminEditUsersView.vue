@@ -99,7 +99,7 @@ const loading = ref(true)
 onMounted(async () => {
   try {
     const response = await fetch(
-      `http://localhost/yrkesprov/vue-project/backend/api/users.php?action=get&id=${userId}`,
+      `https://yrkesprov.fwh.is/backend/api/users.php?action=get&id=${userId}`,
       { credentials: 'include' }
     )
     const data = await response.json()
@@ -134,7 +134,7 @@ async function saveUser() {
   };
 
   const response = await fetch(
-    `http://localhost/yrkesprov/vue-project/backend/api/users.php?action=update`,
+    `https://yrkesprov.fwh.is/backend/api/users.php?action=update`,
     {
       method: 'POST',
       credentials: 'include',

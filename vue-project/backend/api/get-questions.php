@@ -1,7 +1,7 @@
 <?php
 require_once "cors.php";
 require_once "../config/db.php";
-
+include_once 'api-init.php';
 $quizId = intval($_GET["quiz_id"] ?? 0);
 
 if ($quizId <= 0) {

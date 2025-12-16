@@ -46,7 +46,7 @@ const loading = ref(true)
 onMounted(async () => {
   try {
     const response = await fetch(
-      'http://localhost/yrkesprov/vue-project/backend/api/users.php?action=getAll',
+      'https://yrkesprov.fwh.is/backend/api/users.php?action=getAll',
       { credentials: 'include' }
     )
     const data = await response.json()

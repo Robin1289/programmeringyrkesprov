@@ -12,7 +12,7 @@ import ResultPage from '@/components/ResultPage.vue'
 const userStore = useUserStore()
 
 onMounted(async () => {
-  await fetch("http://localhost/yrkesprov/vue-project/backend/api/level_up.php", {
+  await fetch("https://yrkesprov.fwh.is/backend/api/level_up.php", {
     method: "POST",
     credentials: "include"
   })

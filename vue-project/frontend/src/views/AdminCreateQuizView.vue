@@ -18,7 +18,7 @@ import router from "@/router"
 async function createQuiz(quiz) {
 
   const res = await fetch(
-    "http://localhost/yrkesprov/vue-project/backend/api/admin_quizzes.php?action=create",
+    "https://yrkesprov.fwh.is/backend/api/admin_quizzes.php?action=create",
     {
       method: "POST",
       credentials: "include",

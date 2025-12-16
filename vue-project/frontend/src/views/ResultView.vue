@@ -84,7 +84,7 @@ const sortBy = ref("date_desc")
 async function loadResults() {
   try {
     const res = await fetch(
-      "http://localhost/yrkesprov/vue-project/backend/api/user_results.php",
+      "https://yrkesprov.fwh.is/backend/api/user_results.php",
       { credentials: "include" }
     )
 

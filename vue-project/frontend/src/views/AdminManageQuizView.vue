@@ -65,7 +65,7 @@ async function loadQuiz() {
   try {
 
     const res = await fetch(
-      `http://localhost/yrkesprov/vue-project/backend/api/admin_quizzes.php?action=get&quiz_id=${quizId}`,
+      `https://yrkesprov.fwh.is/backend/api/admin_quizzes.php?action=get&quiz_id=${quizId}`,
       { credentials: "include" }
     )
 
@@ -93,7 +93,7 @@ async function loadQuiz() {
 async function saveQuiz(updated) {
 
   await fetch(
-    "http://localhost/yrkesprov/vue-project/backend/api/admin_quizzes.php?action=update",
+    "https://yrkesprov.fwh.is/backend/api/admin_quizzes.php?action=update",
     {
       method: "POST",
       credentials: "include",
@@ -133,7 +133,7 @@ async function saveQuestion(question) {
   const action = question.q_id ? "update_question" : "create_question"
 
   const res = await fetch(
-    `http://localhost/yrkesprov/vue-project/backend/api/admin_quizzes.php?action=${action}`,
+    `https://yrkesprov.fwh.is/backend/api/admin_quizzes.php?action=${action}`,
     {
       method: "POST",
       credentials: "include",
@@ -157,7 +157,7 @@ async function saveQuestion(question) {
 if (question.q_type === "multiple" || question.q_type === "sort") {
 
   await fetch(
-    "http://localhost/yrkesprov/vue-project/backend/api/admin_quizzes.php?action=save_answers",
+    "https://yrkesprov.fwh.is/backend/api/admin_quizzes.php?action=save_answers",
     {
       method: "POST",
       credentials: "include",
@@ -174,7 +174,7 @@ if (question.q_type === "multiple" || question.q_type === "sort") {
 
 if (question.q_type === "match") {
   await fetch(
-    "http://localhost/yrkesprov/vue-project/backend/api/admin_quizzes.php?action=save_match_pairs",
+    "https://yrkesprov.fwh.is/backend/api/admin_quizzes.php?action=save_match_pairs",
     {
       method: "POST",
       credentials: "include",
@@ -199,7 +199,7 @@ async function deleteQuestion(questionId) {
   if (!ok) return
 
   await fetch(
-    "http://localhost/yrkesprov/vue-project/backend/api/admin_quizzes.php?action=delete_question&q_id=" + questionId,
+    "https://yrkesprov.fwh.is/backend/api/admin_quizzes.php?action=delete_question&q_id=" + questionId,
     {
       method: "POST",
       credentials: "include"
@@ -214,7 +214,7 @@ function deleteQuiz(id) {
   if (!confirm("Är du säker på att du vill ta bort detta quiz?")) return
 
   fetch(
-    `http://localhost/yrkesprov/vue-project/backend/api/admin_quizzes.php?action=delete&quiz_id=${id}`,
+    `https://yrkesprov.fwh.is/backend/api/admin_quizzes.php?action=delete&quiz_id=${id}`,
     {
       method: "POST",
       credentials: "include"

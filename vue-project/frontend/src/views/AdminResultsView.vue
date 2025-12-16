@@ -41,7 +41,7 @@ const userId = route.params.id
 async function fetchResults() {
   try {
     const response = await fetch(
-      `http://localhost/yrkesprov/vue-project/backend/api/admin_data.php?action=get-results`,
+      `https://yrkesprov.fwh.is/backend/api/admin_data.php?action=get-results`,
       { credentials: "include" }
     )
 

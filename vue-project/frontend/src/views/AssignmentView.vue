@@ -135,7 +135,7 @@ function toggle(section) {
 async function fetchAssignments() {
   try {
     const res = await fetch(
-      "http://localhost/yrkesprov/vue-project/backend/api/assignment.php",
+      "https://yrkesprov.fwh.is/backend/api/assignment.php",
       { credentials: "include" }
     )
 
@@ -157,7 +157,7 @@ async function fetchAssignments() {
 }
 
 onMounted(async () => {
-  await fetch("http://localhost/yrkesprov/vue-project/backend/api/level_up.php", {
+  await fetch("https://yrkesprov.fwh.is/backend/api/level_up.php", {
     method: "POST",
     credentials: "include"
   })

@@ -79,7 +79,7 @@ const result = ref({ correct: 0, total: 0, quiz_id: null });
 
 async function loadResult() {
   const res = await fetch(
-    `http://localhost/yrkesprov/vue-project/backend/api/get-result.php?id=${route.params.id}`,
+    `https://yrkesprov.fwh.is/backend/api/get-result.php?id=${route.params.id}`,
     { credentials: "include" }
   );
   const data = await res.json();

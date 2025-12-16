@@ -96,7 +96,7 @@ const error = ref(null)
 async function loadQuizzes() {
   try {
     const res = await fetch(
-      "http://localhost/yrkesprov/vue-project/backend/api/admin_quizzes.php?action=list",
+      "https://yrkesprov.fwh.is/backend/api/admin_quizzes.php?action=list",
       { credentials: "include" }
     )
 
@@ -126,7 +126,7 @@ function deleteQuiz(id) {
   if (!confirm("Är du säker på att du vill ta bort detta quiz?")) return
 
   fetch(
-    `http://localhost/yrkesprov/vue-project/backend/api/admin_quizzes.php?action=delete&quiz_id=${id}`,
+    `hhttps://yrkesprov.fwh.is/backend/api/admin_quizzes.php?action=delete&quiz_id=${id}`,
     {
       method: "POST",
       credentials: "include"

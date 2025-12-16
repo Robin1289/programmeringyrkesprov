@@ -97,7 +97,7 @@ async function fetchDetails() {
 
   try {
     const res = await fetch(
-      `http://localhost/yrkesprov/vue-project/backend/api/admin_data.php?action=get-result-details&id=${id}`,
+      `https://yrkesprov.fwh.is/backend/api/admin_data.php?action=get-result-details&id=${id}`,
       { credentials: "include" }
     );
 
@@ -122,7 +122,7 @@ async function deleteResult() {
   const id = route.params.id;
 
   const res = await fetch(
-    "http://localhost/yrkesprov/vue-project/backend/api/admin_data.php?action=delete-result",
+    "https://yrkesprov.fwh.is/backend/api/admin_data.php?action=delete-result",
     {
       method: "POST",
       credentials: "include",

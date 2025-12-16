@@ -38,7 +38,7 @@ export const useUserStore = defineStore('user', {
     async login(credentials) {
       try {
         const response = await fetch(
-          "http://localhost/yrkesprov/vue-project/backend/api/login.php",
+          "https://yrkesprov.fwh.is/backend/api/login.php",
           {
             method: "POST",
             credentials: "include",
@@ -79,7 +79,7 @@ export const useUserStore = defineStore('user', {
     async register(name, email, password) {
       try {
         const response = await fetch(
-          'http://localhost/yrkesprov/vue-project/backend/api/register.php',
+          'https://yrkesprov.fwh.is/backend/api/register.php',
           {
             method: 'POST',
             credentials: 'include',
@@ -99,7 +99,7 @@ export const useUserStore = defineStore('user', {
     async logout() {
       try {
         await fetch(
-          'http://localhost/yrkesprov/vue-project/backend/api/users.php',
+          'https://yrkesprov.fwh.is/backend/api/users.php',
           {
             method: 'POST',
             credentials: 'include',
@@ -122,7 +122,7 @@ export const useUserStore = defineStore('user', {
 
       try {
         const response = await fetch(
-          'http://localhost/yrkesprov/vue-project/backend/api/users.php?action=getUser',
+          'https://yrkesprov.fwh.is/yrkesprov/vue-project/backend/api/users.php?action=getUser',
           { credentials: 'include' }
         );
 

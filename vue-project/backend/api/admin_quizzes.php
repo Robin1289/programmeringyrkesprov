@@ -4,6 +4,7 @@ session_start();
 
 require_once "cors.php";
 require_once "../config/db.php";
+include_once 'api-init.php';
 
 /* Admin only */
 if (!isset($_SESSION["user_id"]) || $_SESSION["user_role"] == 1) {

@@ -98,7 +98,7 @@ onMounted(async () => {
 
 async function fetchStats() {
   const response = await fetch(
-    "http://localhost/yrkesprov/vue-project/backend/api/admin_data.php?action=get-stats",
+    "https://yrkesprov.fwh.is/backend/api/admin_data.php?action=get-stats",
     { credentials: "include" }
   );
 
@@ -116,7 +116,7 @@ async function fetchStats() {
 async function fetchLevelHeatmap() {
   try {
     const res = await fetch(
-      "http://localhost/yrkesprov/vue-project/backend/api/admin_data.php?action=get-stats",
+      "https://yrkesprov.fwh.is/backend/api/admin_data.php?action=get-stats",
       { credentials: "include" }
     );
 
