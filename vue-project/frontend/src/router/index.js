@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import { useUserStore } from '../store/userstore.js'
 import DashboardView from '../views/DashboardView.vue'
 import LoginView from '../views/LoginView.vue'
@@ -38,7 +38,7 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes
 })
 router.beforeEach(async (to, from, next) => {
