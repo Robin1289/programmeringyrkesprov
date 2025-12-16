@@ -3400,10 +3400,6 @@ textarea.form-control {
   font-size: 14px;
 }
 
-@media (max-width: 768px) {
-  .admin-table {
-    min-width: 720px;
-  }
 }.table-scroll {
   width: 100%;
   overflow-x: auto;
@@ -3434,4 +3430,24 @@ textarea.form-control {
     display: none;
   }
 }
-
+@media (max-width: 768px) {
+  .admin-table thead {
+    display: none;
+  }
+}
+@media (max-width: 768px) {
+  .admin-table tbody tr {
+    display: grid;
+    grid-template-columns: 1fr 2fr; /* label + value */
+    gap: 8px;
+    margin-bottom: 16px; /* space between rows */
+    border-bottom: 1px solid #ccc;
+  }
+}
+@media (max-width: 768px) {
+  .admin-table td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    display: block;
+  }
+}
