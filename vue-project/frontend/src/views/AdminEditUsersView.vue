@@ -89,6 +89,7 @@ import { useRoute } from 'vue-router'
 import BackButton from '../components/BackButton.vue'
 
 const route = useRoute()
+const router = useRouter()
 const userId = route.params.id
 
 const password = ref("")

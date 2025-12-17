@@ -42,8 +42,6 @@
     <LogoutPopup
       v-if="showLogoutPopup"
       :username="userStore.name"
-      :video-src="'/media/sadchild.mp4'"
-      :sound-src="'/media/tf_nemesis.mp3'"
       @close="handleLogoutPopupClose"
     />
   </nav>

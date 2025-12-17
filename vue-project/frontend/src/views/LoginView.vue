@@ -25,8 +25,6 @@
       <WelcomePopup
         v-if="showWelcomePopup"
         :username="userStore.name"
-        :video-src="'/media/cutevid.mp4'"
-        :sound-src="'/media/uwu.mp3'"
       />
 
     </div>
@@ -47,6 +45,7 @@ import { useRouter } from 'vue-router'
 import { useUserStore } from '../store/userstore.js'
 import LoginForm from '../components/LoginForm.vue'
 import WelcomePopup from '../components/WelcomePopup.vue'
+
 
 const router = useRouter()
 const userStore = useUserStore()

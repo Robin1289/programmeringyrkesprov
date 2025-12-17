@@ -4,7 +4,6 @@
       <h2>Välkommen tillbaka, {{ username }}! 🎉</h2>
 
       <video
-        v-if="videoSrc"
         autoplay
         muted
         class="welcome-video"
@@ -13,7 +12,7 @@
         Din webbläsare stöder inte videotaggen.
       </video>
 
-      <audio v-if="soundSrc" autoplay>
+      <audio autoplay>
         <source :src="soundSrc" type="audio/mpeg" />
       </audio>
     </div>
@@ -25,25 +24,22 @@ import { onMounted } from 'vue'
 import confetti from 'canvas-confetti'
 
 const emit = defineEmits(['close'])
-
 const props = defineProps({
-  username: String,
-  videoSrc: String,
-  soundSrc: String
+  username: String
 })
 
-// 🎊 Trigger confetti + close popup after 3 seconds
+// Use **relative paths** pointing to where your media folder is relative to index.html
+const videoSrc = './media/cutevid.mp4'
+const soundSrc = './media/uwu.mp3'
+
 onMounted(() => {
-  // fire confetti first
   runConfetti()
 
-  // hide after 3s
   setTimeout(() => {
     emit('close')
   }, 3000)
 })
 
-// Function to trigger confetti burst
 function runConfetti() {
   const duration = 1.5 * 1000
   const animationEnd = Date.now() + duration
@@ -55,38 +51,18 @@ function runConfetti() {
 
   const interval = setInterval(function () {
     const timeLeft = animationEnd - Date.now()
-
-    if (timeLeft <= 0) {
-      return clearInterval(interval)
-    }
+    if (timeLeft <= 0) return clearInterval(interval)
 
     const particleCount = 60 * (timeLeft / duration)
-    // left and right side bursts
-    confetti({
-      ...defaults,
-      particleCount,
-      origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
-    })
-    confetti({
-      ...defaults,
-      particleCount,
-      origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
-    })
+    confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } })
+    confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } })
   }, 250)
 }
 </script>
 
 <style scoped>
-
-
 @keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 </style>
